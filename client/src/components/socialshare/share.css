@@ -1,0 +1,8 @@
+.socialmedia-div {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+.social-icons {
+  padding-left: 15px;
+}

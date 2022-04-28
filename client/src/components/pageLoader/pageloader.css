@@ -1,0 +1,18 @@
+.custom-loader-wrapper{
+    overflow: hidden;
+    background-color: #FF661F;
+    width: 100vw;
+    position: fixed;
+    height: 100vh;
+    z-index: 10;
+  
+    
+}
+
+.page-loader{
+    width: 350px;
+   
+}
+.loading-text{
+    font-size: 30px;
+}

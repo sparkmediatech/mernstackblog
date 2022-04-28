@@ -1,0 +1,9 @@
+.cursornotallowed-container{
+    overflow: hidden;
+    opacity: 0.1;
+    width: 100vw;
+    position: fixed;
+    height: 100%;
+    z-index: 10;
+    cursor: not-allowed;
+}

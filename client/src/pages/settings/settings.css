@@ -1,0 +1,146 @@
+.settings {
+  display: flex;
+  justify-content: center;
+}
+
+.settingsWrapper {
+  flex: 9;
+  padding: 20px;
+}
+.fileUpload2 {
+  display: none;
+}
+.settingsTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.settingsUpdateTitle {
+  font-size: 30px;
+  margin-bottom: 20px;
+  color: lightcoral;
+}
+.settingsUpdateDelete {
+  color: red;
+  font-size: 12px;
+  cursor: pointer;
+}
+.settingsform {
+  display: flex;
+  flex-direction: column;
+}
+.settingsform2 {
+  pointer-events: none;
+}
+.settingsProfilePic {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+.settingsProfilePic img {
+  width: 70px;
+  height: 70px;
+  border-radius: 20px;
+}
+.settingsProfilePicicon {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: lightcoral;
+  color: white;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  justify-content: center;
+  cursor: pointer;
+}
+.settingsform label {
+  font-size: 20px;
+  margin-top: 20px;
+}
+.settingsform input {
+  color: gray;
+  margin: 10px 0;
+  height: 30px;
+  border: none;
+  border-bottom: 2px solid lightgray;
+  outline: none;
+}
+.settingsSubmit {
+  width: 150px;
+  align-self: center;
+  border-radius: 10px;
+  color: white;
+  background-color: teal;
+  padding: 10px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+.settingsSubmit2 {
+  cursor: not-allowed;
+  background-color: gray;
+}
+.sucessCont {
+  width: 150px;
+  align-self: center;
+  background-color: red;
+}
+.updated-sucessfully {
+  font-family: "Open Sans", sans-serif;
+  font-size: 20px;
+  align-self: center;
+  color: #239b56;
+  padding: 10px;
+  margin-top: 20px;
+}
+.settingsSubmit3 {
+  cursor: not-allowed;
+}
+
+/*This section is for the user details when the userUpateMood is false  */
+.user-details-div {
+  margin-top: 20px;
+}
+.user-details-div .settingsProfilePic {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.settingsProfilePic label {
+  padding-bottom: 10px;
+}
+.user-detail-container-username {
+  padding-top: 15px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid gray;
+}
+.user-detail-container-username h4 {
+  font-size: 15px;
+  color: #b3b6b7;
+  font-family: "Open Sans", sans-serif;
+  margin-top: 10px;
+}
+.user-detail-container-email {
+  margin-top: 20px;
+  border-bottom: 1px solid gray;
+  padding-bottom: 5px;
+}
+.user-detail-container-email h4 {
+  font-size: 15px;
+  color: #b3b6b7;
+  font-family: "Open Sans", sans-serif;
+  margin-top: 10px;
+}
+.user {
+  font-family: "Open Sans", sans-serif;
+}
+.user-details-div label {
+  font-size: 20px;
+}
+.user-btn {
+  font-size: 12px;
+  
+}
+.user-btn:hover {
+  background-color: #f4540b;
+}

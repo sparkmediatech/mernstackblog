@@ -1,0 +1,31 @@
+{
+  "name": "blogfullstack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install-api": "npm install --prefix api",
+    "install-client": "npm install --prefix client",
+    "install-general": "concurrently \"npm run install-api\" \"npm run install-client\"",
+    "api": "npm start --prefix api",
+    "client": "npm start --prefix client",
+    "start":"concurrently \"npm run api\" \"npm run client\"",
+    "deploy":"concurrently \"npm run build --prefix client\" \"npm start --prefix api\"",
+    "startcluster":"concurrently \"npm run build --prefix client\" \"npm run cluster --prefix api\"",
+    "test": "concurrently \"npm run test --prefix api\" \"npm run test --prefix client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sparkmediatech/fullstackblogapp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sparkmediatech/fullstackblogapp/issues"
+  },
+  "homepage": "https://github.com/sparkmediatech/fullstackblogapp#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}

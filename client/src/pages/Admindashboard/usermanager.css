@@ -1,0 +1,117 @@
+/*.users-custom-wrapper{
+    height: 100vh;
+    max-width: 1600px;
+    margin: 0 auto;
+    overflow: auto;
+    padding: 0 40px;
+}*/
+
+.custom-users-dashboard-div{
+    width: 100%;
+}
+.users-manager-custom-div{
+    background-color: #FBFCFC;
+    height: 100vh;
+}
+.displayUser-div-container{
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    width: 90%;
+    margin-top: 30px;
+    background-color: white;
+    height: 10vh;
+    padding: 0 15px 5px 15px;
+}
+
+.custom-paragrap-text{
+    cursor: pointer;
+    transition: 0.5s ease-in-out;
+}
+.custom-paragrap-text:hover {
+    color: #FF661F;
+    font-size: 18px;
+}
+.users-main-container{
+    width: 100%;
+    height: 100%;
+    
+}
+.users-title-container{
+    margin-left: 30px;
+    margin-top: 20px;
+    width: 90%;  
+}
+
+/* Title texts   */
+
+.name-div {
+    width: 33%;
+  
+}
+.role-div{
+    width: 18%;
+    margin-left: 5px; 
+}
+.blocked-div{
+    width: 10%;
+    margin-left: 5px;
+}
+.verified-div{
+    width: 20%;
+    margin-left: 5px;
+}
+
+/* users name section  */
+.users-custom-name-container{
+    margin-top: 5px;
+    width: 35%;
+    height: 100%;
+   
+
+}
+
+/* users profile pics section  */
+.userImg-div {
+    cursor: pointer;
+    width: 15%;
+    height: 80%;
+    margin-left: 10px;
+    
+    
+}
+.users-img {
+    margin-top: 5px;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    transition: 0.5s ease-in-out;
+    
+}
+.users-img:hover{
+    transform: scale(1.2);
+}
+.users-detail-container{
+    margin-top: 5px;
+    margin-left: 20px;
+    height: 100%;
+    width: 75%;
+    
+}
+
+/* user role section */
+
+.users-role-custom-div{
+    width: 20%;
+    margin-top: 5px;  
+}
+
+
+.users-verified-custom-div{
+    width: 20%;
+    margin-top: 5px;
+}
+
+.users-isBlocked-custom-div{
+    margin-top: 5px;
+    width: 20%;  
+}
+

@@ -1,0 +1,91 @@
+.display-single-user-custom-div{
+    height: 100%;
+}
+.single-user-custom-div{
+    background-color: hsl(180, 14%, 97%);
+    width: 95%;
+    height: 95%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.user-details-custom-div{
+    width: 90%;
+    height: 25%;
+
+}
+/*user's profile pics section */
+.user-profile-pics-div{
+    width: 70%;
+    height: 20%;
+}
+
+.user-profile-pics{
+    width: 20%;
+    height: 100%;
+    border-radius: 100%;
+    border: 10px solid #FF661F;
+}
+
+/* user buttons */
+.user-custom-btn-div{
+  
+}
+.message-btn{
+    display: flex;
+    justify-content: center;
+    width: 20%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+   transition: 0.6s ease-in-out;
+    margin-left: 10px;
+}
+.message-btn:hover{
+    transform: scale(1.1);
+    background-color: #f05208;
+}
+.follow-btn{
+    display: flex;
+    justify-content: center;
+    width: 20%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    transition: 0.6s ease-in-out;
+}
+.follow-btn:hover{
+    transform: scale(1.1);
+    background-color: #f05208;
+}
+.block-user-custom-btn{
+    padding-bottom: 20px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    transition: 0.6s ease-in-out;
+    margin-left: 15px;
+}
+.block-user-custom-btn:hover{
+    transform: scale(1.1);
+    background-color: #f05208;
+}
+/*activities section  */
+.user-activity-div{
+    height: 30%;
+}
+.post-custom-div{
+    width: 100%;
+}
+.paragraph-custom-div{
+    width: 100%;
+}
+
+.custom-post-title:hover{
+    cursor: pointer;
+    color: #f05208;
+}
+
+/*   */
+.blockDate-custom-setting-div {
+    width: 20%;
+}
+
+.block-custom-selection-div {
+    width: 100%;
+}
+.date-time-custom-input{
+    width: 100%;
+}

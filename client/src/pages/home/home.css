@@ -1,0 +1,8 @@
+.home {
+  display: flex;
+}
+.loading-div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

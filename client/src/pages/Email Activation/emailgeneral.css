@@ -1,0 +1,59 @@
+.wrapper{
+  overflow: hidden;
+background-color: #5D6D7E;
+}
+
+
+/* ActivationLinksent section */
+
+.md-div {
+  background-color: #ff7433;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.emailIcon2 {
+  margin-top: 15px;
+  font-size: 130px;
+  color: #f6996e;
+  outline-color: black;
+}
+
+
+.verifyText2 {
+  color: #99a3a4;
+  margin-top: 10px;
+  font-size: 15px;
+  font-family: "Satisfy";
+  font-style: italic;
+}
+.check {
+  margin-top: 15px;
+  font-size: 80px;
+  color: #3ec1f1;
+  outline-color: black;
+}
+.emailText{
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* ResendVerifyLink section */
+.custom-email-verification-container {
+  height: 73vh;
+  overflow: hidden;
+}
+.resend-Email-div {
+  border-radius: 10px;
+  display: flex;
+  height: 40%;
+  padding: 10px 15px 20px 15px;
+  flex-direction: column;
+  background-color: #FFFFFF;
+  width: 400px;
+  box-shadow: 8px 8px 8px -6px black;
+}
+.resend-Email-div2{
+  height: 50%;
+}

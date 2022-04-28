@@ -1,0 +1,131 @@
+.write {
+  padding-top: 30px;
+  width: 100%;
+}
+.write-isFetching {
+  /*makes the cursor unclickable when isFetching is true  */
+  cursor: not-allowed;
+}
+.writeImg {
+
+  margin-left: 100px;
+  width: 70%;
+  height: 300px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.writeForm {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+
+}
+
+.fileUpload {
+  display: none;
+}
+.writeFormGroup {
+  margin-left: 100px;
+  display: flex;
+  align-items: center;
+}
+.writeIcon {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 1px solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  color: gray;
+  cursor: pointer;
+}
+.writeInput {
+  font-size: 30px;
+  border: none;
+  padding: 20px;
+  width: 70%;
+  outline: none;
+}
+.writetext {
+  font-size: 20px;
+  height: 100vh;
+}
+.btn-custom-div{
+  width: 100%;
+  
+}
+.write-custom-btn {
+ width: 15%;
+ padding: 13px 0 13px 0;
+ cursor: pointer;
+ background-color: #FF661F;
+ outline: none;
+ border: none;
+ border-radius: 10px;
+ color: white;
+ font-size: 15px;
+ transition: 0.6s ease-in-out;
+
+}
+.write-custom-btn:hover{
+  background-color: #e2500c;
+}
+.writeSubmit-non-cursor {
+  cursor: not-allowed;
+}
+.category-div {
+  display: flex;
+  margin-left: 10px;
+}
+.category-div h5 {
+  font-family: sans-serif;
+  padding: 5px 0 5px 0px;
+}
+.category-box {
+  border: 1px #d0d3d4 solid;
+  border-radius: 5px;
+  margin-left: 5px;
+  outline: none;
+  width: 10%;
+  padding: 5px 20px 5px 20px;
+}
+
+.category-box:focus {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+/* Mobile*/
+@media (max-width: 500px) {
+  .writeImg {
+    width: 90%;
+    margin-left: 0px;
+  }
+  .write {
+    width: 100%;
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .writeFormGroup {
+    width: 90%;
+    margin-left: 0px;
+  }
+  .writeSubmit {
+    border: none;
+    width: 40%;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+  .writeForm {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+  }
+}
