@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import "./comment.css"
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {AuthContext} from '../../context/AuthProvide';
+import BASE_URL from '../../hooks/Base_URL'
 
 
 export default function Comments() {
@@ -32,7 +33,7 @@ export default function Comments() {
     useEffect(() => {
         const getPost = async () =>{
             try{
-                 const response = await axios.get("/posts/"+path )
+                 const response = await axios.get(`${BASE_URL}/posts/`+path )
                  setComments(response.data.comments)
               
             }catch(err){
@@ -201,7 +202,7 @@ const handleDeleteComment = async (id, replyId)=>{
                                 
                                 <div className="commentPic">
                                     
-                                    <img className="user-pics" src={PF + singleComment.author.profilePicture} alt="" />
+                                    <img className="user-pics" src={singleComment.author.profilePicture} alt="" />
                                       
                                 </div>
                                 <div className="comment-info">
@@ -256,7 +257,7 @@ const handleDeleteComment = async (id, replyId)=>{
 
                                                     <div className='display-reply-comment' key={replyId}>
                                                     <div className='commentPic'>
-                                                            <img className='user-pics' src={PF + author.profilePicture} alt="" />
+                                                            <img className='user-pics' src={author.profilePicture} alt="" />
                                                     </div>
 
                                                     <div className='comment-info'>

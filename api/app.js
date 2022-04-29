@@ -8,7 +8,8 @@ const notFoundMiddleware = require('./middleware/not-found');
 const cookieParser = require('cookie-parser');
 const checkDB = require('./middleware/scheduleTask');
 const cors = require('cors');
-const fs = require('fs')
+const fs = require('fs');
+
 
 
 
@@ -32,6 +33,10 @@ app.use(cors({credentials: true,
 
 
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, '/build')))
+
+
 
 //cookie-parser
 app.use(cookieParser());
@@ -102,7 +107,12 @@ app.use("/api/v1/headervalue", headervalues);
 app.use("/api/v1/", refreshToken);
 app.use("/api/v1/", verifyEmailRoute);
 app.use("/api/v1/", searchRout)
-app.use(notFoundMiddleware);
+//app.use(notFoundMiddleware);
+
+
+app.get('*', (req, res)=>{
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+})
 
 //app.use("/api", (req, res, next) => {console.log(req.originalUrl); next()}, verifyEmailRoute);
 app.use(checkDB);

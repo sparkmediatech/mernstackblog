@@ -3,7 +3,8 @@ import axios from 'axios';
 import {AuthContext} from '../../context/AuthProvide';
 import ActivationLinkSent from './ActivationLinkSent';
 import {MdMarkEmailRead} from 'react-icons/md';
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom';
+import  BASE_URL from '../../hooks/Base_URL'
 
 function ResendVerifyLink() {
     const {temp, regUser, dispatch, isLoading} = useContext(AuthContext);
@@ -18,7 +19,7 @@ function ResendVerifyLink() {
     
     try{
         //setIsloading(true)
-       const response = await axios.post(`/resendlink`, {email: emailRef.current.value});
+       const response = await axios.post(`${BASE_URL}/resendlink`, {email: emailRef.current.value});
         dispatch({type:"REG_SUCCESS", payload: response.data});        
         window.location.replace('/linksent')
          

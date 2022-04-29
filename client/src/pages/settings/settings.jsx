@@ -4,6 +4,7 @@ import Sidebar from '../../components/sidebar/sidebar';
 import axios from 'axios';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {AuthContext} from '../../context/AuthProvide';
+import BASE_URL from '../../hooks/Base_URL'
 
 export default function Settings() {
     
@@ -38,7 +39,7 @@ const handleUpdate = async (e) =>{
 
       
         try{
-        const imageResponse =await axios.post("/upload", data,);
+        const imageResponse =await axios.post(`${BASE_URL}/upload`, data,);
         const imgUrl = imageResponse.data;
         setUser.profilepicture =imgUrl.url;
         setUpdated(true)

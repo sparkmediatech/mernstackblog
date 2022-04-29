@@ -5,6 +5,7 @@ import {AiFillCheckCircle} from 'react-icons/ai';
 import {FaSadCry} from 'react-icons/fa';
 import {MdGppBad} from 'react-icons/md'
 import { Link, useLocation } from 'react-router-dom';
+import  BASE_URL from '../../hooks/Base_URL'
 
 function ChanagePassword() {
     const {temp} = useContext(AuthContext);
@@ -29,7 +30,7 @@ function ChanagePassword() {
             }
             console.log(userDetails.password === userDetails.confirmPassword)
             try{
-                const response = await axios.patch(`/updatepassword/${temp.emailToken}`, userDetails, {
+                const response = await axios.patch(`${BASE_URL}/updatepassword/${temp.emailToken}`, userDetails, {
                      withCredentials: true,
                     headers:{authorization: `Bearer ${temp.emailToken}`}  
                 });

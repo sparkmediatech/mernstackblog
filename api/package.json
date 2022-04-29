@@ -21,8 +21,8 @@
     "redis": "^4.0.2"
   },
   "scripts": {
-    "watch": "node server.js",
-    "start": "nodemon server.js"
+    "watch": "nodemon server.js",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC"

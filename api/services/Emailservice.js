@@ -17,7 +17,7 @@ const sendConfirmationEmail = async (user, res) => {
     const emailToken = jwt.sign({userId: user._id, username: user.username}, process.env.EMAIL_JWT_SECRET,  {
             expiresIn: process.env.EMAIL_JWT_DURATION})
 
-    const url = `http://localhost:3000/confirm/${emailToken}`
+    const url = `http://localhost:5000/confirm/${emailToken}`
 
     //console.log(emailToken)
     transport.sendMail({
@@ -40,7 +40,7 @@ const resetPasswordLink = async (user) =>{
     const passwordToken = jwt.sign({userId: user._id, username: user.username}, process.env.PASSWORD_RESET_SECRET,  {
             expiresIn: process.env.PASSWORD_JWT_DURATION}); 
 
-    const url = `http://localhost:3000/updatepassword/${passwordToken}`
+    const url = `http://localhost:5000/updatepassword/${passwordToken}`
 
     //console.log(emailToken)
     transport.sendMail({

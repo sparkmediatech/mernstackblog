@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from 'react';
 import Dashboard from '../../pages/Admindashboard/Dashboard';
 import axios from 'axios';
 import {AuthContext} from '../../context/AuthProvide';
+import  BASE_URL from '../../hooks/Base_URL'
 //import {useLocation} from "react-router-dom"
 
 export default function Header() {
@@ -12,7 +13,8 @@ export default function Header() {
     const [EditHeaderTitleMode, setEditHeaderTitleMode] = useState(false)
     const [writeHeaderTitle, setWriteHeaderTitle] = useState('')
     const [headerValues, setHeaderValues] = useState([]);
-    const PF = "http://localhost:5000/images/"
+    const PF = "http://localhost:5000/images/";
+
     
     //console.log(headerValues)
    
@@ -20,7 +22,7 @@ export default function Header() {
   useEffect(() => {
        dispatch({ type: "ISLOADING_START" });
       const fetchFrontendValue = async () =>{
-          const res = await axios.get("/headervalue");
+          const res = await axios.get(`${BASE_URL}/headervalue`);
           setHeaderValues(res.data)
            dispatch({ type: "ISLOADING_END" });
       }

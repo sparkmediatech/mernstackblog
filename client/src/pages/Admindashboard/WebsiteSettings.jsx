@@ -3,6 +3,7 @@ import axios from 'axios';
 import {AuthContext} from '../../context/AuthProvide';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import AdminSidebar from './AdminSidebar';
+import BASE_URL from '../../hooks/Base_URL'
 
 function WebsiteSettings() {
     const [headerValues, setHeaderValues] = useState([])
@@ -69,7 +70,7 @@ setUpdating(true)
         
       
         try{
-              const imageResponse = await axios.post("/upload", data)//handles the uploading of the image
+              const imageResponse = await axios.post(`${BASE_URL}/upload`, data)//handles the uploading of the image
               const imgUrl = imageResponse.data;
               console.log(imageResponse.data)
               updatedHeaderValue.headerImg = imgUrl.url;

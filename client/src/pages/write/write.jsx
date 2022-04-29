@@ -4,6 +4,7 @@ import axios from "axios";
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {AuthContext} from '../../context/AuthProvide';
 import PageLoader from '../../components/pageLoader/PageLoader';
+import BASE_URL from '../../hooks/Base_URL'
 
 
 
@@ -11,7 +12,6 @@ import PageLoader from '../../components/pageLoader/PageLoader';
 
 //console.log(AutoRefreshToken())
 export default function Write() {
-
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [file, setFile] = useState(null);
@@ -21,7 +21,7 @@ export default function Write() {
     const [userNotFoundError, setUserNotFounderError] = useState(false);
     const [blockedUserError, setBlockedUserError] = useState(false);
     const [verifiedUserError, setVerifiedUserError] = useState(false);
-    const [imgUrl, setImgUrl] = useState('');
+  
    
 
    
@@ -50,7 +50,7 @@ const handleSubmit = async (e) =>{
         data.append("file", file);
         newPost.postPhoto = filename
         try{
-           const imageResponse = await axios.post("/upload",  data,)
+           const imageResponse = await axios.post(`${BASE_URL}/upload`,  data,)
            const imgUrl = imageResponse.data;
             console.log(imageResponse.data)
             newPost.postPhoto = imgUrl.url
@@ -61,7 +61,7 @@ const handleSubmit = async (e) =>{
 
     try{
        
-        const response = await axiosPrivate.post("/v1/posts",  newPost, { withCredentials: true,
+        const response = await axiosPrivate.post('/v1/posts',  newPost, { withCredentials: true,
             headers:{authorization: `Bearer ${auth.token}`}
            
         },)

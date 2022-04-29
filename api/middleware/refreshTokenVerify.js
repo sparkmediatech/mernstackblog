@@ -5,6 +5,8 @@ const User = require('../models/User');
 
 
 const refreshTokenverify = async (req, res,) =>{
+    console.log(req.cookies)
+    console.log('Hey')
     const cookies = req.cookies;
     if(!cookies?.refreshJWT){
           return res.status(401).json({message: "Your session is not valid"})

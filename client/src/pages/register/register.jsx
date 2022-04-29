@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import React, {useState, useContext, useEffect} from 'react';
 import axios from 'axios';
 import {AuthContext} from '../../context/AuthProvide';
+import BASE_URL from '../../hooks/Base_URL'
 
 export default function Register() {
     const [username, setUsername] = useState(""); //here, I declared the usestate and should match with the registeration model object variable coming from your api
@@ -24,7 +25,7 @@ export default function Register() {
         try{
                setIsFetching(true)
                 
-            const response = await axios.post("/auth/register", {
+            const response = await axios.post(`${BASE_URL}/auth/register`, {
                 username,
                 email,
                 password,

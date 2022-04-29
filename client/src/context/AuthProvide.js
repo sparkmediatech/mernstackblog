@@ -2,6 +2,7 @@ import { createContext, useState, useEffect, useReducer } from "react";
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import Reducer from "../context/Reducer";
+import BASE_URL from '../hooks/Base_URL'
 
 
 const INITIAL_STATE = {
@@ -30,7 +31,7 @@ export const AuthProvider = ({children})=>{
     const refreshToken = async () =>{
         
         try{
-                const response = await axios.post("/refresh", {
+                const response = await axios.post(`${BASE_URL}/refresh`, {
                  withCredentials: true
              });
              setAuth(response.data);
@@ -45,9 +46,10 @@ export const AuthProvider = ({children})=>{
  
     useEffect( async () =>{
         if(!auth?.token){
+            console.log('I am running refresh token')
              refreshToken()
         }
-    }, [auth?.token]);
+    }, []);
 console.log(auth);
 
 const decodeJWT = ()=>{

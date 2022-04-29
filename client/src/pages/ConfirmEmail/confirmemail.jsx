@@ -10,6 +10,7 @@ import {BiUnlink} from 'react-icons/bi'
 import {AuthContext} from '../../context/AuthProvide';
 import ActivationLinkSent from '../Email Activation/ActivationLinkSent'
 import '../../CSS files/utilities.css'
+import  BASE_URL from '../../hooks/Base_URL'
 
 
 
@@ -38,7 +39,7 @@ const handleVerifyEmailLink = async ()=>{
         _id:temp.Id,       
     };
     try{
-        const response = await axios.post(`/confirm/${temp.emailToken}`, getUser);
+        const response = await axios.post(`${BASE_URL}/confirm/${temp.emailToken}`, getUser);
         setIsloading(false)
         setResData(response)
     }catch(err){

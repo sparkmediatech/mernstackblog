@@ -9,9 +9,14 @@ import HelmetMetaData from '../socialshare/Helmet';
 import {AuthContext} from '../../context/AuthProvide';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import PageLoader from '../pageLoader/PageLoader';
+import  BASE_URL from '../../hooks/Base_URL'
+
+
 //import Helmet from '../socialshare/Helmet';
 
 export default function SinglePost() {
+    
+    const axiosPrivate = useAxiosPrivate();
     const location = useLocation()
     const path = location.pathname.split("/")[2];
     const [post, setPost] = useState([]);
@@ -23,7 +28,7 @@ export default function SinglePost() {
     const [isLoading, setIsLoading] = useState(false);   
     let currentUrl = `http://www.localhost:3000/post/${path}`;
     const {auth, logUser} = useContext(AuthContext);
-    const axiosPrivate = useAxiosPrivate();
+   
 
 
     
@@ -37,7 +42,7 @@ export default function SinglePost() {
       
            try{
               setIsLoading(true)
-            const response = await axios.get("/posts/"+path )
+            const response = await axios.get(`${BASE_URL}/posts/${path}`);
             setPost([response.data]);
             setTitle(response.data.title);
             setDescription(response.data.description);

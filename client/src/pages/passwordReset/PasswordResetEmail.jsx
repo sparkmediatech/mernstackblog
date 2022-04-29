@@ -4,6 +4,7 @@ import './passwordReset.css';
 import axios from 'axios';
 import {AuthContext} from '../../context/AuthProvide';
 import {MdOutlineMail} from 'react-icons/md';
+import  BASE_URL from '../../hooks/Base_URL'
 
 
 
@@ -23,7 +24,7 @@ function PasswordResetEmail() {
     const handleSendResetPasswordEmailLink = async () =>{
         try{
             setLoading(true)
-            const response = await axios.post('/resetPassword', {
+            const response = await axios.post(`${BASE_URL}/resetPassword`, {
                  email: emailRef.current.value,
             })
             dispatch({type:"REG_SUCCESS", payload: response.data});

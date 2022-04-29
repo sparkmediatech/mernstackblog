@@ -8,10 +8,13 @@ import axios from 'axios';
 import {useLocation} from "react-router-dom";
 import {AuthContext} from '../../context/AuthProvide';
 import AutoRefreshToken from "../../hooks/AutoRefreshToken";
+import  BASE_URL from '../../hooks/Base_URL'
+
 
 
 
 export default function Home() {
+  
     const [posts, setPosts] = useState([]);//creating a usestate for the post
     const [loading, setLoading] = useState(false);
     const {auth, isLoading, dispatch} = useContext(AuthContext);
@@ -32,8 +35,8 @@ export default function Home() {
         setLoading(true)
         dispatch({ type: "ISLOADING_START" });
         const fetchPosts = async ()=>{
-        
-       const res = await axios.get("/posts"+search)//all we are saying is that fetch the posts with the query search entered. This could be author's name, category, etc
+       
+       const res = await axios.get(`${BASE_URL}/posts/${search}`)//all we are saying is that fetch the posts with the query search entered. This could be author's name, category, etc
         setPosts(res.data)
         setLoading(false)
         dispatch({ type: "ISLOADING_END" });

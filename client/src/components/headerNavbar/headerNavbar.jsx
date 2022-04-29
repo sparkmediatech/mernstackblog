@@ -9,6 +9,7 @@ import {FaFacebookF, FaTwitter, FaLinkedinIn, FaYoutube, FaSearch} from 'react-i
 import {AiOutlineInstagram} from 'react-icons/ai';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {LogContext} from '../../context/LogContext';
+import  BASE_URL from '../../hooks/Base_URL'
 
 
 function HeaderNavbar() {
@@ -19,12 +20,13 @@ function HeaderNavbar() {
     const {auth, setAuth, logUser} = useContext(AuthContext);
     const {logdispatch} = useContext(LogContext);
     const [focus, setFocus] = useState(false);
+
   
 
 useEffect(() => {
 
       const fetchFrontendValue = async () =>{
-          const res = await axios.get("/headervalue");
+          const res = await axios.get(`${ BASE_URL}/headervalue`);
           setHeaderValues(res.data)
           //console.log(res)
       }
