@@ -23,6 +23,9 @@ const headervalues = require("./routes/headervalue");
 const refreshToken = require('./routes/refreshToken');
 const verifyEmailRoute = require('./routes/EmailVerifyRoute');
 const searchRout = require('./routes/searchroute');
+const PopularPosts = require('./routes/popularPost');
+const Categories = require('./routes/Categories');
+
 
 
 
@@ -43,12 +46,12 @@ app.use(cookieParser());
 
 
 
-app.use("/images", express.static(path.join(__dirname, "/images") ))
+app.use("images", express.static(path.join(__dirname, "/images") ))
 //allowed image formats
 const ALLOWED_FORMATS = ['image/jpeg', 'image/png', 'image/jpg'];
 
 //login to upload images using libery called multer
-const storage = multer.diskStorage({//choosing destination of the file
+/*const storage = multer.diskStorage({//choosing destination of the file
     destination:(req, file, cb) =>{
         if(ALLOWED_FORMATS.includes(file.mimetype)){
              cb(null, "images")
@@ -60,21 +63,22 @@ const storage = multer.diskStorage({//choosing destination of the file
        cb(null, req.body.name) 
     }
 })
+*/
 
-const upload = multer({storage:storage});//uploading file to the file storage variabe that we created above
+//const upload = multer({storage:storage});//uploading file to the file storage variabe that we created above
 
 //image upload endpoint
-app.post("/api/v1/upload", upload.single("file"), async (req, res) =>{
+/*app.post("/api/v1/upload", upload.single("file"), async (req, res) =>{
+    console.log(req.file)
    
     try {
         const fileStr = req.file.path
-        console.log(fileStr)
+        
         if(!fileStr){
               return res.status(500).json( 'No image found');
         }else{
             //calling the cloudinary function for upload
              const uploadResponse = await uploadCloudinary(fileStr)
-            console.log(uploadResponse)
             
             const result = {
             url: uploadResponse.secure_url,
@@ -92,7 +96,7 @@ app.post("/api/v1/upload", upload.single("file"), async (req, res) =>{
    
   
 }); 
-
+*/
 
 
 
@@ -101,12 +105,15 @@ app.post("/api/v1/upload", upload.single("file"), async (req, res) =>{
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/users",userRoute);
 app.use("/api/v1/posts",postRoute);
+app.use("/api/v1/popular", PopularPosts)
 app.use("/api/v1/comments", commentRoute);
 app.use("/api/v1/reply", replycommentRoute)
 app.use("/api/v1/headervalue", headervalues);
 app.use("/api/v1/", refreshToken);
 app.use("/api/v1/", verifyEmailRoute);
-app.use("/api/v1/", searchRout)
+app.use("/api/v1/", searchRout);
+app.use("/api/v1/category", Categories);
+
 //app.use(notFoundMiddleware);
 
 

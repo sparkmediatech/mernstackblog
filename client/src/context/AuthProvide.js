@@ -9,7 +9,8 @@ const INITIAL_STATE = {
     temp: JSON.parse(localStorage.getItem("obj")) || null,
     isLoading: false,
     cursorState: false,
-   dashboardEditMode: false
+   dashboardEditMode: false,
+   searchStatus: false,
    
 }
 
@@ -31,7 +32,7 @@ export const AuthProvider = ({children})=>{
     const refreshToken = async () =>{
         
         try{
-                const response = await axios.post(`${BASE_URL}/refresh`, {
+                const response = await axios.post(`/refresh`, {
                  withCredentials: true
              });
              setAuth(response.data);
@@ -58,7 +59,8 @@ const decodeJWT = ()=>{
         username: decoded.username,
         userId: decoded.userId,
         profilepicture: decoded.profilepicture,
-        role: decoded.role
+        role: decoded.role,
+        photoPublicId: decoded.photoPublicId,
         }
     setLogUsers(newUser)
      console.log(decoded)
@@ -96,8 +98,10 @@ console.log(auth)
 console.log(regUser)
 
     return(
-        <AuthContext.Provider value={{auth, setAuth,logUser, setLogUsers, regUser, setRegUser, temp: state.temp, isLoading: state.isLoading, dispatch,  cursorState: state. cursorState,
-            dashboardEditMode: state.dashboardEditMode
+        <AuthContext.Provider value={{auth, setAuth,logUser, setLogUsers, regUser, setRegUser, temp: state.temp, 
+            isLoading: state.isLoading, dispatch,  cursorState: state. cursorState,
+            dashboardEditMode: state.dashboardEditMode,
+             searchStatus: state. searchStatus
         }}>
             {children}
         </AuthContext.Provider>

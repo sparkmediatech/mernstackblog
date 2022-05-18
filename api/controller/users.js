@@ -1,8 +1,10 @@
 const User = require("../models/User"); 
+const Post = require("../models/Post")
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const client = require('../reditConnect');
-const {deleteCloudinary} = require('../middleware/CloudinaryFunctions')
+const {deleteCloudinary, uploadCloudinary, deleteAllFiles} = require('../middleware/CloudinaryFunctions');
+const fs = require('fs')
 
 
 
@@ -11,33 +13,61 @@ const {deleteCloudinary} = require('../middleware/CloudinaryFunctions')
 
 //update
 const updateUser = async (req, res) =>{
+    console.log(req.file)
 try{ 
+   
     const resUser = await User.findById(req.user.userId);
+     
     if(!resUser){
+         fs.unlinkSync(req.file.path);
        return res.status(404).json('No user found'); 
     };
     if(resUser.isBlocked === true){
+         fs.unlinkSync(req.file.path);
         return res.status(401).json('You are banned from updating your profile'); 
     };
     if(resUser.isVerified === false){
+         fs.unlinkSync(req.file.path);
         return res.status(401).json('You are not authorized from updating your profile'); 
     };
-    
-     await deleteCloudinary.uploader.destroy(resUser.profilePicture, function(result, err){
-         if(err){
-             return err
-         }
-         return result
-     } )
+   
     if(resUser._id.toString() === req.params.id){
+        
        
-            try{
                 //values that should be updated
            const updatedUser = await User.findByIdAndUpdate(req.params.id,{
                     username: req.body.username,
-                    profilePicture: req.body.profilepicture,
-                   
+                                     
                }, {new: true}); 
+
+               //get the current user profile pics public id for cloudinary delete operations
+                const currentUserPhotoPublicId = updatedUser.photoPublicId
+                
+            //upload image to cloudnary if user uploaded an image
+            
+            if(req.file){
+                const fileStr = req.file.path
+                //calling the cloudinary function for upload
+                const uploadResponse = await uploadCloudinary(fileStr);
+                const result = {
+                    url: uploadResponse.secure_url,
+                    publicId: uploadResponse.public_id
+                    }
+                //push image to upated user
+                const updateUserProfilePics = await User.findByIdAndUpdate(updatedUser._id, {
+                         photoPublicId: result.publicId,
+                         profilePicture: result.url
+                    }, {new: true}) 
+                //get the updated user profile pics public id for cloudinary delete operations
+                const updatedUserPhotoPublicId = updateUserProfilePics.photoPublicId;
+
+                 //compare the two public ids. If they are not same and the value is not an empty string, the cloudinary delete method would run
+                if(currentUserPhotoPublicId !== "" && currentUserPhotoPublicId !== updatedUserPhotoPublicId && updateUserProfilePics.photoPublicId !== " "){
+                    console.log('I ran here')
+                    await deleteCloudinary(resUser.photoPublicId)
+                }
+                
+            }
             
            //generate new access and refresh tokens since user updated their profile.
            const token = resUser.JWTAccessToken();
@@ -50,18 +80,16 @@ try{
                 httpOnly: true,
                 maxAge: 604800000,
             } )
+             
             return res.status(200).json({token});
             
-           
-        } catch(err){
-            console.log(err)
-        return res.status(500).json(err) 
-        };
-        
    } else{
+        fs.unlinkSync(req.file.path);
        return res.status(401).json("You can only update your account!")
    };
 }catch(err){
+     //fs.unlinkSync(req.file.path);
+    console.log(err)
     return res.status(500).json("Something went wrong, try again");
 };
   
@@ -71,13 +99,12 @@ try{
 //delete logic
 const deleteUser = async (req, res) =>{
 try{
-      const user = await User.findById(req.user.userId)
+      const user = await User.findById(req.user.userId);
+      if(!user){
+          return res.status(401).json('No user found')
+      }
     if(user._id.toString() === req.params.id){
 
-        const delUser = await User.findById(req.params.id)
-        if(!delUser){
-                return res.status(200).json(`There is no user with this id ${req.params.id}`);
-        };
                 //get refresh token of user saved in redis
                 const key = await client.get(user._id.toString());
                 if(!key){
@@ -93,8 +120,20 @@ try{
                     };
                        //clear cookie and redis database of deleted user                         
                         res.clearCookie('refreshJWT', {httpOnly: true});
+                        //delete all post images associated with this user from cloudinary
+                        //first find all posts this user has created
+                        //then, get the public id object and return as a single array of publicIds
+                        const userPosts = await Post.find({username: req.user.userId})
+                        const arrayOfPostsImagePublicId = userPosts.map((singleImagePublicId)=>{
+                            return singleImagePublicId.photoPublicId
+                        })
+                        //pass the array of public image ids to the cloudinary deleteall method
+                        await deleteAllFiles(arrayOfPostsImagePublicId)
                         await User.findByIdAndDelete(req.params.id)
                         await client.DEL(user._id.toString());
+                        //delete user's pics from cloudinary
+                        await deleteCloudinary(user.photoPublicId)
+                        
                         return res.status(200).json("User has been deleted");                                 
    } else{
       return res.status(401).json("You can only delete your account!");

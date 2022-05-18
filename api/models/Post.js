@@ -1,6 +1,4 @@
-//creating the user models for the database
-
-const mongoose = require("mongoose"); //import mongoose
+const mongoose = require("mongoose"); 
 const Schema = mongoose.Schema;
 const Comment = require("./Comment");
 const ReplyComments = require('./Replycomment');
@@ -11,7 +9,7 @@ const PostSchema = new mongoose.Schema(
         title:{
             type: String,
             //required: true,
-            index: { unique: true, sparse: true}
+           
         },
         description:{
             type: String,
@@ -23,13 +21,14 @@ const PostSchema = new mongoose.Schema(
         },
         photoPublicId:{
             type: String,
+            default: " "
         },
        username:{
             type: Schema.Types.ObjectId, 
             ref: 'User'
         },
         categories:{
-           type: Array,
+           type: String,
         },
        comments: [{
              type: mongoose.Schema.Types.ObjectId,
@@ -38,8 +37,11 @@ const PostSchema = new mongoose.Schema(
         postReplyComments: [{
              type: mongoose.Schema.Types.ObjectId,
              ref: 'Replycomments',
-           }]
-       
+           }],
+      postLikes:{
+             type: Array,
+             default: []
+           }  
 }, {timestamps: true},
 
 );
@@ -59,6 +61,7 @@ PostSchema.post('findOneAndDelete', async function (doc) {
 });
 
 
-//exporting this schema
+//enables the mongose default search via post title
 PostSchema.index({title: 'text'});
-module.exports = mongoose.model("Post", PostSchema); //the module name is "Post"
+//exporting this schema
+module.exports = mongoose.model("Post", PostSchema); 

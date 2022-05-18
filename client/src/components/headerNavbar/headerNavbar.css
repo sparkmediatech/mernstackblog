@@ -137,6 +137,7 @@
     background-color: #EEEEEE;
 }
 .search-icon-div{
+    cursor: pointer;
     border-radius: 5px;
     display: flex;
     align-items: center;

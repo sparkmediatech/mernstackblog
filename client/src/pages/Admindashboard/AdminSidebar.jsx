@@ -6,6 +6,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {FaHome, FaUserAlt} from 'react-icons/fa';
 import {AiOutlineSetting} from 'react-icons/ai';
 import {FiActivity} from 'react-icons/fi';
+import {RiPagesLine} from 'react-icons/ri'
 
 
 function AdminSidebar() {
@@ -63,6 +64,16 @@ const [setDashboardEditMode] = useState(false);
             <FiActivity className='admin-custom-icon-div-icons'/>
              <div >
                  <p className='settingText' >Activities</p>
+             </div>
+          </div>
+
+           <div className='flex-3 admin-custom-icon-div'>
+            <RiPagesLine className='admin-custom-icon-div-icons'/>
+             <div >
+               <Link className='link' to={'/pagesettings'}>
+                  <p className='settingText' >Pages</p>
+               </Link>
+                 
              </div>
           </div>
           

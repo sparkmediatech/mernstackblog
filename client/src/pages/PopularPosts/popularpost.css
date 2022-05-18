@@ -1,0 +1,16 @@
+.popular-post-div{
+    padding-bottom: 40px;
+    display: flex;
+   justify-content: space-evenly;
+    flex-wrap: nowrap;
+    margin: 0 auto;
+    overflow: auto;
+    width: 100%;
+}
+.popular-posts{
+    width: 32%;
+}
+.popular-posts .postTitle:hover{
+    transition: 0.5s ease-in-out;
+    color: #FF661F;
+}

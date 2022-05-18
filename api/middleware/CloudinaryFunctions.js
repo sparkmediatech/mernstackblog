@@ -8,6 +8,7 @@ const uploadCloudinary = async (fileToUpload)=>{
             upload_preset: 'nodeblog',
         }, function(result, err){
             if(err){
+                console.log(err)
                //delete file from local server storage
                 return console.log('failed to upload')
             }
@@ -23,15 +24,28 @@ const deleteCloudinary = async (fileToDelete) =>{
     const deleteResponse = await cloudinary.uploader.destroy(fileToDelete, function(result, err){
         if(err){
                 //delete file from local server storage
-               return console.log(error)
+               return console.log(err)
         }
         //delete file from local server storage
-                fs.unlinkSync(fileToDelete);
+               
                 return console.log(result, 'file deleted')
     })
-    fs.unlinkSync(fileToUpload);
+   
     return deleteResponse
 }
 
+//delete multiple files
 
-module.exports = { uploadCloudinary, deleteCloudinary}
+const deleteAllFiles = async (filesToDelete) =>{
+    const deleteAllFilesResponse = await cloudinary.api.delete_resources(filesToDelete, function(result, err){
+        if(err){
+            console.log(err)
+            return console.log('deleting all images failed')
+        }
+
+        return result
+    });
+    return deleteAllFilesResponse
+}
+
+module.exports = { uploadCloudinary, deleteCloudinary, deleteAllFiles}

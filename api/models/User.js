@@ -28,6 +28,7 @@ const UserSchema = new mongoose.Schema({
         },
          photoPublicId:{
             type: String,
+            default: ""
         },
         role:{
             type: String,
@@ -38,28 +39,36 @@ const UserSchema = new mongoose.Schema({
              type: mongoose.Schema.Types.ObjectId,
              ref: 'Post',
            }],
-     usercomments: [{
+        usercomments: [{
              type: mongoose.Schema.Types.ObjectId,
              ref: 'Comment',
            }],
-    userReplyComments: [{
+        userReplyComments: [{
              type: mongoose.Schema.Types.ObjectId,
              ref: 'Replycomments',
            }],
-    isBlocked: {
+         userLikes: [{
+             type: mongoose.Schema.Types.ObjectId,
+             ref: 'Likes',
+           }],
+        following: [{
+             type: mongoose.Schema.Types.ObjectId,
+             ref: 'Follow',
+           }],
+        isBlocked: {
         type: Boolean,
         default: false
-    },
-    blockedDate:{
+         },
+        blockedDate:{
          type: Date,
-     },
-    expDate:{
+        },
+        expDate:{
          type: Date,
-     },
-     currentDate:{
+        },
+        currentDate:{
          type: Date,
-     },
-     isVerified:{
+        },
+        isVerified:{
          type: Boolean,
          default: false
      },
@@ -89,7 +98,7 @@ UserSchema.post('findOneAndDelete', async function (doc) {
 });
 //creating the jwt token using the mongoose instance method
 UserSchema.methods.JWTAccessToken = function (){
-    return jwt.sign({userId: this._id, username:this.username, role: this.role,  profilepicture: this. profilePicture, isVerified: this.isVerified},  
+    return jwt.sign({userId: this._id, username:this.username, role: this.role,  profilepicture: this. profilePicture,  photoPublicId: this. photoPublicId, isVerified: this.isVerified,},  
         process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_LIFETIME})
 };

@@ -147,6 +147,8 @@ setUpdating(true)
                   <input className='color-pciker1' onChange={(e) => setHeaderColor(e.target.value)} type="color" value={headerColor} />
                 <label className='color-picker-label'>Hex Value</label >
                <input className='color-pciker1 color-picker-hex-input' type="text" placeholder={headerColor} onChange={(e) => setHeaderColor(e.target.value)} />
+               <label  className='color-picker-label'>Previous Color</label>
+               <input className='color-pciker1 color-picker-hex-input' type="text" value={singleValues.headerColor} readOnly />
                </div>
                
              </div>
@@ -159,6 +161,8 @@ setUpdating(true)
                   <input className='color-pciker1' onChange={(e) => setNavColor(e.target.value)} type="color" value={navColor} />
                 <label className='color-picker-label'>Hex Value</label >
                <input className='color-pciker1 color-picker-hex-input' type="text" placeholder={navColor} onChange={(e) => setNavColor(e.target.value)} />
+               <label  className='color-picker-label'>Previous Color</label>
+               <input className='color-pciker1 color-picker-hex-input' type="text" value={singleValues.navColor} readOnly />
                </div>
                
              </div>

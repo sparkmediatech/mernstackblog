@@ -1,5 +1,5 @@
 const DEFAULT_PAGE_NUMBER = 1
-const DEFAULT_PAGE_LIMIT = 0;
+const DEFAULT_PAGE_LIMIT = 10;
 
 
 const getPagination =(query) =>{

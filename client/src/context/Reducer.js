@@ -39,6 +39,11 @@ const Reducer = (state, action) =>{
                     ...state,
                    dashboardEditMode: false
                 }
+             case "SEARCH_STATUS_START":
+                return{
+                    ...state,
+                   searchStatus: true
+                }
 
             default:
                 return state;

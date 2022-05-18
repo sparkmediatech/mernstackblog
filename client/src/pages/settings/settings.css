@@ -5,6 +5,8 @@
 
 .settingsWrapper {
   flex: 9;
+  display: flex;
+  flex-direction: column;
   padding: 20px;
 }
 .fileUpload2 {
@@ -23,6 +25,12 @@
 .settingsUpdateDelete {
   color: red;
   font-size: 12px;
+  cursor: pointer;
+}
+.delete-div{
+  width: 20%;
+}
+.delete-All-Posts{
   cursor: pointer;
 }
 .settingsform {
@@ -137,10 +145,26 @@
 .user-details-div label {
   font-size: 20px;
 }
+
+/* Buttons */
 .user-btn {
-  font-size: 12px;
-  
+  font-size: 15px;
+  width: 20%;
+  margin-right: 5px;
 }
+
 .user-btn:hover {
   background-color: #f4540b;
+}
+.cancel-custom-btn{
+  cursor: pointer;
+  color: red;
+ padding-top: 20px;
+ padding-bottom: 15px;
+  font-size: 20px;
+}
+.custom-edit-image-BTN{
+  font-size: 15px;
+  width: 15%;
+  padding: 10px 0 10px 0;
 }

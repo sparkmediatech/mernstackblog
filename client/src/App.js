@@ -22,6 +22,8 @@ import Usersmanager from './pages/Admindashboard/Usersmanager';
 import CursorNotallowed from './pages/cursonnotallowed/CursorNotallowed';
 import WebsiteSettings from './pages/Admindashboard/WebsiteSettings';
 import SingleUser from './pages/singleUser/SingleUser';
+import PageSettings from './pages/Admindashboard/PageSettings';
+import UsersPosts from './pages/UsersPosts/usersPosts';
 
 import {
   BrowserRouter as Router,
@@ -85,13 +87,18 @@ function App() {
          <Route path="/websitesettings">
           {session && logUser?.role == "admin"  ?  <WebsiteSettings/> : <Register/> }
         </Route>
+        <Route path="/pagesettings">
+          {session && logUser?.role == "admin"  ?  <PageSettings/> : <Register/> }
+        </Route>
         <Route path="/users/:userId">
           {session ?  <SingleUser/>: <Login/>}
         </Route>
         <Route path="/post/:postId">
           <Single />
         </Route>
-
+         <Route path="/usersposts">
+          <UsersPosts/>
+        </Route>
       <Route path="/confirm/:tokenId">
           {temp?.emailToken ? <ConfirmEmail/>: <Login /> }
         </Route>

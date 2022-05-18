@@ -19,7 +19,7 @@ function HeaderNavbar() {
     const [headerValues, setHeaderValues] = useState([]);  
     const {auth, setAuth, logUser} = useContext(AuthContext);
     const {logdispatch} = useContext(LogContext);
-    const [focus, setFocus] = useState(false);
+    const [query, setQuery] = useState('')
 
   
 
@@ -183,7 +183,15 @@ const customHeaderColor = {
             
              <div className='custom-topList-section2'>
                         <div className='search-input-div '>
-                            <input className='search-custom' type="text" placeholder='Search Blog Posts'/> <div className='search-icon-div'><FaSearch className='fa-search'/></div>
+                            <input className='search-custom' type="text" placeholder='Search Blog Posts'
+                                onChange={(e)=>setQuery(e.target.value)}
+                            /> 
+                                <div className='search-icon-div'>
+                                    <Link className='link' to={`/?searches=${query}`}>
+                                        <FaSearch className='fa-search'/>
+                                    </Link>
+                                    
+                                </div>
                             </div>
                     </div>
         </div>

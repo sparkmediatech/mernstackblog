@@ -1,0 +1,69 @@
+.usersposts-main-wrapper{
+   
+}
+.usersPosts-custom-main-div{
+    flex: 9;
+    background-color: #FBFCFC;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.posts-div{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.single-post-div{
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+}
+.post-title-div{
+    width: 25%;
+}
+.post-title-custom-text{
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+}
+.post-title-custom-text:hover{
+    color: #FE6620;
+}
+.post-item-custom-div{
+    width: 70%;
+    justify-content: right;
+}
+.delete-post{
+   cursor: pointer;
+}
+.check-box{
+    cursor: pointer;
+}
+.delete-BTN-div{
+    width: 100%;
+    padding-bottom: 60px;
+}
+.delet-selected-custom{
+    padding: 13px 40px 13px 40px;
+    transition: 0.4s ease-in-out;
+}
+.delet-selected-custom:hover{
+    background-color: #ed4b00;
+}
+.clear-selected-btn-div{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    width: 100%;
+    height: 40px;
+}
+.clear-btn{
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+}
+.clear-btn:hover{
+    color: #e84900;
+}
+.delet-selected-custom{
+    cursor: not-allowed;
+    opacity: 0.3;
+}
