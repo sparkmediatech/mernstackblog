@@ -10,7 +10,7 @@ const FrontendSchema = new mongoose.Schema(
             type: String,
             required: true,           
         },
-        sitesubName:{
+        siteImagePublicId:{
             type: String,
         },
         headerColor:{
@@ -24,6 +24,10 @@ const FrontendSchema = new mongoose.Schema(
         headerImg:{
             type: String,
             default: ""
+        },
+
+         aboutWebsite:{
+            type: String,
         }
        
 },

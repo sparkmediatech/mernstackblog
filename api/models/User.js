@@ -35,6 +35,9 @@ const UserSchema = new mongoose.Schema({
             default: 'user',
             enum: ['admin', 'user']
         },
+        aboutUser:{
+            type: String,
+        },
         userPosts: [{
              type: mongoose.Schema.Types.ObjectId,
              ref: 'Post',
@@ -98,7 +101,9 @@ UserSchema.post('findOneAndDelete', async function (doc) {
 });
 //creating the jwt token using the mongoose instance method
 UserSchema.methods.JWTAccessToken = function (){
-    return jwt.sign({userId: this._id, username:this.username, role: this.role,  profilepicture: this. profilePicture,  photoPublicId: this. photoPublicId, isVerified: this.isVerified,},  
+    return jwt.sign({userId: this._id, username:this.username, role: this.role,  profilepicture: this.profilePicture,  photoPublicId: this.photoPublicId, isVerified: this.isVerified,
+    aboutUser: this.aboutUser
+    },  
         process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_LIFETIME})
 };

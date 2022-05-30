@@ -48,10 +48,9 @@ export default function Write() {
         fetchCategory()
    }, []) 
 
-   console.log(catName)
+  
 
    //handle select category
-
    const handleSelectCategory = (catId) =>{
         setSelectedCategoryId(catId)
    }
@@ -60,15 +59,6 @@ export default function Write() {
 const handleSubmit = async (e) =>{
     e.preventDefault();
      dispatch({type:"CURSOR_NOT_ALLOWED_START"});
-
-    const newPost = {
-        username: logUser.userId,
-        role: logUser.role,
-        title,
-        description,
-        categories:selectedCategoryId
-       
-    };
    
    //logic behind uploading image and the image name
     if(file){                    
@@ -80,7 +70,7 @@ const handleSubmit = async (e) =>{
         data.append("role", logUser.role);
         data.append("title", title);
         data.append("description", description);
-         data.append("categories", selectedCategoryId);
+        data.append("categories", selectedCategoryId);
         try{
        
             const response = await axiosPrivate.post('/v1/posts',  data,{ withCredentials: true,
@@ -228,6 +218,7 @@ const handleShowCategory = () =>{
                     {postTitleMinError && <p className='paragraph-text red-text'>Post title should not be less than 10 characters</p>}
                     {/* Error messages end */}
 
+                   
                         <div className='category-div'><p className='text-general-small color3 '>Category</p>  <input className='input-general category-box margin-small  color3' type='text' placeholder='category here...'
                             value={selectedCategoryId}
                             

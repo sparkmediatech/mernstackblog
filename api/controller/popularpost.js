@@ -8,7 +8,7 @@ const Post = require("../models/Post");
 
 const getPopularPosts = async(req,res) =>{
     try{
-        popularPosts = await Post.find({}).sort({createdAt: -1}).limit(3);
+        popularPosts = await Post.find({}).populate('username', 'username').sort({createdAt: -1});
         const highest = popularPosts.sort((a, b) => b.postLikes.length - a.postLikes.length)
        
         return res.status(200).json(highest)

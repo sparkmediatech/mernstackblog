@@ -5,7 +5,8 @@ import axios from 'axios';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {AuthContext} from '../../context/AuthProvide';
 import BASE_URL from '../../hooks/Base_URL';
-import {MdCancel} from 'react-icons/md'
+import {MdCancel} from 'react-icons/md';
+import {FiEdit} from 'react-icons/fi'
 
 export default function Settings() {
     
@@ -16,7 +17,10 @@ export default function Settings() {
      const [userUpdateMode, setUserUpdateMode] = useState(false)
      const {auth, logUser, dispatch, setAuth} = useContext(AuthContext);
      const axiosPrivate = useAxiosPrivate();
-     const [editImageMode, setEditImageMode] = useState(false)
+     const [editImageMode, setEditImageMode] = useState(false);
+     const [aboutUser, setAboutUser] = useState('');
+     const [aboutUserState, setAboutUserState] = useState(false);
+     const [aboutUserUpdateError1, setAboutUserUpdateError1] = useState(false)
     
 
 
@@ -31,7 +35,8 @@ const handleUpdate = async (e) =>{
         data.append("file", file);
         data.append("userId", logUser.userId);
         data.append('role', logUser.role);
-        data.append('username', username)
+        data.append('username', username);
+        data.append("aboutUser", aboutUser);
 
     try{
             const response = await axiosPrivate.patch("/v1/users/" + logUser.userId, data, { withCredentials: true,
@@ -42,19 +47,22 @@ const handleUpdate = async (e) =>{
             
     }catch(err){
         dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-        console.log(err)
+       if(err.response.data === "about section must not be more than 400 words"){
+            setAboutUserUpdateError1(true) 
+        }
     }
 }
-console.log(logUser)
-//this controls the success notification to timeout after 1 seconds
+
+//this controls notification to timeout after some seconds
   useEffect(() => {
-      const updatedTimer = setTimeout(() => {
-          setUpdated(false)
-      }, 1500);
-      return () => {
-          clearTimeout(updatedTimer)
-      }
-  }, [updated])
+      setTimeout(() => {
+        setUpdated(false)
+    }, 2000);
+
+       setTimeout(() => {
+        setAboutUserUpdateError1(false)
+    }, 2000);
+  }, [updated, aboutUserUpdateError1])
 
   //handle user delete. This deletes the user's account and all posts associated with the user
 const handleDelete = async () =>{
@@ -69,7 +77,7 @@ const handleDelete = async () =>{
              dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
     }catch(err){
          dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-        console.log(err)
+       
     }
    
 }
@@ -91,6 +99,11 @@ const handleDeleteAllPosts = async ()=>{
     }catch(err){
          dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
     }
+};
+
+//handle user about state
+const handleUserAboutUpdateState = ()=> {
+    setAboutUserState(!aboutUserState)
 }
     return (
 
@@ -110,7 +123,7 @@ const handleDeleteAllPosts = async ()=>{
                 
 
               {userUpdateMode ? <MdCancel  className="cancel-custom-btn" onClick={handleUserUpdate}/>: 
-              <button className="button-general user-btn" onClick={handleUserUpdate} >Edit Details</button> }
+              <button className="button-general-2 user-btn" onClick={handleUserUpdate} >Edit Details</button> }
 
            
 
@@ -139,8 +152,8 @@ const handleDeleteAllPosts = async ()=>{
                            }
                         </div>
                            
-                {!editImageMode && userUpdateMode && <button onClick={() => setEditImageMode(true)} className="button-general custom-edit-image-BTN">Change Image</button>}
-                {editImageMode && userUpdateMode && <button onClick={() => setEditImageMode(false)} className="button-general custom-edit-image-BTN">Cancel</button>}
+                {!editImageMode && userUpdateMode && <button onClick={() => setEditImageMode(true)} className="button-general-2 custom-edit-image-BTN">Change Image</button>}
+                {editImageMode && userUpdateMode && <button onClick={() => setEditImageMode(false)} className="button-general-2 custom-edit-image-BTN">Cancel</button>}
                 {userUpdateMode &&
                 <div className={updated ? "settingsform2 settingsform" : "settingsform"} >
                         
@@ -150,6 +163,38 @@ const handleDeleteAllPosts = async ()=>{
                         onChange={(e) => setUsername(e.target.value)}
                     
                     required/>
+                     <div className="margin-small"><label className="label-general about-user-custom-label">About User</label></div>
+                  
+                          {!aboutUserState &&
+                              <div className="about-user-div custom-about-user-text-div margin-small ">
+                               <p className="text-general-small color1 custom-about-user-text">{logUser.aboutUser}</p>
+                           </div>
+                          }
+                           
+                        
+                    
+                         <div className="flex-2">
+                              {aboutUserState &&
+                                <textarea 
+                                    placeholder='About you...' 
+                                    type='text' 
+                                    className='custom-about-user-textbox'
+                                    onChange={e => setAboutUser(e.target.value)}
+                                >
+
+
+                                </textarea>
+                                }
+
+                                {aboutUserUpdateError1 && <p>About user section should not be more than 400 words</p>}
+                             {!aboutUserState?
+                                 <button type="button" onClick={handleUserAboutUpdateState} className="button-general-2 about-user-custom-BTN">Edit About User</button>:
+                                <button type="button" onClick={handleUserAboutUpdateState} className="button-general-2 about-user-custom-BTN">Cancel Edit</button>
+                            }
+                         </div>
+                        
+                       
+                    
                    
                     <button className={ updated ? "settingsSubmit2 button-general": "button-general"} type="submit">
                         Update
@@ -172,6 +217,10 @@ const handleDeleteAllPosts = async ()=>{
                         <div className="user-detail-container-username"><label className="user">Username</label>
                         <h4>{logUser.username}</h4></div>
 
+                         <div className="margin-small"><label className="label-general about-user-custom-label">About User</label></div>
+                         <div className="about-user-div custom-about-user-text-div margin-small">
+                               <p className="text-general-small color1 custom-about-user-text">{logUser.aboutUser}</p>
+                           </div>
                     </div>
                    } 
               

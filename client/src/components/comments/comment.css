@@ -1,0 +1,13 @@
+.custom-reply-btn-div{
+    width: 100%;
+}
+.reply-custom-btn{
+    display: flex;
+    justify-content: center;
+    width: 15%;
+}
+.cancel-comment-update-icon{
+    font-size: 20px;
+    color: red;
+    cursor: pointer;
+}

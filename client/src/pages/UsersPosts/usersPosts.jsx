@@ -131,7 +131,7 @@ function UsersPosts() {
               })}
 
               <div className='delete-BTN-div flex topMargin-medium'>
-                    <button onClick={handleSelectedPosts} className={selectedPosts.length > 1 ? 'button-general-2 delet-selected-custom' : "delet-selected-custom button-general-2 delet-selected-custom"}>Delete Selected Posts</button>
+                    <button onClick={handleSelectedPosts} className={selectedPosts.length > 1 ? 'button-general-2 ' : "delet-selected-custom button-general-2 delet-selected-custom"}>Delete Selected Posts</button>
               </div>
               
            </div>

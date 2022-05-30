@@ -26,6 +26,8 @@ export const AuthProvider = ({children})=>{
     const [logUser, setLogUsers] = useState({})
 
     const [regUser, setRegUser] = useState({});
+    const [websiteName, setWebsiteName] = useState()
+    const [authorDetails, setAuthorDetails] = useState({})
 
 
     
@@ -61,6 +63,7 @@ const decodeJWT = ()=>{
         profilepicture: decoded.profilepicture,
         role: decoded.role,
         photoPublicId: decoded.photoPublicId,
+        aboutUser: decoded.aboutUser
         }
     setLogUsers(newUser)
      console.log(decoded)
@@ -101,7 +104,9 @@ console.log(regUser)
         <AuthContext.Provider value={{auth, setAuth,logUser, setLogUsers, regUser, setRegUser, temp: state.temp, 
             isLoading: state.isLoading, dispatch,  cursorState: state. cursorState,
             dashboardEditMode: state.dashboardEditMode,
-             searchStatus: state. searchStatus
+             searchStatus: state. searchStatus,
+             websiteName, setWebsiteName,
+             authorDetails, setAuthorDetails
         }}>
             {children}
         </AuthContext.Provider>

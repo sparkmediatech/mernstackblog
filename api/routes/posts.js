@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {verify} = require('../middleware/tokenVerify');
 
-const {createNewPost, updatePost, deletePost, deletAllUsersPost, handleDeleteSelectedPosts, getPost, getAllPosts, likePost} = require('../controller/posts');
+const {createNewPost, updatePost, deletePost, deletAllUsersPost, handleDeleteSelectedPosts, getPost, getAllPosts,getPostCategory_1, likePost,} = require('../controller/posts');
 const {upload} = require('../middleware/multer');
 
 
@@ -15,6 +15,9 @@ router.post('/deleteall', verify, deletAllUsersPost);
 router.post('/deleteSelected', verify, handleDeleteSelectedPosts)
 router.get('/:id', getPost);
 router.get('/', getAllPosts);
+router.post('/page-0', getPostCategory_1);
+
+
 
 
 

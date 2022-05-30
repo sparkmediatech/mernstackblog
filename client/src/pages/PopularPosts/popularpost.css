@@ -1,5 +1,4 @@
 .popular-post-div{
-    padding-bottom: 40px;
     display: flex;
    justify-content: space-evenly;
     flex-wrap: nowrap;

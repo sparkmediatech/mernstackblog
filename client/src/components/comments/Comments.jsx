@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import "./comment.css"
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {AuthContext} from '../../context/AuthProvide';
-import BASE_URL from '../../hooks/Base_URL'
+import BASE_URL from '../../hooks/Base_URL';
+import {MdCancel, MdTrendingUp} from 'react-icons/md'
 
 
 export default function Comments() {
@@ -15,40 +16,41 @@ export default function Comments() {
      const [comments, setComments] = useState([]);
      const [updateComment, setUpdateComment] = useState(false);
      const [commentdescription2, setCommentDescription2] = useState();
-     const [isLoading, setIsLoading] = useState(false)
      const [showReply, setShowReply] = useState(false);
      const [replyMode, setReplyMode] = useState(false);
      //const [replycomment, setReplyComment] = useState("");
      const [editReplyMode, setEditReplyMode] = useState(false);
      const [currentReply, setCurrentReply] = useState();
      const axiosPrivate = useAxiosPrivate();
-     const {auth, logUser} = useContext(AuthContext);
+     const {auth, logUser, dispatch} = useContext(AuthContext);
     //const [commentdescription, setCommentDescription] = useState('');
      const commentdescription = useRef(null);
      const replycomment = useRef(null);
+     const [commentState, setCommentState] = useState(true)
      
    
 
 //fetched comment from database here
     useEffect(() => {
         const getPost = async () =>{
+             dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
             try{
                  const response = await axios.get(`${BASE_URL}/posts/`+path )
-                 setComments(response.data.comments)
+                 setComments(response.data.comments);
+                 dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
               
             }catch(err){
                 console.log(err)
+                dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
             }
         }
        getPost()
-    }, [comments])
+    }, [commentState])
 
 
 //handled making comment
-console.log(commentdescription)
-
 const handleComment = async ()=>{
-     
+    dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
     const newComment = {
         author: logUser.userId,
         role: logUser.role,
@@ -57,54 +59,58 @@ const handleComment = async ()=>{
     };
 
     try{
-         setIsLoading(true)
         await axiosPrivate.post("/v1/comments/posts/"+ path + "/comment", newComment, { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}
             });
-            
-           setIsLoading(false)
+            dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
             commentdescription.current.value = null;
-           
+            setCommentState(!commentState)
             
            
            //setCommentDescription('')
           
     }catch(err){
+         dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
         console.log(err)
     }
 };
 
 //handle comment update
-const handleCommentUpdate = async (id) =>{  
+const handleCommentUpdate = async (id) =>{
+    
     try{
-         setIsLoading(true)
-        await axiosPrivate.patch("/v1/comments/posts/"+ path + "/comment/" + id, {
+          dispatch({type:"CURSOR_NOT_ALLOWED_START"});  
+            await axiosPrivate.patch("/v1/comments/posts/"+ path + "/comment/" + id, {
              author: logUser.userId,
              role: logUser.role, 
              commentdescription:  commentdescription2,
             }, { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}
            })
-            setIsLoading(false);
-            setUpdateComment(false)
+           dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+            setCommentState(!commentState);
+            
            
     }catch(err){
-        console.log(err)
+        console.log(err);
+        dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
     }
 }
 
 //handled the deletion of comment by the owner of the comment here
 const  handleCommentDelete = async (id) =>{
+   
     try{
-        setIsLoading(true)
+         dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
         
         await axiosPrivate.delete(`/v1/comments/posts/${path}/comment/${id}`, {data: {author: logUser.userId, role: logUser.role}}, { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}
            })
-          setIsLoading(false)
+           dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+           setCommentState(!commentState);
         
     }catch(err){
-   
+        dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
     }
 }
 
@@ -119,22 +125,23 @@ const handleReply = async (id) =>{
     };
 
     try{
-         setIsLoading(true)
+        dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
        await axiosPrivate.post(`/v1/reply/posts/${path}/comments/${id}/reply`, newReply, { withCredentials: true,
-            headers:{authorization: `Bearer ${auth}`}})
-          setIsLoading(false);
-          setShowReply(false)
-          replycomment.current.value = null
+            headers:{authorization: `Bearer ${auth}`}});
+            dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
+            setShowReply(false)
+            replycomment.current.value = null
+            setCommentState(!commentState)
     }catch(err){
-        console.log(err)
+        console.log(err);
+        dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
     }
 }
 
 //handle reply update
 const handleReplyUpdate = async (id) =>{
-    console.log(id)
     try{
-         setIsLoading(true)
+         dispatch({type:"CURSOR_NOT_ALLOWED_START"});
         await axiosPrivate.patch(`/v1/reply/${id}`, {
              author: logUser.userId,
              role: logUser.role, 
@@ -143,11 +150,13 @@ const handleReplyUpdate = async (id) =>{
                 headers:{authorization: `Bearer ${auth}`}}
              )
            //window.location.reload()
+          dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
             setReplyMode(true);
             setEditReplyMode(false);
-            setIsLoading(false)
+            setCommentState(!commentState)
     }catch(err){
-        console.log(err)
+        console.log(err);
+        dispatch({type:"CURSOR_NOT_ALLOWED_START_END"}); 
     }
 }
 
@@ -155,14 +164,16 @@ const handleReplyUpdate = async (id) =>{
 
 const handleDeleteComment = async (id, replyId)=>{
      try{
-          setIsLoading(true)
+            dispatch({type:"CURSOR_NOT_ALLOWED_START"});
                 await axiosPrivate.delete(`/v1/reply/posts/${path}/comments/${id}/reply/${replyId}`, {data: {author: logUser.userId, role: logUser.role}},
                 { withCredentials: true,
                 headers:{authorization: `Bearer ${auth}`}}
                 );
                 //window.location.reload()
-                 setIsLoading(false)
+                 dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+                 setCommentState(!commentState)
         }catch(err){
+            dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
 
         }
     
@@ -176,7 +187,7 @@ const handleDeleteComment = async (id, replyId)=>{
         <div className='comment-div'>
             <textarea className='comment-wrapper' type='text' placeholder='Share your comment' 
                 ref={commentdescription} ></textarea>
-            <button className={isLoading? 'comment-btn-no-cursor button-general comment-btn' : 'button-general comment-btn'}onClick={handleComment}>Post Comment</button>
+            <button className="button-general comment-btn"onClick={handleComment}>Post Comment</button>
             </div>
         <div className="comment">
 
@@ -189,11 +200,14 @@ const handleDeleteComment = async (id, replyId)=>{
                             {updateComment == _id ? 
                              <div className='comment-div' key={_id} >
             
-                        <textarea className='comment-wrapper' type='text' 
-                        onChange={(e) => setCommentDescription2(e.target.value)} value={commentdescription2}>
+                        <div className='flex-3'>
+                            <textarea className='comment-wrapper' type='text' 
+                                onChange={(e) => setCommentDescription2(e.target.value)} value={commentdescription2}>
 
-                        </textarea>
-                        <button className={isLoading ? 'comment-btn-no-cursor comment-btn': 'comment-btn'}onClick={() => handleCommentUpdate(_id)}>Update Post</button>
+                            </textarea>
+                            <MdCancel className='cancel-comment-update-icon' onClick={()=>setUpdateComment()} />
+                       </div>
+                        <div className='custom-reply-btn-div'><button className="button-general-2 reply-custom-btn" onClick={() => handleCommentUpdate(_id)}>Update</button></div>
                         
                         </div>
                             :
@@ -216,7 +230,7 @@ const handleDeleteComment = async (id, replyId)=>{
                                            singleComment.author.username == logUser?.username &&  //we hide the edit and delete buttons from non owner
                                            <div className="comment-edit-delete-div">
                                              <i className="singlePostIcon fas fa-edit" onClick={() => {setUpdateComment(_id); setCommentDescription2(commentdescription)}}  ></i>
-                                                <i className={isLoading? "cursor-not-allowed singlePostIcon far fa-trash-alt":"singlePostIcon far fa-trash-alt" } onClick={() => handleCommentDelete(_id)}  ></i>
+                                                <i className="singlePostIcon far fa-trash-alt" onClick={() => handleCommentDelete(_id)}  ></i>
 
                                             </div>
                                        }
@@ -232,7 +246,7 @@ const handleDeleteComment = async (id, replyId)=>{
                                     {replyMode == _id ? showReply && <div className='reply-div'>
                                         <textarea className='comment-wrapper ' placeholder='Reply comment' ref={replycomment}>
                                         </textarea>
-                                        <button className={isLoading ? 'comment-btn-no-cursor comment-btn': 'comment-btn'} onClick={()=> handleReply(_id)}>Reply</button>
+                                        <div className='custom-reply-btn-div'><button className='button-general-2 reply-custom-btn' onClick={()=> handleReply(_id)}>Reply</button></div>
                                     </div> : null}
 
                                         {/* comment replies section */}
@@ -251,7 +265,7 @@ const handleDeleteComment = async (id, replyId)=>{
                                                             onChange={(e) => setCurrentReply(e.target.value)} value={currentReply}>
 
                                                         </textarea>
-                                                        <button className={isLoading ? 'comment-btn-no-cursor comment-btn': 'comment-btn'}onClick={() => handleReplyUpdate(replyId)}>Update Reply</button>
+                                                        <button className='comment-btn' onClick={() => handleReplyUpdate(replyId)}>Update Reply</button>
                                                           
                                                      </div>:
 
@@ -272,7 +286,7 @@ const handleDeleteComment = async (id, replyId)=>{
                                                                 author.username == logUser ?.username && //hide the reply comment edit and delete buttons for non owners
                                                                 <div className="comment-edit-delete-div">
                                                                 <i className="singlePostIcon fas fa-edit" onClick={() => {setEditReplyMode(replyId); setCurrentReply(replycomment)}}></i>
-                                                                <i className={isLoading? "cursor-not-allowed singlePostIcon far fa-trash-alt":"singlePostIcon far fa-trash-alt" }   
+                                                                <i className="singlePostIcon far fa-trash-alt"    
                                                                      onClick={()=> handleDeleteComment(_id, replyId)}//passed two id here. One for the comment and the other for the reply
                                                                      ></i>
 

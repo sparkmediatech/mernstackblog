@@ -30,6 +30,7 @@ const Categories = require('./routes/Categories');
 
 
 
+
 app.use(cors({credentials: true,
     origin: 'http://localhost:3000'
 }));
@@ -113,6 +114,7 @@ app.use("/api/v1/", refreshToken);
 app.use("/api/v1/", verifyEmailRoute);
 app.use("/api/v1/", searchRout);
 app.use("/api/v1/category", Categories);
+
 
 //app.use(notFoundMiddleware);
 

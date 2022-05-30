@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Comment = require("./Comment");
 const ReplyComments = require('./Replycomment');
+const Category = require('./Categories')
 
 const PostSchema = new mongoose.Schema(
     {
@@ -57,6 +58,7 @@ PostSchema.post('findOneAndDelete', async function (doc) {
                 $in: doc.postReplyComments
             }
         })
+        
     }
 });
 

@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Category = require('../models/Categories');
+const Post = require('../models/Post')
 
 
 
@@ -11,7 +12,6 @@ const createCategory = async (req, res)=>{
     const getCatNameString = req.body.catName;
     //convert first letter to capital letter
     const catName = getCatNameString.charAt(0).toUpperCase() + getCatNameString.slice(1)
-    console.log(catName)
    
     try{
         const checkDataBase = await Category.find({});
@@ -75,6 +75,16 @@ const deleteCategory = async (req, res) =>{
        if(user.role !== 'admin'){
            return res.status(401).json('You are not authourized to perform this action')
        }
+       //find category
+       const category = await Category.findById(req.params.categoryId);
+       if(!category){
+           return res.status(404).json('no category found')
+       };
+       //check if this category already has posts with the name
+       const post = await Post.find({categories: category.catName})
+       if(post){
+           return res.status(500).json('You can not delete a category that has been assigned a post. Please, consider changing the name')
+       }
         await Category.findByIdAndDelete(req.params.categoryId);
         return res.status(200).json('Category deleted')
 
@@ -99,10 +109,15 @@ const updateCategory = async (req, res)=>{
         if(user.role !== 'admin'){
             return res.status(401).json('You are not authorized to perform this action')
         };
+        
         try{
-            await Category.findByIdAndUpdate(req.params.categoryId, {
+            const updatedCategory = await Category.findByIdAndUpdate(req.params.categoryId, {
                  $set: req.body
             }, {new: true, runValidators: true});
+
+        //find posts with this category name and update
+        
+        await Post.updateMany({categories: findCategory.catName}, {categories: updatedCategory.catName})
             return res.status(200).json('Category updated')
         }catch(err){
             return res.status(404).json('No category found')

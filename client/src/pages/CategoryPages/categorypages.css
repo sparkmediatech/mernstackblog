@@ -1,0 +1,66 @@
+.page1-main-custom-div{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.homePage-post-div{
+   width: 100%;
+}
+.page-title-custom-div{
+    width: 100%;
+}
+.singlePost-div{
+    width: 32%;
+}
+.page-title-text {
+    font-family: "Lato",
+    sans-serif;
+    font-size: 30px;
+    color: black;
+}
+/* home page2 custom section */
+.page2-custom-main-div{
+    overflow: hidden;
+    height: 400px;
+    padding-bottom: 100px;
+}
+.page2-homePage-custom-div{
+    height: 100%;
+}
+.page2-custom-image{
+    height: 90%;
+}
+.page2-singlePost-custom-div{
+    width: 48%;
+    height: 90%;
+}
+
+/* page3 custom section */
+
+.page3-main-custom-div{
+    overflow: hidden;
+    height: 600px;
+    width: 100%;
+    
+}
+
+.homePage3-post-div {
+    height: 90%;
+   
+}
+.page3-custom-image{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.singlePost-page3-div{
+    background-color: green;
+    width: 32%;
+    height: 90%;
+    
+}
+/* text section  */
+.page1-custom-title{
+    
+}
+

@@ -45,7 +45,6 @@ color: #a6acaf;
   margin-left: 15px;
 }
 
-
 .editmodeBTN-div {
   margin-top: 20px;
   padding-bottom: 20px;
@@ -64,6 +63,7 @@ color: #a6acaf;
   padding: 7px 30px 7px 30px;
  
 }
+
 .updateModeBTN-unclick {
   cursor: not-allowed;
 }
@@ -78,17 +78,40 @@ color: #a6acaf;
   height: 70vh;
   padding: 0 15px 5px 15px;
 }
+
+.custom-dashboard-wrapper{
+  height: 85vh;
+  margin-top: 10px;
+}
+.custom-dashboard-wrapper-2{
+  height: 85vh;
+}
+.custom-dashBoard-wrapper-3{
+  height: 65vh;
+}
+.custom-dashboard-wrapper{
+  height: 90vh;
+}
+.custom-dashboard-wrapper-4{
+  height: 50vh;
+}
 .dashboard-input {
   text-indent: 15px;
   width: 99%;
   outline: none;
   border: none;
+  border-radius: 5px;
   border-bottom: 1px solid gray;
   margin-top: 10px;
   padding-bottom: 10px;
   padding-top: 10px;
+  transition: 0.5s ease-out;
 }
 
+.dashboard-input:focus{
+  
+  box-shadow: #636363b6 0px 2px 8px 0px;
+}
 .dashboard-label {
   color: #7b7d7d;
   font-family: "Lato", sans-serif;
@@ -105,8 +128,23 @@ color: #a6acaf;
 .dasboard-input-div {
   margin-top: 15px;
 }
+
+.custom-dashboard-input-div{
+  margin-top: 0;
+}
 .dashboard-img-container {
   margin-top: 10px;
+}
+.custom-dashboard-img-container{
+  margin-top: 0;
+  padding-bottom: 10px;
+}
+.custom-headerImg-div-1{
+  width: 70%;
+  height: 25vh;
+  margin-left: 10px;
+  padding-bottom: 20px;
+ 
 }
 .updatedText {
   margin-top: 10px;
@@ -124,8 +162,18 @@ color: #a6acaf;
 .headerImg-div {
   margin-top: 10px;
   width: 70%;
-  height: 70vh;
+  height: 30vh;
   margin-left: 10px;
+ 
+}
+.custom-header-image-2{
+  height: 37vh;
+}
+.custom-header-image{
+  height: 10px;
+}
+.custom-headerImg-div{
+  height: 10vh
 }
 .headerImg-div p {
   font-family: "Lato", sans-serif;
@@ -137,13 +185,36 @@ color: #a6acaf;
   height: 50%;
   border-radius: 5px;
 }
+.sub-image-custom-div{
+  width: 100%;
+ 
+}
+.custom-image-edit-icon{
+  transition: 0.3s ease-in-out;
+  font-size: 25px;
+  cursor: pointer;
+  margin-right: 10px;
+  color: #FF661F;
+  float: right;
+}
+.custom-image-edit-icon:hover{
+  transform: scale(1.1);
+}
+.customHeaderValueImage{
+  height: 70%;
+  width: 45%;  
+}
+.customHeaderValueImage-2{
+  height: 85%;
+  width: 70%;
+}
 /*custom btn */
 .custom-admin-BTN{
   font-size: 15px;
   width: 10%;
 }
 .admin-update-custom-BTN{
-  width: 30%;
+  width: 22%;
 }
 /*admin input*/
 
@@ -170,17 +241,92 @@ color: #a6acaf;
   margin-left: 15px;
 }
 .color-picker-input-div{
-  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  width: 49%;
+  height: 80px;
 }
 .color-pciker1{
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #b1b1b1;
   border-radius: 20px;
-  width: 20%;
+  width: 100%;
   margin-top: 10px;
+  height: 40px;
 }
 .color-picker-label{
-  margin-top: 15px;
   margin-left: 10px;
 }
 .color-picker-hex-input{
   margin-left: 10px;
+}
+
+/*  create header values section */
+.header-value-create-div{
+  width: 99%;
+  padding-bottom: 30px;
+  background-color:#F7F9F9 ;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.header-value-create-wrapper{
+  width: 98%;
+  height: 85vh;
+}
+.custom-header-value-input{
+  border: none;
+  outline: none;
+  background-color: red;
+}
+.custom-upload-image-input{
+  border: none;
+  border-bottom: solid 2px #bebebe;
+}
+.custom-upload-image-div{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 230px;
+
+}
+.custom-display-header-image{
+  margin-top: 5px;
+  width: 40%;
+  height: 80%;
+}
+
+.custom-header-image{
+  height: 87%;
+  width: 50%;
+  object-fit: cover;
+}
+
+.about-website-custom-div{
+  margin-left: 15px;
+  width: 100%;
+  border-bottom: 2px solid #bebebe;
+  padding-bottom: 40px;
+  height: 60px;
+  
+}
+.custom-about-text{
+  width: 97%;
+}
+.about-website-textArea-custom-div{
+  width: 100%;
+}
+.about-website-textArea{
+  max-width: 97%;
+  min-width: 97%;
+  max-height: 100px;
+  min-height: 100px;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid rgb(209, 209, 209);
+}
+.empty-div-text{
+  width: 100%;
+  height: 20px;
+  margin-left: 15px;
+  margin-top: 15px;
 }

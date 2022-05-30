@@ -9,7 +9,7 @@
 .category-div-wrapper{
     justify-content: space-between;
     width: 80%;
-    height: 95%;
+    height: 85%;
     background-color: #414141;
 }
 .create-category-div{
@@ -33,7 +33,7 @@
 .category-single-div{
     
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    height: 85px;
+    height: 89px;
     margin-top: 3px;
     background-color: #414141;
 }

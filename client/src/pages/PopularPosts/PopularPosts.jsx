@@ -23,8 +23,8 @@ function PopularPosts() {
     console.log(popularPosts)
   return (
       <>
-        <div className='topMargin-medium popular-post-div'>
-           {popularPosts.map((singlePopularPost) =>{
+        <div className='margin-small homePage-post-div'>
+           {popularPosts.slice(0, 3).map((singlePopularPost) =>{
              return(
                <div className='popular-posts'>
                  {singlePopularPost.postPhoto &&(
@@ -34,17 +34,15 @@ function PopularPosts() {
             )}
 
              <div className='postInfo'>
-                <div className='postCats'>
-                   {console.log(singlePopularPost.categories)}
-                </div>
+                
                 
                 <Link to={`/post/${singlePopularPost._id}`} className="link">
                     <span className='postTitle'>{singlePopularPost.title}</span>
                 </Link>
-
+                  <div className='flex-3 post-name-date-div'>
+                      <p className='text-general-small color1'>{singlePopularPost.username.username}</p><p className='text-general-small color1 postDate'> {new Date(singlePopularPost.createdAt).toDateString()}</p>
+                  </div>
                 
-                <hr />
-                <span className='postDate'> {new Date(singlePopularPost.createdAt).toDateString()}</span>
             </div>
                </div>
              )

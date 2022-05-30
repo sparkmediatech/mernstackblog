@@ -28,7 +28,7 @@
 .postInfo {
   display: flex;
   flex-direction: column;
-  align-items: center;
+ 
 }
 
 .postCat {
@@ -50,11 +50,7 @@
 }
 
 .postDate {
-  font-family: "Lora", serif;
-  font-style: italic;
-  font-size: 13px;
-  color: #999;
-  margin-top: 15px;
+  margin-left: 10px;
 }
 
 .postDescription {

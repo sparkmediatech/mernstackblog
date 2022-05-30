@@ -17,7 +17,7 @@ function HeaderNavbar() {
     const PF = "http://localhost:5000/images/" 
     const [topMenuBar, setTopMenuBar] = useState(false);
     const [headerValues, setHeaderValues] = useState([]);  
-    const {auth, setAuth, logUser} = useContext(AuthContext);
+    const {auth, setAuth, logUser, websiteName, setWebsiteName} = useContext(AuthContext);
     const {logdispatch} = useContext(LogContext);
     const [query, setQuery] = useState('')
 
@@ -74,6 +74,10 @@ const customHeaderColor = {
    backgroundColor: arrayHeaderValues.headerColor
 }
 
+//setWebsiteName for global state management
+useEffect(()=>{
+     setWebsiteName(arrayHeaderValues.websiteName)
+}, [headerValues])
 
   return (
       <>

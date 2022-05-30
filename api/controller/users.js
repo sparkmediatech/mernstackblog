@@ -13,31 +13,64 @@ const fs = require('fs')
 
 //update
 const updateUser = async (req, res) =>{
-    console.log(req.file)
+    const aboutUserString = req.body.aboutUser;
+    //convert first letter to capital letter
+    const aboutUserCaps = aboutUserString.charAt(0).toUpperCase() + aboutUserString.slice(1)
 try{ 
    
     const resUser = await User.findById(req.user.userId);
      
     if(!resUser){
-         fs.unlinkSync(req.file.path);
+         if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
        return res.status(404).json('No user found'); 
     };
     if(resUser.isBlocked === true){
-         fs.unlinkSync(req.file.path);
+        if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
         return res.status(401).json('You are banned from updating your profile'); 
     };
     if(resUser.isVerified === false){
-         fs.unlinkSync(req.file.path);
+        if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
         return res.status(401).json('You are not authorized from updating your profile'); 
     };
    
     if(resUser._id.toString() === req.params.id){
         
-       
+       if(aboutUserCaps === '' ||  aboutUserCaps === null ||  !aboutUserCaps){
+           if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
+          
+           return res.status(500).json('about user section must not be empty')
+            
+       }
+       //check the user about string count
+       const string = aboutUserCaps.split('');
+       const aboutUserWordCount = string.filter(word => word !== '').length;
+       console.log(aboutUserWordCount)
+       if( aboutUserWordCount >= 400){
+           if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
+           return res.status(500).json('about section must not be more than 400 words')
+            
+       }
+       if(aboutUserWordCount <= 45){
+          if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
+           return res.status(500).json('about user section must not be less than 45 words')
+            
+       }
                 //values that should be updated
            const updatedUser = await User.findByIdAndUpdate(req.params.id,{
                     username: req.body.username,
-                                     
+                    aboutUser: aboutUserCaps               
                }, {new: true}); 
 
                //get the current user profile pics public id for cloudinary delete operations
@@ -84,12 +117,15 @@ try{
             return res.status(200).json({token});
             
    } else{
-        fs.unlinkSync(req.file.path);
+        if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
        return res.status(401).json("You can only update your account!")
    };
 }catch(err){
-     //fs.unlinkSync(req.file.path);
-    console.log(err)
+    if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
     return res.status(500).json("Something went wrong, try again");
 };
   

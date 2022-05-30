@@ -3,7 +3,8 @@ const Post = require("../models/Post");
 const {getPagination} = require("../services/query");
 const Category = require("../models/Categories");
 const {deleteCloudinary, uploadCloudinary, deleteAllFiles} = require('../middleware/CloudinaryFunctions')
-const fs = require('fs')
+const fs = require('fs');
+
 
 
 
@@ -16,40 +17,56 @@ const createNewPost =  async (req, res) =>{
   try{  
     const user = await User.findById(req.user.userId);
     if(!user){
-        fs.unlinkSync(req.file.path);
+       if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
         return res.status(404).json('User not found'); 
     };
     
     if(user.isBlocked === true){
-        fs.unlinkSync(req.file.path);
+        if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
         return res.status(500).json('Sorry, you can not make a post at this moment');
     };
     if(user.isVerified === false){
-        fs.unlinkSync(req.file.path);
+       if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
         return res.status(500).json('Only verified users can perform this action');
     };
     
     if(req.body.categories === ""){
-        fs.unlinkSync(req.file.path);
+       if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
         return res.status(500).json('Post category should not be empty')
 
     }
     //check duplicate post
     const duplicatePost = await Post.exists({title: req.body.title});
     if(duplicatePost){
-        fs.unlinkSync(req.file.path);
+       if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
         return res.status(500).json('Post title already exist')
     }
     if(uppercaseTitle.length > 61){
-         fs.unlinkSync(req.file.path);
+         if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
         return res.status(500).json('post title should not be more than 60 characters')
     }
     if(uppercaseTitle.length < 10){
-         fs.unlinkSync(req.file.path);
+        if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
         return res.status(500).json('post title should not be less than 10 characters')
     }
      if(uppercaseTitle === " "){
-          fs.unlinkSync(req.file.path);
+         if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
         return res.status(500).json('post title should not be empty')
     }
      const newPost = new Post({
@@ -57,7 +74,8 @@ const createNewPost =  async (req, res) =>{
          username: req.body.username,
          postPhoto: req.body.postPhoto,
          title: uppercaseTitle,
-         description: req.body.description 
+         description: req.body.description,
+         categories: req.body.categories 
      });
 
      //push post to userPost array to create user-post relationship
@@ -65,22 +83,16 @@ const createNewPost =  async (req, res) =>{
         //save new post and user
         const createdPost = await newPost.save();
         //save user model
-        await user.save();
-   try{ 
-        //find the selected category
-        const category = await Category.findOne({catName: req.body.categories});
-        //push post into category post array
-        category.postCategories.push(createdPost);
-        //save category
-        await category.save()
+        await user.save();       
         
         //upload image to cloudinary
-        try {
+    try {
         const fileStr = req.file.path
-        console.log(fileStr)
         
         if(!fileStr){
-            fs.unlinkSync(req.file.path);
+           if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
             return res.status(500).json( 'No image found');
         }else{
         //calling the cloudinary function for upload
@@ -101,16 +113,17 @@ const createNewPost =  async (req, res) =>{
         
     
     } catch (err) {
-        fs.unlinkSync(req.file.path);
+        if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
         return res.status(500).json({ err: 'Something went wrong with image' });
        
     }
-    }catch(err){
-         fs.unlinkSync(req.file.path);
-       res.status(500).json({message: 'Something went wrong category', err: err});
-   };
+   
   }catch(err){
-       fs.unlinkSync(req.file.path);
+       if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
       res.status(500).json({message: 'Something went wrong with user or post', err: err});
   }
   
@@ -122,34 +135,42 @@ const updatePost = async (req, res)=>{
     try{
     const user = await User.findById(req.user.userId);
     if(!user){
-        fs.unlinkSync(req.file.path);
+       if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
          return res.status(404).json("User not found");
     }
     if(user.isBlocked === true){
-        fs.unlinkSync(req.file.path);
+       if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
         return res.status(401).json("Sorry, you're banned from making posts");
     };
     if(user.isVerified === false){
-        fs.unlinkSync(req.file.path);
+       if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
          return res.status(401).json("Sorry, only verified users can update their posts");
     };
 
     try{
         const post = await Post.findById(req.params.id);
-        //get the current user profile pics public id for cloudinary delete operations
-        const currentPostPhotoPublicId = post.photoPublicId
-        
-        console.log(post.photoPublicId,'current ID')
-        if(!post){
-            fs.unlinkSync(req.file.path);
+
+         if(!post){
+            if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
             return res.status(401).json("No post with this Id found");
             };
+        //get the current user profile pics public id for cloudinary delete operations
+        const currentPostPhotoPublicId = post.photoPublicId
+       
                 if(post.username.toString() == user._id.toString() ){
                     const updatedPost = await Post.findByIdAndUpdate(req.params.id, {
                         
                         $set: req.body
                     }, {new: true, runValidators: true});
-
+                    
                     //update image
                      if(req.file){
                         const fileStr = req.file.path;
@@ -179,16 +200,22 @@ const updatePost = async (req, res)=>{
                    return res.status(200).json(updatedPost);
 
          } else{
-             
+             if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
              return res.status(401).json("you can only update your posts");
 
          }  
     }catch(err){
-        fs.unlinkSync(req.file.path);
+       if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
        return res.status(500).json(err);
     };
 }catch(err){
-    fs.unlinkSync(req.file.path);
+    if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
     return res.status(500).json("Something went wrong");
 }
 };
@@ -246,6 +273,19 @@ const deletePost = async (req, res)=>{
             return res.status(401).json("Post not found");
          }
          if(post.username.toString() == user._id.toString()){
+                //get the category of this post and remove the post from the category post array
+                const getCategory = await Category.findOne({catName: post.categories});
+                if(!getCategory){
+                        await Post.findByIdAndDelete(post._id); 
+                        //delete post image from cloudinary
+                        await deleteCloudinary(post.photoPublicId)
+                        return res.status(200).json('no category found, post deleted');
+
+                }
+                const postIndex = getCategory.postCategories.indexOf(post._id)
+                getCategory.postCategories.splice(postIndex, 1);
+                await getCategory.save()
+
                 await Post.findByIdAndDelete(post._id); 
                //delete post image from cloudinary
                 await deleteCloudinary(post.photoPublicId)
@@ -315,10 +355,12 @@ try{
 }
     
 }
+
+
 //Get Post
 const getPost = async (req, res) =>{
     try{
-        const post = await Post.findById(req.params.id).populate('username', 'username').populate({
+        const post = await Post.findById(req.params.id).populate('username', 'username profilePicture aboutUser').populate({
       path: "comments",
       populate: [{
          path: "author",
@@ -374,30 +416,30 @@ const getAllPosts = async (req, res) =>{
     const catName = req.query.cat;
     const {searches} = req.query;
     const keys = [req.body.title]
-   
+   console.log(searches)
 
     try{
        let posts;
        if(username){
-           posts = await Post.find({username: username}).sort({createdAt:-1})
+           posts = await Post.find({username: username}).populate('username', 'username').sort({createdAt:-1})
            .skip(skip)
            .limit(limit)  
        }
        else if(catName){
-            posts = await Post.find({categories: catName}).sort({createdAt:-1})
+            posts = await Post.find({categories: catName}).populate('username', 'username').sort({createdAt:-1})
             .skip(skip)
            .limit(limit)  
        }
 
        else if(searches){
-           posts = await Post.find({title: {$regex: searches.toString(), "$options": "i"}}).sort({createdAt:-1})
+           posts = await Post.find({title: {$regex: searches.toString(), "$options": "i"}}).populate('username', 'username').sort({createdAt:-1})
            .skip(skip)
            .limit(limit)  
                
        }
 
        else{
-           posts = await Post.find().sort({createdAt:-1})
+           posts = await Post.find().populate('username', 'username').sort({createdAt:-1})
            .skip(skip)
            .limit(limit)  
        }
@@ -407,6 +449,34 @@ const getAllPosts = async (req, res) =>{
         res.status(500).json(err)
     };
 };
+
+//get post based on category model indexes. I need to create 8 routes for this as the category model has 
+const getPostCategory_1 = async (req, res)=>{
+        try{
+            //get all categories
+            const category = await Category.find();
+
+            if(!category){
+                return res.status(404).json('no category found, create a category first')
+            }
+
+            const indexNumber = Number(req.body.categoryIndex) 
+               //get firt index
+            const getCategoryIndex = category[indexNumber].catName;
+            //find all post based on category index
+            const posts = await Post.find({categories: getCategoryIndex}).populate('username', 'username').sort({createdAt:-1});
+            //get Page title
+            const pageTitle = getCategoryIndex;
+            
+            if(!posts){
+                return res.status(404).json('no post for this category yet')
+            }
+            return res.status(200).json({posts, pageTitle})
+        }catch(err){
+            console.log(err)
+            return res.status(500).json('something went wrong')
+        }
+}
 
 
 
@@ -418,7 +488,7 @@ module.exports = {
     deletAllUsersPost,
     getPost,
     handleDeleteSelectedPosts,
-    getAllPosts,
+    getAllPosts, 
+    getPostCategory_1,
    
-    
 }

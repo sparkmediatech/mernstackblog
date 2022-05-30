@@ -25,6 +25,7 @@ import SingleUser from './pages/singleUser/SingleUser';
 import PageSettings from './pages/Admindashboard/PageSettings';
 import UsersPosts from './pages/UsersPosts/usersPosts';
 
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -90,6 +91,7 @@ function App() {
         <Route path="/pagesettings">
           {session && logUser?.role == "admin"  ?  <PageSettings/> : <Register/> }
         </Route>
+         
         <Route path="/users/:userId">
           {session ?  <SingleUser/>: <Login/>}
         </Route>

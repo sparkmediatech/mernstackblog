@@ -1,11 +1,13 @@
 import axios from 'axios';
-import react, { useState, useEffect } from 'react'
+import react, { useState, useEffect, useContext } from 'react'
 import './sidebar.css';
 import { Link } from 'react-router-dom';
+import {AuthContext} from '../../context/AuthProvide';
 
 export default function Sidebar() {
     const [category, setCategory] = useState([]);
-    const [catURL, setCatURL] = useState()
+    const [catURL, setCatURL] = useState();
+     const {auth, logUser, dispatch, setAuth, authorDetails} = useContext(AuthContext);
   
    console.log(catURL)
 
@@ -24,42 +26,23 @@ export default function Sidebar() {
        }
         getCategory()
     }, [])
-   
+   console.log(authorDetails)
     return (
         <div className='sidebar'>
             <div className='sidebarItem'>
-                <span className='sidebarTitle'>ABOUT ME</span>
-                <img src={process.env.PUBLIC_URL + '/img/sidebarimg.jpg'} alt="" />
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
-                    Error et repudiandae voluptas asperiores, aliquid veritatis 
-                    odit sunt excepturi vitae quidem, quod.</p>
+                <p className='sidebarTitle text-general-small color1'>ABOUT THE AUTHOR</p>
+                <img src={authorDetails.profilePicture} alt="" />
+                <h5 className='text-general-small color1 margin-small'>Name: {authorDetails.username}</h5>
+                <p className='text-general-small color1'>{authorDetails.aboutUser}</p>
             </div>
 
             <div className='sidebarItem'>
-                <span className='sidebarTitle'>CATEGORIES</span>
-                <ul className='sidebarList'>
-                    
-                    { category.map((singleCategory, index)=>{
-                   
-                        
-                       return <Link key={index} to={`/?cat=${singleCategory}`} className="link">{/* we assigned the link to point to the name of the category querry coming from our api  */}
-                                   
-                                  
-                                   <li key={index} className='sidebarListItem'>{singleCategory}</li>
-                                    {console.log(index)}
-                                   
-                      
-                        </Link>
-
-                          
-                    })}
-                   
-                   
-                </ul>
+                
+                
             </div>
 
             <div className='sidebarItem'>
-                <span className='sidebarTitle'>FOLLOW US</span>
+                <p className='sidebarTitle text-general-small color1'>FOLLOW {authorDetails.username}</p>
                 <div className='sidebarSocial'>
                     <i className="sidebaricon fab fa-facebook-square"></i>
                     <i className="sidebaricon fab fa-twitter-square"></i>

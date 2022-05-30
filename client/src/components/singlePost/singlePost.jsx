@@ -11,7 +11,8 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import PageLoader from '../pageLoader/PageLoader';
 import  BASE_URL from '../../hooks/Base_URL';
 import {AiOutlineLike} from 'react-icons/ai';
-import {MdCancel} from 'react-icons/md'
+import {MdCancel} from 'react-icons/md';
+
 
 
 //import Helmet from '../socialshare/Helmet';
@@ -26,15 +27,17 @@ export default function SinglePost() {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("");
     const [updateMode, setUpdateMode] = useState(false)
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState();
     const [username, setUsername] = useState();
     const [isLoading, setIsLoading] = useState(false);   
     let currentUrl = `http://www.localhost:3000/post/${path}`;
-    const {auth, logUser, dispatch} = useContext(AuthContext);
+    const {auth, logUser, dispatch, authorDetails, setAuthorDetails} = useContext(AuthContext);
     const [liked, setLiked] = useState();
-    const [file, setFile] = useState(null);
+    const [file, setFile] = useState("");
     const [editImageMode, setEditImageMode] = useState(false);
-    const [updatePostError, setUpdatePostError] = useState(false)
+    const [updatePostError, setUpdatePostError] = useState(false);
+    const [showCategories, setShowCategories] = useState(false);
+    
    
 
 
@@ -57,7 +60,8 @@ export default function SinglePost() {
             setDescription(response.data.description);
             setCategories(response.data.categories);
             setLiked(response.data.postLikes)
-            
+            //set author's details globally
+            setAuthorDetails(response.data.username)
             setIsLoading(false)
             
            }catch(err){
@@ -66,9 +70,9 @@ export default function SinglePost() {
        
        };
         
-     return getPost()
+      getPost()
     }, [path]);
-
+    
 
 //handles deleting post
     const handleDelete = async () =>{
@@ -87,27 +91,6 @@ export default function SinglePost() {
 const handleUpdate = async () =>{
      dispatch({type:"CURSOR_NOT_ALLOWED_START"});
      
-     //if user didnt edit the post image, run this code
-     if(!file){
-        const data = new FormData();
-        data.append("username", logUser.userId);
-        data.append("role", logUser.role);
-        data.append('title', title);
-        data.append('description', description)
-
-        try{
-                await axiosPrivate.patch(`/v1/posts/${path}`, data, { withCredentials: true,headers:{authorization: `Bearer ${auth}`}
-                    });
-                 // window.location.reload("/")
-                  dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-                 setUpdateMode(false)
-        }catch(err){
-                dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-                 
-        }
-//if user changed the post image, run this code
-     }else{
-
         const data = new FormData();
         const filename = Date.now() + file.name;
         data.append("name", filename);
@@ -116,20 +99,19 @@ const handleUpdate = async () =>{
         data.append("role", logUser.role);
         data.append('title', title);
         data.append('description', description)
+        
 
         try{
                 await axiosPrivate.patch(`/v1/posts/${path}`, data, { withCredentials: true,headers:{authorization: `Bearer ${auth}`}
                     });
                  // window.location.reload("/")
                   dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-                 setUpdateMode(false)
+                 setUpdateMode(false);
+                 setShowCategories(false)
         }catch(err){
              dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
             console.log(err)
-        }
-
-     }
-     
+        }     
                 
 }
 
@@ -141,12 +123,13 @@ const handleLike = async ()=>{
         const response = await axiosPrivate.patch(`/v1/posts/${path}/like`, 
             { withCredentials: true,headers:{authorization: `Bearer ${auth}`}}
         )
-        console.log(response.data)
+        
             setPost([response.data]);
     }catch(err){
 
     }
 }
+
 
     return (
         <>                
@@ -237,14 +220,17 @@ const handleLike = async ()=>{
                 
 
 
-                <div className='single-category-div'><h5>Category</h5><h5 className='cat-Text'>{categories}</h5></div>
+                {!updateMode && <div className='single-category-div'><h5>Category</h5><h5 className='cat-Text'>{categories}</h5></div>}
+                
+                
                 </div>
                 }
                
-                 {updatePostError && <p className='paragraph-text topMargin-medium red-text'>Post Image must not be empty</p>}
-                {updateMode && <div className='category-div'><h5 className='text-general-small color1'>Category</h5>  <input className='category-box color3' type='text' value={categories}
-                        onChange={(e)=>setCategories(e.target.value)}
-                      /> </div>}
+                {updatePostError && <p className='paragraph-text topMargin-medium red-text'>Post Image must not be empty</p>}
+
+               
+ 
+               
                
            {updateMode && <button className="button-general singlePostButton" onClick={handleUpdate}>Update</button>} 
           

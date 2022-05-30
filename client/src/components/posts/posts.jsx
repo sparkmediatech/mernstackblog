@@ -11,7 +11,8 @@ import axios from 'axios';
 
 export default function Posts() {//we picked the posts props and declared it
     const {auth, isLoading, dispatch} = useContext(AuthContext);
-     const [posts, setPosts] = useState([])
+     const [posts, setPosts] = useState([]);
+     
       const [loading, setLoading] = useState(false);
      const location = useLocation();// called the useLocation here under a variable called location
 
@@ -23,7 +24,7 @@ export default function Posts() {//we picked the posts props and declared it
         dispatch({ type: "ISLOADING_START" });
         const fetchPosts = async ()=>{
        
-       const res = await axios.get(`${BASE_URL}/posts/`)//all we are saying is that fetch the posts with the query search entered. This could be author's name, category, etc
+       const res = await axios.get(`${BASE_URL}/posts/`)
         setPosts(res.data)
         setLoading(false)
         dispatch({ type: "ISLOADING_END" });
@@ -32,9 +33,10 @@ export default function Posts() {//we picked the posts props and declared it
          
     }, [])
     return (
-        <div className='posts topMargin-medium '>
+        <div className='posts margin-small '>
            
            {posts.slice(0,3).map((post, index)=>{
+               console.log(post)
                
                return <div className='post'>
             {post.postPhoto &&(
@@ -52,9 +54,10 @@ export default function Posts() {//we picked the posts props and declared it
                     <span className='postTitle'>{post.title}</span>
                 </Link>
 
+                <div className='flex-3 post-name-date-div'>
+                      <p className='text-general-small color1'>{post.username.username}</p><p className='text-general-small color1 postDate'> {new Date(post.createdAt).toDateString()}</p>
+                  </div>
                 
-                <hr />
-                <span className='postDate'> {new Date(post.createdAt).toDateString()}</span>
             </div>
 
             <p className='postDescription'>

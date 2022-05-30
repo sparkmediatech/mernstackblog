@@ -149,8 +149,9 @@
 /* Buttons */
 .user-btn {
   font-size: 15px;
-  width: 20%;
+  width: 14%;
   margin-right: 5px;
+  padding: 10px 0 10px 0;
 }
 
 .user-btn:hover {
@@ -164,7 +165,21 @@
   font-size: 20px;
 }
 .custom-edit-image-BTN{
-  font-size: 15px;
-  width: 15%;
+  width: 13%;
   padding: 10px 0 10px 0;
+}
+.about-user-custom-BTN{
+  width: 13%;
+  padding: 10px 0px 10px 0px;
+}
+/*  about user section */
+.about-user-div{
+  width: 100%;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  padding-bottom: 20px;
+  border-bottom: #d1d1d1 solid 1px;
+}
+
+.custom-about-user-text-div{
+  padding: 5px 5px 20px 5px;
 }

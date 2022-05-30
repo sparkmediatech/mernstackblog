@@ -26,7 +26,8 @@ function PageSettings() {
     const [editCategory, setEditCategory] = useState(false);
     const [categoryId, setCategoryId] = useState('');
     const [categoryUpdated, setCategoryUpdated] = useState(false);
-    const [categoryDeleted, setCategoryDeleted] = useState(false)
+    const [categoryDeleted, setCategoryDeleted] = useState(false);
+    const [deletCategoryError, setDeleteCategoryError] = useState(false)
     
     
     //fetch all categories
@@ -104,6 +105,7 @@ function PageSettings() {
                 dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
                 setCategoryMaxLimitError(true)
             }
+           
         }
       
     };
@@ -153,6 +155,9 @@ function PageSettings() {
              setCategoryDeleted(true)
         }catch(err){
             dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+             if(err.response.data === "You can not delete a category that has been assigned a post. Please, consider changing the name"){
+                 setDeleteCategoryError(true)
+            }
         }
     }
     //hand cancel of editmode
@@ -207,9 +212,13 @@ function PageSettings() {
         setTimeout(() => {
            setCategoryDeleted(false)
         }, 2000);
+
+        setTimeout(() => {
+          setDeleteCategoryError(false)
+        }, 3000);
     }, [created, alreadyExitError, categoryLessThanMinError, categoryMoreThanMaxError, categoryEmptyError, 
         noUserFoundError, notAuthourizedError, categoryNumberError, 
-        categoryMaxLimitError, categoryUpdated, categoryDeleted]);
+        categoryMaxLimitError, categoryUpdated, categoryDeleted, deletCategoryError]);
 
        
 
@@ -248,7 +257,7 @@ console.log(categoryId)
                                     { categoryMaxLimitError && <p className='paragraph-text red-text'>You can not create more than 8 categories</p>}
                                     { categoryUpdated && <p className='paragraph-text'>Category name updated successfully</p>}
                                     { categoryDeleted && <p className='paragraph-text'>Category deleted successfully</p>}
-                                   
+                                    { deletCategoryError && <p className='paragraph-text'>You can not delete a category that already has a post, consider changing the name</p>}
 
                                 </div>
 

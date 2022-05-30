@@ -5,10 +5,7 @@ const CategorySchema = new mongoose.Schema({
     catName:{
        type: String, 
     },
-    postCategories:[{
-             type: mongoose.Schema.Types.ObjectId,
-             ref: 'Post',
-           }],
+   
 },  {timestamps: true})
 
 
