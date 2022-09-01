@@ -276,10 +276,13 @@ try{
 const getAllHeaderValues = async (req, res) =>{
     try{
       allFrontendValues = await Frontend.find()
+      if(!allFrontendValues){
+        return res.status(401).json('no value found')
+      }
       res.status(200).json(allFrontendValues)
    }catch(err){
-      res.status(500).json(err);
-      console.log(err)
+      res.status(500).json('something went wrong')
+     
    }
 
 }

@@ -7,7 +7,7 @@ import {AuthContext} from '../../context/AuthProvide';
 export default function Sidebar() {
     const [category, setCategory] = useState([]);
     const [catURL, setCatURL] = useState();
-     const {auth, logUser, dispatch, setAuth, authorDetails} = useContext(AuthContext);
+    const {auth, logUser, dispatch, setAuth, authorDetails} = useContext(AuthContext);
   
    console.log(catURL)
 

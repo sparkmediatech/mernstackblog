@@ -21,8 +21,12 @@ const PostSchema = new mongoose.Schema(
             required:false,
         },
         photoPublicId:{
-            type: String,
-            default: " "
+            type: Array,
+            default: []
+        },
+        postPhotoArray:{
+             type: Array,
+             default: []
         },
        username:{
             type: Schema.Types.ObjectId, 
@@ -39,10 +43,10 @@ const PostSchema = new mongoose.Schema(
              type: mongoose.Schema.Types.ObjectId,
              ref: 'Replycomments',
            }],
-      postLikes:{
-             type: Array,
-             default: []
-           }  
+      postLikes:[{
+             type: mongoose.Schema.Types.ObjectId,
+             ref: 'User',
+           }],
 }, {timestamps: true},
 
 );

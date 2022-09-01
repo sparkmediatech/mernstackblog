@@ -1,0 +1,36 @@
+.settingSideBar-custom-div{
+    flex: 4;
+    margin: 20px;
+    padding-bottom: 30px;
+    background-color: #fdfbfb;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;   
+}
+.custom-sidebar-item{
+    align-items: flex-start;
+}
+.custom-sidebar-item p{
+    padding: 5px; 
+}
+.custom-sidebarBTN{
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #FF661F;
+    font-family: 'Source Sans Pro', sans-serif;
+    color: white;
+    border: none;
+}
+.custom-sidebar-div{
+    width: 43%;
+}
+.custom-sidebarMain-div{
+    width: 100%;
+    align-items: flex-start;
+}

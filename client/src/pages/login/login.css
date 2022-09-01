@@ -84,6 +84,7 @@
 /* Admin login */
 
 .admin-login-custom-div{
+  margin-top: 100px;
   border-radius: 10px;
   width: 40%;
   padding: 0 10px 0px 10px;
@@ -94,7 +95,7 @@
 }
 
 .admin-main-custom-div{
-  height: 70vh;
+  height: 90vh;
   margin-top: 100px;
 }
 .admin-custom-text{

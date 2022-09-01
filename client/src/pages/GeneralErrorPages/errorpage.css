@@ -1,0 +1,7 @@
+.fetchError-custom-div{
+    width: 100vw;
+    position: fixed;
+    height: 100%;
+    z-index: 999;
+    background-color: #FFFFFF;
+}

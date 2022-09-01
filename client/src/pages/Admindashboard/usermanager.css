@@ -113,5 +113,17 @@
 .users-isBlocked-custom-div{
     margin-top: 5px;
     width: 20%;  
+    justify-content: space-between;
 }
 
+.custom-next-prev-userdashboard-icon{
+    cursor: pointer;
+    color: #FF661F;
+    font-size: 30px;
+}
+.custom-usermanger-title-div{
+    justify-content: space-around;
+}
+.cursorNotallowed{
+    cursor: not-allowed;
+}

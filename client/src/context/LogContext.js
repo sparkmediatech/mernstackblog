@@ -1,4 +1,4 @@
-import React, {useContext, useReducer, useEffect, useState} from "react";
+/*import React, {useContext, useReducer, useEffect, useState} from "react";
 import LogReducer from "./LogReducer";
 
 const INITIAL_STATE = {
@@ -29,4 +29,4 @@ export const LogContextProvider = ({children}) =>{
             {children}
         </LogContext.Provider>
     )
-}
+}*/

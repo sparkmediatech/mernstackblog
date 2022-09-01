@@ -6,7 +6,13 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {AuthContext} from '../../context/AuthProvide';
 import BASE_URL from '../../hooks/Base_URL';
 import {MdCancel} from 'react-icons/md';
-import {FiEdit} from 'react-icons/fi'
+import {FiEdit,} from 'react-icons/fi';
+import {AiFillDelete} from 'react-icons/ai';
+import {MdOutlineManageAccounts} from 'react-icons/md';
+import Settingsidebar from "../../components/SettingSidebar/Settingsidebar";
+import Footer from "../../components/Footer/Footer";
+import { Link } from "react-router-dom";
+
 
 export default function Settings() {
     
@@ -20,7 +26,15 @@ export default function Settings() {
      const [editImageMode, setEditImageMode] = useState(false);
      const [aboutUser, setAboutUser] = useState('');
      const [aboutUserState, setAboutUserState] = useState(false);
-     const [aboutUserUpdateError1, setAboutUserUpdateError1] = useState(false)
+     //error states start here
+     const [aboutUserUpdateMaxError, setAboutUserUpdateMaxError] = useState(false);
+     const [usernameEmptyError, setUsernameEmptyError] = useState(false);
+     const [aboutUserUpdateMinError, setAboutUserUpdateMinError] = useState(false);
+     const [unAuthorizedUserError, setUnAuthorizedUserError] = useState(false);
+     const [somethingWentWrongError, setSomethingWentWrongError] = useState(false);
+     const [aboutUserSectionEmptyError, setAboutUserSectionEmptyError] = useState(false);
+     const [userNotVerifiedError, setUserNotVerifiedError] = useState(false);
+     const [noUserFoundError, setNoUserFoundError] = useState(false)
     
 
 
@@ -48,11 +62,35 @@ const handleUpdate = async (e) =>{
     }catch(err){
         dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
        if(err.response.data === "about section must not be more than 400 words"){
-            setAboutUserUpdateError1(true) 
+            setAboutUserUpdateMaxError(true);
+        }
+        if(err.response.data == 'username can not be empty'){
+            setUsernameEmptyError(true)
+        }
+        if(err.response.data == 'about user section must not be less than 45 words'){
+            return setAboutUserUpdateMinError(true)
+        }
+        if(err.response.data == "You can only update your account!"){
+            return setUnAuthorizedUserError(true)
+        }
+        if(err.response.data == "Something went wrong, try again"){
+            return setSomethingWentWrongError(true)
+        }
+        if(err.response.data == 'about user section must not be empty'){
+            return setAboutUserSectionEmptyError(true)
+        }
+        if(err.response.data == 'You are not authorized from updating your profile'){
+            return setUserNotVerifiedError(true)
+        }
+        if(err.response.data == 'No user found'){
+            return setNoUserFoundError(true)
         }
     }
 }
 
+useEffect(()=>{
+    setAboutUser(logUser.aboutUser)
+}, [aboutUserState])
 //this controls notification to timeout after some seconds
   useEffect(() => {
       setTimeout(() => {
@@ -60,9 +98,39 @@ const handleUpdate = async (e) =>{
     }, 2000);
 
        setTimeout(() => {
-        setAboutUserUpdateError1(false)
+        setAboutUserUpdateMaxError(false)
     }, 2000);
-  }, [updated, aboutUserUpdateError1])
+
+    setTimeout(() => {
+        setUsernameEmptyError(false)
+    }, 2000);
+
+     setTimeout(() => {
+        setAboutUserUpdateMinError(false)
+    }, 2000);
+
+    setTimeout(() => {
+        setUnAuthorizedUserError(false)
+    }, 2000);
+
+     setTimeout(() => {
+        setSomethingWentWrongError(false)
+    }, 2000);
+
+     setTimeout(() => {
+       setAboutUserSectionEmptyError(false)
+    }, 2000);
+
+     setTimeout(() => {
+      setUserNotVerifiedError(false)
+    }, 2000);
+
+     setTimeout(() => {
+      setNoUserFoundError(false)
+    }, 2000);
+  }, [updated, aboutUserUpdateMaxError, usernameEmptyError, aboutUserUpdateMinError, unAuthorizedUserError,
+    somethingWentWrongError, aboutUserSectionEmptyError, userNotVerifiedError, noUserFoundError
+    ])
 
   //handle user delete. This deletes the user's account and all posts associated with the user
 const handleDelete = async () =>{
@@ -84,22 +152,10 @@ const handleDelete = async () =>{
 //handle toggling of userUpdateMode true or false
 const handleUserUpdate = () =>{
     setUserUpdateMode(!userUpdateMode)
+    setAboutUserState(false)
+    setEditImageMode(false)
 }
-//handle delete all posts by the owner
 
-const handleDeleteAllPosts = async ()=>{
-    const username = {
-        username: logUser.userId
-    }
-    try{
-        dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
-        await axiosPrivate.post(`/v1/posts/deleteall`,   { withCredentials: true,
-            headers:{authorization: `Bearer ${auth}`}});
-             dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-    }catch(err){
-         dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-    }
-};
 
 //handle user about state
 const handleUserAboutUpdateState = ()=> {
@@ -108,128 +164,146 @@ const handleUserAboutUpdateState = ()=> {
     return (
 
         <>
-        
-    <div className='settings'>
-        <div className="settingsWrapper">
-                <div className="settingsTitle">
-                    <span className='text-general-Medium'>Update Your Account</span>
-                    <div className="delete-div flex flex-2">
-                        <span className='settingsUpdateDelete'onClick={handleDelete}>Delete Your Account</span>
-                        <p onClick={handleDeleteAllPosts} className="delete-All-Posts margin-small text-general-small red-text">Delete All Your Posts</p>
-                        <button className="button-general margin-small">Manage Your Posts</button>
-                    </div>
-                    
-                </div>
+        <div className="mainWrapper custom-setting-wrapper flex-3 ">
+            <div className="custom-setting-container flex-3 ">
                 
-
-              {userUpdateMode ? <MdCancel  className="cancel-custom-btn" onClick={handleUserUpdate}/>: 
-              <button className="button-general-2 user-btn" onClick={handleUserUpdate} >Edit Details</button> }
-
-           
-
-              
-             <form className='writeForm' onSubmit={handleUpdate}>   
-               {userUpdateMode && <label className="label-general">Profile Picture</label>} 
-
-                        <div className="flex-3">
-                           {userUpdateMode &&
-                                <div className="settingsProfilePic">
-                               <img src={file && editImageMode ? URL.createObjectURL(file): logUser.profilepicture}
-                                alt="" />  
-                            </div>
-                           }
-                       
-                           {editImageMode &&
+                <div className="settingsProfilePic  flex-3 topMargin-Extral-Large">
+                   
+                   <div className="flex-2 ">
+                     {editImageMode &&
                                 <div className="edit-image-input-custom-div">
-                                <label htmlFor="fileInput">
+                                    <label htmlFor="fileInput">
                                 
-                                <i className="settingsProfilePicicon far fa-user-circle"></i>
-                                </label>
-                                    <input className='fileUpload2' type="file" id="fileInput" 
+                                    <i className="settingsProfilePicicon far fa-user-circle "></i>
+                                    </label>
+                                        <input className='fileUpload2 ' type="file" id="fileInput" 
                                         onChange={(e) => setFile(e.target.files[0])}
                                     />
-                            </div>
+                                </div>
                            }
-                        </div>
-                           
-                {!editImageMode && userUpdateMode && <button onClick={() => setEditImageMode(true)} className="button-general-2 custom-edit-image-BTN">Change Image</button>}
-                {editImageMode && userUpdateMode && <button onClick={() => setEditImageMode(false)} className="button-general-2 custom-edit-image-BTN">Cancel</button>}
-                {userUpdateMode &&
-                <div className={updated ? "settingsform2 settingsform" : "settingsform"} >
-                        
-                    
-                    <label className="label-general">Username</label>
-                    <input type="text" placeholder={logUser.username} 
-                        onChange={(e) => setUsername(e.target.value)}
-                    
-                    required/>
-                     <div className="margin-small"><label className="label-general about-user-custom-label">About User</label></div>
-                  
-                          {!aboutUserState &&
-                              <div className="about-user-div custom-about-user-text-div margin-small ">
-                               <p className="text-general-small color1 custom-about-user-text">{logUser.aboutUser}</p>
-                           </div>
-                          }
-                           
-                        
-                    
-                         <div className="flex-2">
-                              {aboutUserState &&
-                                <textarea 
-                                    placeholder='About you...' 
-                                    type='text' 
-                                    className='custom-about-user-textbox'
-                                    onChange={e => setAboutUser(e.target.value)}
-                                >
+                            <img src={file && editImageMode ? URL.createObjectURL(file): logUser.profilepicture} 
+                        alt="" />
+                   </div>
+                     
+                 
+                {!editImageMode && userUpdateMode && <FiEdit className="custom-edit-icon mousePointer-click-general custom-edit-icon-2 "   onClick={() => setEditImageMode(true)}/>}
+                {editImageMode && userUpdateMode &&  <MdCancel className="custom-edit-icon mousePointer-click-general custom-edit-icon-2" onClick={() => setEditImageMode(false)}/>}
+                </div>
 
+                <div className="custom-user-data-div topMargin flex-2">
+                    <h4 className="text-general-Medium">Update Your Account</h4>
 
-                                </textarea>
-                                }
-
-                                {aboutUserUpdateError1 && <p>About user section should not be more than 400 words</p>}
-                             {!aboutUserState?
-                                 <button type="button" onClick={handleUserAboutUpdateState} className="button-general-2 about-user-custom-BTN">Edit About User</button>:
-                                <button type="button" onClick={handleUserAboutUpdateState} className="button-general-2 about-user-custom-BTN">Cancel Edit</button>
-                            }
-                         </div>
-                        
                        
+                        <div className="topMargin-medium flex-2"><label className="text-general-small2">Username</label>
+                            {!userUpdateMode ? <label className="text-general-small2 margin-small ">{logUser.username}</label>:
+
+                             <input className="margin-small input-general custom-username-input color1 " type="text" placeholder={logUser.username} 
+                            onChange={(e) => setUsername(e.target.value)}
+                            required/>
+                          }
+                        </div>
+                       {usernameEmptyError && <p className='paragraph-text red-text'>User name can not be empty</p> }
                     
                    
-                    <button className={ updated ? "settingsSubmit2 button-general": "button-general"} type="submit">
-                        Update
-                        </button>
-                         {updated && 
-                            <h2 className="updated-sucessfully">
-                                Updated Succeesfully
-                            </h2>}
+                      
+                    
+                    {!userUpdateMode && 
+                    <>
+                            <div className="margin-small "><label className="text-general-small2">About User</label></div>
+                                <div className="about-user-div ">
+                               <p className="text-general-small color1 margin-small">{logUser.aboutUser}</p>
+                            </div>
+                      </> 
+                    }
+                       
+                     {!aboutUserState && userUpdateMode && 
+                        <>
+                            <div className="topMargin-medium "><label className="text-general-small2">About User</label></div>
+                                <div className="about-user-div edit-user-details-custom-icon flex-3">
+                                <div className="custom-edit-paragraph-tag"><p className="text-general-small color1 margin-small">{logUser.aboutUser}</p></div>
+                                <FiEdit className="custom-edit-icon mousePointer-click-general"  onClick={handleUserAboutUpdateState}/>
+                            </div>
+                      </> 
+                    }
+                           
+                        
+                    {
+                        userUpdateMode &&
+
+                             <div className="flex-3 topMargin-medium ">
+                               
+                              {aboutUserState &&
+                                <>
+                                    <label className="text-general-small2">About User</label>
+                                    <div className="custom-edit-textbox-tag-div">
+                                            <textarea 
+                                            placeholder='About you...' 
+                                            type='text' 
+                                            className='custom-edit-about-user-textbox color1'
+                                            onChange={e => setAboutUser(e.target.value)}
+                                            value={aboutUser}
+                                        >
+                                        </textarea>
+                                </div>
+                                </>
+                                }
+                                 {aboutUserState &&
+
+                             <div >
+                                 <MdCancel className="custom-edit-icon mousePointer-click-general margin-left-sm1" onClick={handleUserAboutUpdateState}/>
+                             </div>
+
+                            
+                               
+                            }
+                                {aboutUserUpdateMaxError && <p className='paragraph-text red-text'>About user section should not be more than 400 words</p>}
+                                {aboutUserUpdateMinError && <p className='paragraph-text red-text'>About user section should not be less than 45 words</p>}
+                                {unAuthorizedUserError && <p className='paragraph-text red-text'>You're not permitted to carry out this action</p>}
+                                {somethingWentWrongError && <p className='paragraph-text red-text'>something went wrong, contact support</p>}
+                                {aboutUserSectionEmptyError && <p className='paragraph-text red-text'>About user section must not be empty</p>}
+                                {aboutUserSectionEmptyError && <p className='paragraph-text red-text'>You need to verify your account</p>}
+                                {noUserFoundError && <p className='paragraph-text red-text'>No user found</p>}
+                            
+                         </div>
+                        }
+                        
+                        
+                    
+                        
+
+                        <div className="topMargin-medium  "><label className="text-general-small2">Settings</label></div>
+
+                        {
+                            !userUpdateMode ? 
+                            <div className="topMargin-medium flex-3 center-flex-align-display" onClick={handleUserUpdate}> 
+                            
+                            <FiEdit className="custom-edit-icon mousePointer-click-general"/><label className="text-general-small2 margin-left-sm1 mousePointer-click-general">Edit User Details</label>
+                            
+                        </div> :
+                        <div className="topMargin-medium flex-3 center-flex-align-display" onClick={handleUserUpdate}>
+                            <MdCancel  className="custom-edit-icon mousePointer-click-general"/><label className="text-general-small2 margin-left-sm1 mousePointer-click-general">Cancel Edit</label>
                         </div>
-                }
-            </form> 
-                   { !userUpdateMode &&
-
-                       <div className="user-details-div">
-                        <div className="settingsProfilePic">
-                          <label>Profile Picture</label>
-                        <img src={logUser.profilepicture} //this line says if there is file loaded into the upload input box, display the file using url.createobjecturl and pass the data.append name used
-                        alt="" /></div>
-
-                        <div className="user-detail-container-username"><label className="user">Username</label>
-                        <h4>{logUser.username}</h4></div>
-
-                         <div className="margin-small"><label className="label-general about-user-custom-label">About User</label></div>
-                         <div className="about-user-div custom-about-user-text-div margin-small">
-                               <p className="text-general-small color1 custom-about-user-text">{logUser.aboutUser}</p>
-                           </div>
-                    </div>
-                   } 
-              
-              
-               
-        </div>
+                        }
+                        
+                      {
+                        !userUpdateMode && 
+                        <div >
+                            <div className="flex-3 center-flex-align-display margin-small"><AiFillDelete  className="custom-edit-icon"/><label onClick={handleDelete} className="text-general-small2 margin-left-sm1 mousePointer-click-general">Delete Account</label></div>
+                            <Link to={`/usersposts/${logUser?.userId}/${Number(1)}`} className='link'>
+                                 <div className="flex-3 center-flex-align-display margin-small"><MdOutlineManageAccounts  className="custom-edit-icon"/><label className="text-general-small2 margin-left-sm1 mousePointer-click-general">Manage Posts</label></div>
+                            </Link>
+                           
+                        </div>
+                      }
+                   {userUpdateMode &&  <button className={ updated ? "settingsSubmit2 button-general": "button-general"} type="button" onClick={handleUpdate}>
+                        Update
+                        </button>}
+                </div>
                 
-            <Sidebar/>
-    </div>
+            </div>
+             <Settingsidebar/>
+        </div>
+  
 </>
     )
 }

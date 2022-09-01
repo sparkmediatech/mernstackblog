@@ -1,13 +1,25 @@
+:root {
+    --tx: 0vw;
+    --lastSlide: -100vw;
+    --nextSlide: 100vw;
+    --postTitleLine: 0%
+    
+}
 /*  cursor not allowed */
 .curson-not-allowed{
     position: absolute;
     width: 100%;
     cursor: not-allowed;
     background-color: red;
-   
     z-index: 999;
 }
+.curson-not-allowed-2{
+    cursor: not-allowed;
+}
 
+.general-cursor-pointer{
+    cursor: pointer;
+}
 
 .mainWrapper{
 background-color: #ECF0F1;
@@ -82,6 +94,10 @@ overflow: hidden;
     font-family: "Lato",
     sans-serif;
 }
+.text-general-extral-small{
+    font-size: 12px;
+    font-family: "Lato",sans-serif;
+}
 .support-team-text{  
 color: #99a3a4;
 margin-top: 10px;
@@ -89,6 +105,10 @@ font-size: 15px;
 font-family: "Satisfy";
 font-style: italic;
 
+}
+.postTitle{
+    font-size: 28px;
+    font-family: "Lato",sans-serif;
 }
 .center-text{
     text-align: center;
@@ -115,8 +135,15 @@ font-style: italic;
 .color2{
     color: #FF661F;
 }
+
+.colorBG{
+    background-color:#FF661F ;
+}
 .color3{
     color:#626567;
+}
+.transitionText{
+    transition: 0.2s ease-in;
 }
 /* Margins  */
 .topMargin-Extral-Large{
@@ -132,11 +159,38 @@ font-style: italic;
 .margin-small{
     margin-top: 15px;
 }
+.margin-small-small{
+    margin-top: 10px;
+}
+.margin-extra-small-Top{
+    margin-top: 5px;
+}
 .marginLeft-sm{
     margin-left: 20px;
 }
+.marginLeft-extraSmall{
+    margin-left: 10px;
+}
 .marginRight-sm{
     margin-right: 20px;
+}
+.marginRight-extraSmall{
+    margin-right: 10px;
+}
+.margin-left-sm1{
+    margin-left: 10px;
+}
+.margin-left-EX-small{
+    margin-left: 5px;
+}
+.rightMargin-medium{
+    margin-right: 30px;
+}
+.rightMargin-medium-large{
+    margin-right: 50px;
+}
+.rightMargin-large{
+    margin-right: 100px;
 }
 /* General padding  */
 .padding-bottom{
@@ -150,6 +204,9 @@ font-style: italic;
     padding: 0 20px 0 20px;
 }
 
+.mousePointer-click-general{
+    cursor: pointer;
+}
 /* general input */
 .input-general{
     padding: 10px;
@@ -251,6 +308,9 @@ color: #FF661F;
     height: 1px;
 }
 
+.custom-icon-font-size{
+    font-size: 30px;
+}
 /*  general textbox */
 
 .custom-about-user-textbox {
@@ -267,7 +327,9 @@ color: #FF661F;
     opacity: 0;
     transition: 0.3s ease-in-out;
 }
-
+.opacityOff{
+    opacity: 0;
+}
 .fadeInText{
     opacity: 1;
 }

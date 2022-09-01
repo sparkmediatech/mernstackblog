@@ -6,7 +6,9 @@ import { Link } from 'react-router-dom';
 
 function Page2() {
     const [page2, setPage2] = useState([]);
-    const [pageTitle, setPageTitle] = useState('')
+    const [pageTitle, setPageTitle] = useState('');
+    const [selectedId, setSelectedId] = useState('')
+    const [postSelectedPostTitle, setSelectedPostTitle] = useState('')
   //fetch page1 based on category index[0]
 useEffect(()=>{
     const fetchPage1 = async ()=>{
@@ -24,6 +26,20 @@ useEffect(()=>{
     }
     fetchPage1();
 }, []);
+
+//this controls the line animation under each post title
+useEffect(()=>{
+
+  if(selectedId && postSelectedPostTitle){
+      //check the random post title length
+       const postTitle = postSelectedPostTitle.split('');
+       const randomPostTitleCount = postTitle.filter(word => word !== '').length *1.3;
+       
+      document.documentElement.style.setProperty('--postTitleLine', `${randomPostTitleCount}%`);
+      //const nextSlide = (getComputedStyle(document.documentElement).getPropertyValue('--postTitleLine'))
+     
+  }
+}, [selectedId, setSelectedId]);
 
   return (
     <>
@@ -43,15 +59,15 @@ useEffect(()=>{
                   return(
                     <>
                    
-                    <div className='singlePost-div page2-singlePost-custom-div margin-small '>
+                    <div className='singlePost-div page2-singlePost-custom-div margin-small ' onMouseEnter={()=> {setSelectedId(_id); setSelectedPostTitle(title)}} onMouseLeave={()=> {setSelectedId(''); setSelectedPostTitle('')}} >
                          {postPhoto &&(
                           <img className='postImg page2-custom-image'src={postPhoto} alt="" />)}
 
                           <div className='page-post-title-custom-div'>
                       <Link to={`/post/${_id}`} className="link">
-                        <h4 className='text-general-small margin-small page1-custom-title'>{title}</h4>
+                        <h4 className={selectedId == _id ? 'text-general-small margin-small color2 transitionText' : 'text-general-small margin-small'}>{title}</h4>
                       </Link>
-                    
+                     <div className={selectedId == _id ? 'page3-post-line-div animated-page3-post-line-div' : 'transitionText page3-post-line-div'}></div>
                     <div className='flex-3 post-name-date-div'>
                       <p className='text-general-small color1'>{username.username}</p><p className='text-general-small color1 postDate'> {new Date(createdAt).toDateString()}</p>
                     </div>

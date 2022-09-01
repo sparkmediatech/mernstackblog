@@ -9,7 +9,6 @@
     z-index: 999;
 }
 .top{
-    
     justify-content: space-between;
     height: 100%;
     max-width: 1555px;
@@ -21,6 +20,7 @@
     overflow: hidden;
     background-color: #F6F6F6;
     height: 10vh;
+   
 }
 .navBar-header-div{
     align-items: center;
@@ -29,6 +29,7 @@
     margin: 0 auto;
     overflow: auto;
     padding: 0 40px;
+   
 
 }
 .siteName-div{
@@ -106,15 +107,24 @@
     height: 100%;
     background-color: #FF661F;
 }
+
+.customItemDiv{
+    
+    height: 100%;
+   
+    
+}
 .home-custom-color{
     color: #F6F6F6;
     margin-right: 0px;
+    padding: 0 15px 0 15px;
    
 }
 .custom-topList-Item{
     display: flex;
     flex-direction: row;
     margin-left: 20px;
+    height: 100%;
 }
 .custom-topList-section2{
     display: flex;
@@ -156,4 +166,13 @@
 }
 .search-custom:focus{
     background-color: #F7F9F9;
+}
+.dm{
+    width: 25%;
+    height: 100%;
+    padding: 0 0px 0 0px;
+    margin-left: 0px;
+    margin: 0;
+  
+   
 }

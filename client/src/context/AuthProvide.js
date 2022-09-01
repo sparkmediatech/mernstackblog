@@ -24,13 +24,32 @@ export const AuthProvider = ({children})=>{
    
     const [auth, setAuth] = useState({});
     const [logUser, setLogUsers] = useState({})
-
     const [regUser, setRegUser] = useState({});
-    const [websiteName, setWebsiteName] = useState()
-    const [authorDetails, setAuthorDetails] = useState({})
+    const [websiteName, setWebsiteName] = useState();
+    const [authorDetails, setAuthorDetails] = useState({});
+    const [aboutWebsite, setAboutWebsite] = useState();
+    const [posts, setPosts] = useState([]);
+    const [imageDetails, setImageDetails] = useState();
+    const [query, setQuery] = useState('');
+    const [searchState, setSearchState] = useState(false);
+    //the states for menu and paths start here
+    const [componentName, setComponentName] = useState([])
+    const [pathName, setPathName] = useState([])
+    const [blogPageName, setBlogPageName] = useState();
+    const [contactPageName,  setContPageName] = useState();
+    const [writePageName, setWritePageName] = useState();
+    const [pathNameMount, setPathNameMount] = useState(false)
+    const [pathLocation, setPathLocation] = useState();
+    const [blogPageAliasName, setBlogPageAliasName] = useState();
+    const [writePageAliasName, setWritePageAliasName] = useState();
+    const [generalFetchError, setgeneralFetchError] = useState(false);
+    const [tokenError,  setTokenError] = useState(false)
 
 
     
+
+
+    console.log(searchState)
     const refreshToken = async () =>{
         
         try{
@@ -42,6 +61,9 @@ export const AuthProvider = ({children})=>{
             
         }
             catch(err){
+                if(err.response.data === "Token is not valid"){
+                    setTokenError(true)
+                }
                 console.log(err);
             }
     };
@@ -63,7 +85,8 @@ const decodeJWT = ()=>{
         profilepicture: decoded.profilepicture,
         role: decoded.role,
         photoPublicId: decoded.photoPublicId,
-        aboutUser: decoded.aboutUser
+        aboutUser: decoded.aboutUser,
+        joined: decoded.joined
         }
     setLogUsers(newUser)
      console.log(decoded)
@@ -94,19 +117,81 @@ useEffect(() => {
     useEffect(() => {
         localStorage.setItem("obj", JSON.stringify(state.temp, ));         
     }, [state.temp]);
+   
+
+useEffect(() =>{
+    const getAllComponents = async () =>{
+      try{
+          const response = await axios.get('/component')
+            setComponentName(response.data)
+      }catch(err){
+        if(err.response.data === 'No client component found'){
+            return setgeneralFetchError(true)
+        }
+      }
+    }
     
+    getAllComponents()
+}, [])
+
+
+
+
+useEffect(()=>{
+
+const fetchPathName = async ()=>{
+     try{
+        dispatch({type:"CURSOR_NOT_ALLOWED_START"});
+        const response = await axios.get('/pathname');
+        setPathName(response.data);
+         dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+        console.log(response.data, 'my name path')
+        }catch(err){
+        dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+       if(err.response.data === 'No pathname found'){
+        return setgeneralFetchError(true)
+       }
+    if(err.response.data == 'something went wrong'){
+        return setgeneralFetchError(true)
+    }     
+    }
+}
+fetchPathName()
+}, [pathNameMount, pathLocation])
+
+console.log(tokenError, 'token error')
  console.log(state.temp) 
 console.log(logUser)
 console.log(auth)
 console.log(regUser)
+console.log(aboutWebsite)
+
 
     return(
         <AuthContext.Provider value={{auth, setAuth,logUser, setLogUsers, regUser, setRegUser, temp: state.temp, 
             isLoading: state.isLoading, dispatch,  cursorState: state. cursorState,
             dashboardEditMode: state.dashboardEditMode,
-             searchStatus: state. searchStatus,
-             websiteName, setWebsiteName,
-             authorDetails, setAuthorDetails
+            searchStatus: state. searchStatus,
+            websiteName, setWebsiteName,
+            authorDetails, setAuthorDetails,
+            aboutWebsite, setAboutWebsite,
+            posts, setPosts,
+            imageDetails, setImageDetails,
+            query, setQuery,
+            searchState, setSearchState, 
+            componentName, setComponentName,
+            pathName, setPathName,
+            blogPageName, setBlogPageName,
+            contactPageName,  setContPageName,
+            writePageName, setWritePageName,
+            pathNameMount, setPathNameMount,
+            pathLocation, setPathLocation,
+            blogPageAliasName, setBlogPageAliasName,
+            writePageAliasName, setWritePageAliasName,
+            generalFetchError, setgeneralFetchError,
+            tokenError,  setTokenError,
+           
+
         }}>
             {children}
         </AuthContext.Provider>

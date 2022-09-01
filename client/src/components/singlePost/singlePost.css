@@ -36,6 +36,7 @@
   border-radius: 5px;
   object-fit: cover;
 }
+
 .singlePostTitle {
   color: gray;
   text-align: center;
@@ -55,9 +56,9 @@
 .singlePostTitleInput {
   color: gray;
   text-align: center;
-  font-family: "Lora", serif;
   margin: 10px;
   font-size: 28px;
+  font-family: "Lato", sans-serif;
   border: none;
   border-bottom: 1px solid lightgray;
 }
@@ -322,9 +323,29 @@
  
 }
 .edit-writeImg{
-  
   width: 100%;
   height: 300px;
   border-radius: 10px;
   object-fit: cover;
+}
+.custom-editor-div img{
+  width: 100%;
+  height: 60vh;
+
+}
+.editor {
+  padding: 16px;
+  border-radius: 2px;
+  box-shadow: inset 0px 1px 8px -3px #ABABAB;
+  background: #fefefe;
+}
+/* edit post Editor section  */
+.edit-post-div{
+ width: 100%;
+ min-height: 60vh;
+ overflow: hidden;
+}
+.edit-post-div p{
+  color: red;
+  font-size: 100px;
 }

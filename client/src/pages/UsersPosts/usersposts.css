@@ -1,8 +1,10 @@
 .usersposts-main-wrapper{
-   
+
 }
 .usersPosts-custom-main-div{
-    flex: 9;
+    height: auto;
+    overflow: hidden;
+    max-width: 1500px;
     background-color: #FBFCFC;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
@@ -51,10 +53,12 @@
 }
 .clear-selected-btn-div{
     display: flex;
-    align-items: center;
-    justify-content: end;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
     width: 100%;
     height: 40px;
+   
 }
 .clear-btn{
     cursor: pointer;
@@ -66,4 +70,15 @@
 .delet-selected-custom{
     cursor: not-allowed;
     opacity: 0.3;
+}
+.custom-page-navigation-div{
+   
+}
+.custom-page-navigation-icon{
+    cursor: pointer;
+    color: #FF661F;
+    font-size: 30px;
+}
+.unclickMouse{
+    cursor:not-allowed;
 }

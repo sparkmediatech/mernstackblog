@@ -5,6 +5,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {AuthContext} from '../../context/AuthProvide';
 import AdminSidebar from '../Admindashboard/AdminSidebar';
 import { useLocation } from 'react-router';
+import { FiTrendingUp } from 'react-icons/fi';
 
 
 
@@ -19,6 +20,14 @@ function SingleUser(props ) {
     const [unblockUser, setUnblockUser] = useState(false);
     const [blockDateSetting, setBlockDateSetting] = useState(false);
     const expDateRef = useRef();
+    //error states
+    const [userNotFoundError, setUserNotFoundError] = useState(false);
+    const [somethingWentWrongError, setSomethingWentWrongError] = useState(false);
+    const [dateExpError, setDateExpError] = useState(false);
+    const [notAuthorizedError, setNotAuthorizedError] = useState(false);
+    const [userAlreadyBlockedError, setUserAlreadyBlockedError] = useState(false);
+    const [actionNotCompletedError, setActionNotCompletedError] = useState(false);
+    const [userAlreadyUnblockedError,  setUserAlreadyUblockedError] = useState(false)
     
 
 
@@ -29,9 +38,15 @@ useEffect(()=>{
                const res = await axiosPrivate.get(`/v1/users/${path}`, { withCredentials: true,
                 headers:{authorization: `Bearer ${auth.token}`}})
                 setSingleUser(res.data)
-                console.log(res.data)
+               
             }catch(err){
+                if(err.response.data == 'user not found with this ID'){
+                    return setUserNotFoundError(true)
+                }
 
+            if(err.response.data ==='something went wrong with finding user'){
+                return setSomethingWentWrongError(false)
+            }
             }
         }
        return getSingleUser()
@@ -68,6 +83,24 @@ const handleBlockingUser = async() =>{
          
     }catch(err){
           dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+          if(err.response.data == "You must provide expiry date"){
+            return setDateExpError(true);
+          }
+          if(err.response.data ==="User not found"){
+            return setUserNotFoundError(true)
+          }
+          if(err.response.data === "You are not authorized to carry it this feature"){
+            return setNotAuthorizedError(true)
+          }
+        if(err.response.data === "User has already been blocked"){
+            return setUserAlreadyBlockedError(true)
+        }
+        if(err.response.data === 'Action can not be completed'){
+            return setActionNotCompletedError(true)
+        }
+        if(err.response.data === 'something went wrong'){
+            return setSomethingWentWrongError(true)
+        }
     }
 };
 
@@ -87,6 +120,21 @@ const handleUnblockUser = async() =>{
          
     }catch(err){
           dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+          if(err.response.data === "User not found"){
+            return setUserNotFoundError(true)
+          }
+          if(err.response.data === 'admin'){
+            return setNotAuthorizedError(true)
+          }
+        if(err.response.data === "User is has already been unblocked"){
+            return setUserAlreadyUblockedError(true)
+        }
+        if(err.response.data === 'Action can not be completed due to unathourized access or user not found'){
+            return setActionNotCompletedError(true)
+        }
+        if(err.response.data === 'something went wrong'){
+            return setSomethingWentWrongError(true)
+        }
     }
 };
 
@@ -103,6 +151,33 @@ useEffect(()=>{
     }, 2000);
 }, [userBlocked, unblockUser])
 
+
+
+//handle notification
+useEffect(() =>{
+    setTimeout(() => {
+        setUserNotFoundError(false)
+    }, 2000);
+    setTimeout(() => {
+        setSomethingWentWrongError(false)
+    }, 2000);
+
+    setTimeout(() => {
+        setDateExpError(false)
+    }, 2000);
+
+     setTimeout(() => {
+        setNotAuthorizedError(false)
+    }, 2000);
+
+     setTimeout(() => {
+        setActionNotCompletedError(false)
+    }, 2000);
+
+     setTimeout(() => {
+        setUserAlreadyUblockedError(false)
+    }, 2000);
+}, [userNotFoundError, somethingWentWrongError, dateExpError, notAuthorizedError, userAlreadyBlockedError, actionNotCompletedError, userAlreadyUnblockedError])
    
   return (
 
@@ -112,15 +187,15 @@ useEffect(()=>{
      
             < AdminSidebar/>
 
-                <div className='other-pages '>
+                <div className='other-pages topMargin-Extral-Large'>
                     {
 
                     }
                     <div className=' flex-2 center-flex-align-display display-single-user-custom-div '>
                         <div className='flex-2 center-flex-align-display single-user-custom-div'>
            
-                            <div className='user-profile-pics-div flex-2 center-flex-align-display topMargin-medium '>
-                                 <img className='user-profile-pics' src={singleUser && `${singleUser.profilePicture}`} alt="" />
+                            <div className='custom-user-profile-pics-div-wrapper flex-2 center-flex-align-display topMargin-medium '>
+                                 <img className='custom-user-main-profile-pics' src={singleUser && `${singleUser.profilePicture}`} alt="" />
                  
                             </div>
 
@@ -138,7 +213,7 @@ useEffect(()=>{
                         {
                             blockDateSetting && 
                             singleUser && singleUser.isBlocked !== true &&
-                                < div className='blockDate-custom-setting-div flex-2 '>
+                                < div className='blockDate-custom-setting-div flex-2 topMargin-medium'>
                                     <p className='paragraph-text'>Choose Expiry Date</p>
                                         <div className='block-custom-selection-div flex-3 center-flex-justify-display topMargin-medium'>
                                             <input className='input-general date-time-custom-input' type="datetime-local" 
@@ -146,12 +221,18 @@ useEffect(()=>{
                                             />             
                                         </div>
                                         <button onClick={handleBlockingUser} className='button-general'>Block User</button>
+                                            {blockDateSetting && singleUser && singleUser.isBlocked !== true && <button onClick={turnOffBlockingDateSetting} className='button-general-2 block-user-custom-btn '>Cancel</button>}
+
+                                            {dateExpError && <p className='paragraph-text red-text'>You must provide block expiry date</p>}
+                                            {userAlreadyBlockedError && <p className='paragraph-text red-text'>User already blocked</p>}
+                                            {actionNotCompletedError && <p className='paragraph-text red-text'>Action can not be completed, user not found</p>}
+                                            {userAlreadyUnblockedError && <p className='paragraph-text red-text'>User already unblocked</p>}
                                 </div>            
                         }
                                
 
                            {!blockDateSetting &&  
-                           <div className=' flex-2 user-activity-div topMargin-medium user-details-custom-div center-flex-align-display'>
+                           <div className=' flex-2 user-activity-div topMargin user-details-custom-div center-flex-align-display'>
                                 <p className='text-general-Medium'>Recent Activities</p>
                                 <div className='post-custom-div flex-2 center-flex-align-display'>
                                         {singleUser && singleUser.userPosts.slice(0,3).map((singlePost) =>{
@@ -171,19 +252,29 @@ useEffect(()=>{
                                          
                              </div>
                             }
-                                   
-                                        {userBlocked && <p className='paragraph-text'>User has been blocked</p>}
-                                        {unblockUser && <p className='paragraph-text'>User has been unblocked</p>}
+                                   <div className='custom-BTN-div topMargin flex-2 center-flex-align-display'>
+                                    
+                                       
                                         {singleUser && !blockDateSetting && singleUser.isBlocked === false &&  <button onClick={turOnBlockingDateSetting}  className='button-general-2 block-user-custom-btn '>Block User</button> }
                                         {singleUser && singleUser.isBlocked === true && <button onClick={handleUnblockUser} className='button-general-2 block-user-custom-btn '>Unblock User</button>}
-                                        {blockDateSetting && singleUser && singleUser.isBlocked !== true && <button onClick={turnOffBlockingDateSetting} className='button-general-2 block-user-custom-btn '>Cancel</button>}
+                                         {userBlocked && <p className='paragraph-text'>User has been blocked</p>}
+                                        {unblockUser && <p className='paragraph-text'>User has been unblocked</p>}
                                         {singleUser && console.log(singleUser.isBlocked)}
+                                       
+                                     {userNotFoundError && <p className='paragraph-text red-text'>User not found</p>}
+                                    {somethingWentWrongError && <p className='paragraph-text red-text'>Something went wrong</p>}
+                                    {notAuthorizedError && <p className='paragraph-text red-text'>You are not authorized</p>}
+                                    
+                                   
+                                   </div>
                         </div>
+                         
                     </div>
                 </div>
+            
 
- 
         </div>
+    
    </article>  
    </>
  

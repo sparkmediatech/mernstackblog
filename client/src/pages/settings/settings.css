@@ -2,7 +2,30 @@
   display: flex;
   justify-content: center;
 }
+.custom-setting-wrapper{
+  width: 100%;
+  background-color: #F6F6F6;
+}
+.custom-setting-container{
+  flex: 9;
+  max-width: 1800px;
+  margin: 0 auto;
+  margin-top: 100px;
+  overflow: auto;
+  padding: 0 40px;
+  padding-bottom: 0;
+  background-color: #FDFEFE;
+}
 
+.custom-setting-title{
+  font-size: 28px;
+  font-family: "Lato", sans-serif;
+}
+.custom-user-data-div{
+  width: 51%;
+  margin-left: 100px;
+
+}
 .settingsWrapper {
   flex: 9;
   display: flex;
@@ -11,6 +34,7 @@
 }
 .fileUpload2 {
   display: none;
+  
 }
 .settingsTitle {
   display: flex;
@@ -43,12 +67,13 @@
 .settingsProfilePic {
   display: flex;
   align-items: center;
-  margin: 10px 0;
+  width: 40%; 
 }
 .settingsProfilePic img {
-  width: 70px;
-  height: 70px;
-  border-radius: 20px;
+  width: 400px;
+  height: 400px;
+  border-radius: 200px;
+  border: 2px solid #31302C;
 }
 .settingsProfilePicicon {
   width: 25px;
@@ -117,11 +142,7 @@
 .settingsProfilePic label {
   padding-bottom: 10px;
 }
-.user-detail-container-username {
-  padding-top: 15px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid gray;
-}
+
 .user-detail-container-username h4 {
   font-size: 15px;
   color: #b3b6b7;
@@ -175,11 +196,39 @@
 /*  about user section */
 .about-user-div{
   width: 100%;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  padding-bottom: 20px;
-  border-bottom: #d1d1d1 solid 1px;
+
 }
 
 .custom-about-user-text-div{
   padding: 5px 5px 20px 5px;
+}
+.custom-edit-icon{
+  color: #f4540b;
+  font-size: 20px;
+}
+.custom-edit-icon-2{
+  font-size: 40px;
+}
+.edit-user-details-custom-icon{
+  width: 100%;
+}
+.custom-edit-paragraph-tag{
+  width: 96%;
+}
+.custom-edit-about-user-textbox{
+  width: 100%;
+  min-height: 70px;
+  outline: none;
+  border: none;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #a6acaf;
+}
+.custom-edit-textbox-tag-div{
+  width: 94%;
+  padding-left: 5px;
+}
+.custom-username-input{
+  border: none;
+  border-radius: 0;
+  border-bottom: 2px solid #a6acaf;
 }

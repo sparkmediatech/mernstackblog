@@ -18,7 +18,8 @@ const createCategory = async (req, res)=>{
         if(checkDataBase.length > 7){
             return res.status(500).json('There are already 8 categories, you can not create more than 8')
         }
-
+    
+    //check if the category already exist on the database
       const checkDublicate = await Category.exists({catName: catName});
       if(checkDublicate){
           return res.status(500).json('Category already exist')
@@ -110,7 +111,7 @@ const updateCategory = async (req, res)=>{
             return res.status(401).json('You are not authorized to perform this action')
         };
         
-        try{
+     
             const updatedCategory = await Category.findByIdAndUpdate(req.params.categoryId, {
                  $set: req.body
             }, {new: true, runValidators: true});
@@ -119,9 +120,7 @@ const updateCategory = async (req, res)=>{
         
         await Post.updateMany({categories: findCategory.catName}, {categories: updatedCategory.catName})
             return res.status(200).json('Category updated')
-        }catch(err){
-            return res.status(404).json('No category found')
-        }
+      
     }catch(err){
         return res.status(500).json('something went wrong')
     }
@@ -133,7 +132,7 @@ const updateCategory = async (req, res)=>{
 const getSingleCategory = async (req, res)=>{
     try{
         const getSingleCategory = await Category.findById(req.params.categoryId).populate('postCategories');
-        if(!singleCategory){
+        if(!getSingleCategory){
             return res.status(404).json('No category found')
         };
         const {createdAt,updatedAt,__v, ...singleCategory } = getSingleCategory._doc;

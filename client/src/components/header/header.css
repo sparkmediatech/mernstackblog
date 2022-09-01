@@ -1,27 +1,127 @@
 
-.headerTitles {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: "Lato", sans-serif;
 
-  color: #444;
-}
-.headerTitleSm {
-  position: absolute;
-  top: 18%;
-  font-size: 20px;
-}
-.headerTitleLg {
-  position: absolute;
-  top: 20%;
-  font-size: 70px;
-}
-.headerImg {
+/*.section-slider-div{
+  overflow: hidden;
+  position: relative;
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: repeat(5, 625px);
+  grid-template-rows: 550px;
+  grid-gap: 10px;
+}*/
+.section-slider-div{
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
   width: 100%;
-  height: 450px;
-  margin-top: 80px;
-  object-fit: cover;
+  height: 60vh;
+  overflow: hidden;
+}
+.slideIcon{
+  transition: 0.25s ease;
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  cursor: pointer;
+  color: white;
+  font-size: 30px;
+  background-color: #FF661F;
+  padding: 7px;
+  z-index: 999;
+ 
+}
+.next-icon{
+  right: 0;
+  margin-right: 15px;
+}
+
+.previous-icon{
+  left: 0;
+  margin-left: 15px;
+}
+.showSlideIcons{
+  opacity: 1;
+  visibility: visible;
+}
+.image-dark-BG-div{
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 52%;
+  opacity: 0.1;
+  background-color: black;
+}
+.header-image-div{
+  
+  display: flex;
+  position: relative;
+  margin: 2px;
+  flex-shrink: 0;
+  width:33%;
+  height: 100%;
+  
+}
+.left{
+  left: -5px;
+}
+.postSlider-img{
+  width: 100%;
+  height: 100%;
+  filter: brightness(50%)
+ 
+}
+.nextSlide {
+ 
+  transform: translateX(var(--nextSlide));
+}
+.currentSlide{
+ 
+  display: flex;
+  transform: translateX(0vw);
+}
+.move{ 
+  transition: 0.25s ease;
+  transform: translateX(var(--tx));
+}
+.transision{
+  transition: none;
+  transform: translateX(var(--tx));
+}
+.lastSlide{
+ 
+  transform: translateX(var(--lastSlide));
+}
+.postSlider-detail-div{
+  width: 100%;
+  position: absolute;
+  bottom: 20px;
+}
+.postTitle{
+  color: white;
+  transition: 0.5s ease-in;
+}
+.postTitleLine{
+  transition: 0.2s ease-in;
+  width: 0;
+  height: 2px;
+  background-color: #FF661F;
+}
+.animated-post-title-line{
+  width: var(--postTitleLine);
+}
+.postTitle-animated-color{
+  color: #FF661F;
+}
+.postSlider-category-div{
+  display: flex;
+  justify-content: center;
+  width: 20%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #FF661F;
 }
 
 /*Tablet */

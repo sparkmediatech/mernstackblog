@@ -1,9 +1,11 @@
+
 .posts {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: nowrap;
   margin: 0 auto;
-  overflow: auto; 
+  overflow: auto;
+  width: 100%; 
 }
 .post-div{
   background-color: black;
@@ -11,6 +13,14 @@
 }
 .post{
   width: 32%;
+  
+}
+.latest-post-title-div{
+  width: 100%;
+ 
+}
+.post-link{
+  width: 100%;
 }
 .post .postTitle:hover{
   transition: 0.5s ease-in-out;
@@ -48,11 +58,22 @@
   margin-top: 15px;
   cursor: pointer;
 }
+.post-title-custom{
+  transition: 0.1s ease-in;
+  color: black;
+}
 
 .postDate {
   margin-left: 10px;
 }
-
+.latest-post-line-div{
+  width: 0;
+  height: 1px;
+  background-color: red;
+}
+.animated-post-titlte-line{
+  width: var(--postTitleLine);
+}
 .postDescription {
   font-family: "Varela Round", sans-serif;
   font-size: 14px;

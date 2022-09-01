@@ -10,7 +10,7 @@ import {AiFillDelete} from 'react-icons/ai'
 
 function PageSettings() {
     const axiosPrivate = useAxiosPrivate();
-    const {auth, logUser, dispatch, setAuth} = useContext(AuthContext);
+    const {auth, logUser, dispatch, setAuth,setgeneralFetchError } = useContext(AuthContext);
     const [catName, setCategories] = useState([]);
     const categoryRef = useRef('');
     const [mount, setMount] = useState(false);
@@ -27,7 +27,9 @@ function PageSettings() {
     const [categoryId, setCategoryId] = useState('');
     const [categoryUpdated, setCategoryUpdated] = useState(false);
     const [categoryDeleted, setCategoryDeleted] = useState(false);
-    const [deletCategoryError, setDeleteCategoryError] = useState(false)
+    const [deletCategoryError, setDeleteCategoryError] = useState(false);
+    const [noCategoryFoundError, setNoCategoryFoundError] = useState(false);
+    const [somethingWentWrongError, setSomethingWentWrongError] = useState(false)
     
     
     //fetch all categories
@@ -41,7 +43,12 @@ function PageSettings() {
                 
             
             }catch(err){
-
+                if(err.response.data === 'something went wrong'){
+                    return setgeneralFetchError(true)
+                }
+                if(err.response.data === 'No categories found'){
+                    return setgeneralFetchError(true)
+                }
             }
 
             
@@ -137,6 +144,18 @@ function PageSettings() {
              setEditCategory(false)
         }catch(err){
             dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+            if(err.response.data == 'No category with the id found'){
+                return setNoCategoryFoundError(true)
+            }
+        if(err.response.data === "No user found"){
+            return setNoUserFoundError(true)
+        }
+        if(err.response.data === 'admin'){
+            return setNotAuthourizedError(true)
+        }
+        if(err.response.data === 'something went wrong'){
+            return setSomethingWentWrongError(true)
+        }
         }
 
     };
@@ -157,6 +176,18 @@ function PageSettings() {
             dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
              if(err.response.data === "You can not delete a category that has been assigned a post. Please, consider changing the name"){
                  setDeleteCategoryError(true)
+            }
+            if(err.response.data === 'User not found'){
+                return setNoUserFoundError(true)
+            }
+            if(err.response.data === 'admin'){
+                setNotAuthourizedError(true)
+            }
+            if(err.response.data === 'no category found'){
+                return setNoCategoryFoundError(true)
+            }
+            if(err.response.data === 'Something went wrong'){
+                return setSomethingWentWrongError(true)
             }
         }
     }
@@ -216,9 +247,17 @@ function PageSettings() {
         setTimeout(() => {
           setDeleteCategoryError(false)
         }, 3000);
+
+     setTimeout(() => {
+          setNoCategoryFoundError(false)
+        }, 3000);
+
+    setTimeout(() => {
+          setSomethingWentWrongError(false)
+        }, 3000);
     }, [created, alreadyExitError, categoryLessThanMinError, categoryMoreThanMaxError, categoryEmptyError, 
         noUserFoundError, notAuthourizedError, categoryNumberError, 
-        categoryMaxLimitError, categoryUpdated, categoryDeleted, deletCategoryError]);
+        categoryMaxLimitError, categoryUpdated, categoryDeleted, deletCategoryError, noCategoryFoundError, somethingWentWrongError]);
 
        
 
@@ -233,7 +272,7 @@ console.log(categoryId)
 
             < AdminSidebar/>
 
-                <div className='other-pages custom-other-page '>
+                <div className='other-pages custom-other-page topMargin-Extral-Large '>
                                 <h3 className='text-general-Medium margin-small'>Page Setting</h3>
                         <div className='category-custom-div-wrapper margin-small'>
                                
@@ -258,6 +297,8 @@ console.log(categoryId)
                                     { categoryUpdated && <p className='paragraph-text'>Category name updated successfully</p>}
                                     { categoryDeleted && <p className='paragraph-text'>Category deleted successfully</p>}
                                     { deletCategoryError && <p className='paragraph-text'>You can not delete a category that already has a post, consider changing the name</p>}
+                                    {noCategoryFoundError && <p className='paragraph-text'>No category found</p>}
+                                    {somethingWentWrongError && <p className='paragraph-text'>Something went wrong </p>}
 
                                 </div>
 

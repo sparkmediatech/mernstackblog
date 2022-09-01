@@ -12,13 +12,18 @@ import PageLoader from '../pageLoader/PageLoader';
 import  BASE_URL from '../../hooks/Base_URL';
 import {AiOutlineLike} from 'react-icons/ai';
 import {MdCancel} from 'react-icons/md';
-
-
+import {EditorState, convertFromRaw, convertToRaw } from 'draft-js';
+import { Editor as EditEditor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import Editor from '@draft-js-plugins/editor';
+import createImagePlugin from '@draft-js-plugins/image';
+import  '../../../node_modules/@draft-js-plugins/image/lib/plugin.css';
+import UploadImage from '../../hooks/UploadImage'
 
 //import Helmet from '../socialshare/Helmet';
 
 export default function SinglePost() {
-    
+    const imageUploader = UploadImage()
     const axiosPrivate = useAxiosPrivate();
     const location = useLocation()
     const path = location.pathname.split("/")[2];
@@ -31,13 +36,29 @@ export default function SinglePost() {
     const [username, setUsername] = useState();
     const [isLoading, setIsLoading] = useState(false);   
     let currentUrl = `http://www.localhost:3000/post/${path}`;
-    const {auth, logUser, dispatch, authorDetails, setAuthorDetails} = useContext(AuthContext);
+    const {auth, logUser, dispatch, authorDetails, setAuthorDetails, imageDetails, tokenError} = useContext(AuthContext);
     const [liked, setLiked] = useState();
     const [file, setFile] = useState("");
     const [editImageMode, setEditImageMode] = useState(false);
-    const [updatePostError, setUpdatePostError] = useState(false);
     const [showCategories, setShowCategories] = useState(false);
-    
+    const imagePlugin = createImagePlugin();
+    const [editEditorState, setEditEditorState] = useState();
+    const [maineditorState, setMainEditorState] = useState();
+    const [reload, setReload] = useState(false);
+    const [postLikeError, setPostLikeError] = useState(false)
+    const [deletePostErrorState, setDeletePostErrorState] = useState(false)
+    //error states start here
+    const [userNotFoundError, setUserNotFounderError] = useState(false);
+    const [userbannedError, setUserBannedError] = useState(false);
+    const [notVerifiedError, setNotVerifiedError] = useState(false);
+    const [postNotFoundError, setNoPostFoundError] = useState(false);
+    const [notAuthorizedError, setNotAuthorizedError] = useState(false);
+    const [somethingWentWrongError, setSomeThingWentWrongError] = useState(false);
+    const [duplicatePostTitleError, setDubplicateTitleError] = useState(false);
+    const [postTitleMaxError, setPostTitleMaxError] = useState(false);
+    const [postTitleEmptyError, setPostTitleEmptyError] = useState(false);
+    const [postTitleMinError, setPostTitleMinError] = useState(false);
+
    
 
 
@@ -53,7 +74,7 @@ export default function SinglePost() {
            try{
               setIsLoading(true)
             const response = await axios.get(`${BASE_URL}/posts/${path}`)
-            console.log(response.data)
+           
             setUsername(response.data.username)
             setPost([response.data]);
             setTitle(response.data.title);
@@ -71,53 +92,175 @@ export default function SinglePost() {
        };
         
       getPost()
-    }, [path]);
-    
+    }, [path, reload]);
+   
+    //handle the convertion of the the server content to editor content
+    useEffect(()=>{
+        if(updateMode){
+             post.map((singlePost) =>{
+                const contentState = convertFromRaw(JSON.parse(singlePost.description));
+                const editorState = EditorState.createWithContent(contentState);  
+                setEditEditorState(editorState)
+            })
+        }
+           
+        
+    }, [updateMode])
+
+//handle the onChange state of the edit editor text editor
+ const onEditorStateChange = async (editorState) => {
+    setEditEditorState(editorState);
+    const convertedData = convertToRaw(editorState.getCurrentContent());
+    setDescription(JSON.stringify(convertedData))
+  }
 
 //handles deleting post
     const handleDelete = async () =>{
+         dispatch({type:"CURSOR_NOT_ALLOWED_START"});
         try{
                 await axiosPrivate.delete(`/v1/posts/${path}`, {data: {username: logUser.userId, role: logUser.role}}, { withCredentials: true,
                     headers:{authorization: `Bearer ${auth}`}
                     });
                   window.location.replace("/")
         }catch(err){
+            dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+            if(err.response.data == 'Sorry, you can not make a post at this moment'){
+                 setDeletePostErrorState(true)
+                return setUserBannedError(true)
+            }
+            if(err.response.data == 'Sorry, only verified users can delete their posts'){
+                setDeletePostErrorState(true)
+                return setNotVerifiedError(true)
+            }
+            if(err.response.data == "Post not found"){
+                setDeletePostErrorState(true);
+                return setNoPostFoundError(true)
+            }
+            if(err.response.data == "you can only delete your posts"){
+                setDeletePostErrorState(true);
+                return setNotAuthorizedError(true)
+            }
 
+            if(err.response.data == "Something went wrong"){
+                setDeletePostErrorState(true);
+                return setSomeThingWentWrongError(true)
+            }
         }
        
 
     }
+
+ 
+ 
 //this function handles the update of the post by the user
 const handleUpdate = async () =>{
      dispatch({type:"CURSOR_NOT_ALLOWED_START"});
      
+     //if imageDetails is present, that means user has uploaded an image while editing the post.
+     if(imageDetails){
         const data = new FormData();
-        const filename = Date.now() + file.name;
-        data.append("name", filename);
-        data.append("file", file);
         data.append("username", logUser.userId);
         data.append("role", logUser.role);
         data.append('title', title);
         data.append('description', description)
+        data.append('photoPublicId', imageDetails.publicId)
+        data.append('postPhoto', imageDetails.url)
         
 
         try{
                 await axiosPrivate.patch(`/v1/posts/${path}`, data, { withCredentials: true,headers:{authorization: `Bearer ${auth}`}
                     });
-                 // window.location.reload("/")
-                  dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-                 setUpdateMode(false);
-                 setShowCategories(false)
+                
+                    dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+                    setUpdateMode(false);
+                    setShowCategories(false);
+                    setReload(!reload)
+                    //window.location.reload("/")
         }catch(err){
              dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-            console.log(err)
+             if(err.response.data == "User not found"){
+                return setUserNotFounderError(true)
+             }
+             if(err.response.data == "Sorry, you're banned from making posts"){
+                return setUserBannedError(true)
+             }
+             if(err.response.data == "Sorry, only verified users can update their posts"){
+                return setNotVerifiedError(true)
+             }
+            if(err.response.data == "No post with this Id found"){
+                return setNoPostFoundError(true)
+            }
+            if(err.response.data == "you can only update your posts"){
+                return setNotAuthorizedError(true)
+            }
+            if(err.response.data == "Something went wrong"){
+                return setSomeThingWentWrongError(true)
+            }
+            if(err.response.data == "post title can not be empty"){
+                return setPostTitleEmptyError(true)
+            }
+
+            if(err.response.data == 'post title should not be more than 60 characters'){
+                return setPostTitleMaxError(true)
+            }
+            if(err.response.data == 'post title should not be less than 10 characters'){
+                return setPostTitleMinError(true)
+            }
         }     
                 
+     }else{
+        const data = new FormData();
+        data.append("username", logUser.userId);
+        data.append("role", logUser.role);
+        data.append('title', title);
+        data.append('description', description);
+
+        try{
+                await axiosPrivate.patch(`/v1/posts/${path}`, data, { withCredentials: true,headers:{authorization: `Bearer ${auth}`}
+                    });
+                
+                    dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+                    setUpdateMode(false);
+                    setShowCategories(false);
+                    setReload(!reload)
+                    //window.location.reload("/")
+        }catch(err){
+             dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+             if(err.response.data == "User not found"){
+                return setUserNotFounderError(true)
+             }
+             if(err.response.data == "Sorry, you're banned from making posts"){
+                return setUserBannedError(true)
+             }
+             if(err.response.data == "Sorry, only verified users can update their posts"){
+                return setNotVerifiedError(true)
+             }
+            if(err.response.data == "No post with this Id found"){
+                return setNoPostFoundError(true)
+            }
+            if(err.response.data == "you can only update your posts"){
+                return setNotAuthorizedError(true)
+            }
+            if(err.response.data == "Something went wrong"){
+                return setSomeThingWentWrongError(true)
+            }
+             if(err.response.data == "post title can not be empty"){
+                return setPostTitleEmptyError(true)
+            }
+
+            if(err.response.data == 'post title should not be more than 60 characters'){
+                return setPostTitleMaxError(true)
+            }
+            if(err.response.data == 'post title should not be less than 10 characters'){
+                return setPostTitleMinError(true)
+            }
+        }     
+     }
+       
 }
 
 
 //handle like and unlike
-console.log(file)
 const handleLike = async ()=>{
     try{
         const response = await axiosPrivate.patch(`/v1/posts/${path}/like`, 
@@ -126,11 +269,86 @@ const handleLike = async ()=>{
         
             setPost([response.data]);
     }catch(err){
-
+        if(err.response.data == 'No user found'){
+            setPostLikeError(true);
+            return setUserNotFounderError(true)
+        }
+        if(err.response.data == 'no post found'){
+            setPostLikeError(true);
+            return setNoPostFoundError(true)
+        }
+        if(err.response.data === 'you are not athourized'){
+            return setUserBannedError(true)
+        }
+        if(err.response.data == 'something went wrong'){
+            setPostLikeError(true);
+            return setSomeThingWentWrongError(true)
+        }
+        if(err.response.data === 'you are not verified yet'){
+            return setNotVerifiedError(true)
+        }
+       
     }
 }
 
 
+const handleDeleteImage = async () =>{
+    axiosPrivate.post(`/v1/posts/${path}/deleteImage`)
+}
+
+//handle error states display
+    
+useEffect(()=>{
+ setTimeout(() => {
+        setUserNotFounderError(false)
+    }, 2000);
+
+     setTimeout(() => {
+        setUserBannedError(false)
+    }, 2000);
+
+     setTimeout(() => {
+       setNotVerifiedError(false)
+    }, 2000);
+
+     setTimeout(() => {
+       setNoPostFoundError(false)
+    }, 2000);
+
+    setTimeout(() => {
+       setNotAuthorizedError(false)
+    }, 2000);
+
+    setTimeout(() => {
+       setSomeThingWentWrongError(false)
+    }, 2000);
+
+    setTimeout(() => {
+       setPostTitleEmptyError(false)
+    }, 2000);
+
+     setTimeout(() => {
+       setPostTitleMaxError(false)
+    }, 2000);
+
+     setTimeout(() => {
+       setPostTitleMinError(false)
+    }, 2000);
+
+     setTimeout(() => {
+       setDeletePostErrorState(false)
+    }, 2000);
+
+     setTimeout(() => {
+       setPostLikeError(false)
+    }, 2000);
+
+   
+
+}, [userNotFoundError, userbannedError, notVerifiedError, postNotFoundError, notAuthorizedError, somethingWentWrongError,
+ postTitleMaxError, postTitleMinError, postTitleEmptyError, deletePostErrorState, postLikeError, 
+])
+    
     return (
         <>                
        {
@@ -139,46 +357,27 @@ const handleLike = async ()=>{
            <div className='main-container'>
         {post.map((singleItem, index)=>{
             const {_id: postId} = singleItem
-            
-            return(
-                <>
-        <div className='singlePost' key={postId}>
-           <div className="singlePostWrapper" >
-               
-               {singleItem.postPhoto && !editImageMode &&  (
-                <img className='singlePostImg' 
-                src={singleItem.postPhoto} alt="" />
-                )}
-               
-                {file && editImageMode &&  
-                    <div className='edit-image-div'><img 
-                        className='edit-writeImg'
-                        src={URL.createObjectURL(file)} 
-                         alt="" />
-                    </div>
-                }
+           console.log(singleItem, 'this is single item')
+           
+            const contentState = convertFromRaw(JSON.parse(singleItem.description));
 
-               { updateMode && editImageMode &&
-                    <div className="writeFormGroup">
-                    <label htmlFor="fileInput">
-                    <i className="writeIcon fas fa-plus"></i>
-                    </label>
-                    <input type="file" className='fileUpload' id='fileInput'  
-                        onChange={e=> setFile(e.target.files[0])} 
-                    />  
-                                                             
-                </div>
-                }
-                {updateMode && !editImageMode && <button onClick={() => setEditImageMode(true)} className='button-general-2 edit-imageBTN'>Edit Image</button>}
-                 {updateMode && editImageMode && <button onClick={() => {setEditImageMode(false); }} className='button-general-2 edit-imageBTN'>Cancel</button>}
+            const editorState = EditorState.createWithContent(contentState); 
+            
+           
+            
+        return(
+                <>
+               
+            <div className='singlePost topMargin-Extral-Large' key={postId}>
+                <div className="singlePostWrapper" >
                 
-                {updateMode && <div><MdCancel className='cancel-edit-mode-btn' onClick={() => {setUpdateMode(false); setEditImageMode(false)}}/></div>}
-                {updateMode ? <input type="text" value={title} className="singlePostTitleInput"
+                {updateMode && <div><MdCancel className='cancel-edit-mode-btn' onClick={() => {setUpdateMode(false); setTitle(singleItem.title)}}/></div>}
+                {updateMode ? <input type="text" value={title} className="singlePostTitleInput color1 center-text"
 
                      onChange={(e)=> setTitle(e.target.value)}
 
                  autoFocus/> : (
-                    <h1 className='singlePostTitle'>
+                    <h1 className='postTitle color3 center-text'>
                         {title}
                         
                         {username.username === logUser?.username && 
@@ -196,7 +395,7 @@ const handleLike = async ()=>{
                     <span 
                         className='singlePostAuthor'>
                             Author:  
-                            <Link to={`/usersposts`} className="link">
+                            <Link to={`/userProfile/${username._id}`} className="link">
                                   
                                 <p className='text-general-small post-title-custom-text'><b>{ username.username}</b></p>
                           
@@ -209,28 +408,69 @@ const handleLike = async ()=>{
                          
                     </p>
                 </div>
+
+
                 {/*If updatemode is true, show textarea for user to write context, if not, show p tag */}
-                {updateMode ? <textarea  className='singlePostDescInput' value={description} 
-                    onChange={(e)=> setDescription(e.target.value)}
-                
-                    autoFocus/> : 
-                    <div><p className='singlePostDesc'>
-                   {description}
-                </p>
-                
+                {updateMode ? <div className='edit-post-div editor '>
+                    <EditEditor editorState={editEditorState}  
+                     wrapperClassName=" custom-Editor-wrapper"
+                      onEditorStateChange={onEditorStateChange}
+                      
+                      toolbar={{
+                        textAlign: { inDropdown: true },
+                        image: {uploadEnabled: true, uploadCallback: imageUploader,  previewImage: true, alt: { present: true }, defaultSize: {width: '700px', height: '400px'}},
+                        fontSize: {
+                        className: 'custom-fontzie',
+                    
+                    },
+                    }}
+                    />
 
-
+                   
+                </div> : 
+                    <div className='paragraph-text editor custom-editor-div'> <Editor  readOnly={true}  editorState={ editorState} toolbarHidden 
+                            plugins={[imagePlugin]}
+                            
+                    />
+                    
+                   
+               
                 {!updateMode && <div className='single-category-div'><h5>Category</h5><h5 className='cat-Text'>{categories}</h5></div>}
                 
+                 {/* delete post error texts start here */}
+
+
+                {userbannedError && deletePostErrorState && <p className='paragraph-text red-text'>You are blocked from performing this action</p>}
+                {notVerifiedError &&  deletePostErrorState && <p className='paragraph-text red-text'>Only verified user can delete their posts</p>}
+                {postNotFoundError &&  deletePostErrorState && <p className='paragraph-text red-text'>Post not found</p>}
+                {notAuthorizedError && deletePostErrorState && <p className='paragraph-text red-text'>You are not authorized to update this post</p>}
+                {somethingWentWrongError && deletePostErrorState && <p className='paragraph-text red-text'>Something went wrong, contact support</p>}
+                  {/* delete post error texts ends here */}
+
+                {/* like post error start */}
                 
+                {userbannedError && <p className='paragraph-text red-text'>You are blocked from performing this action</p>}
+                {notVerifiedError  && <p className='paragraph-text red-text'>Only verified user can can like posts</p>}
+                {tokenError  && <p className='paragraph-text red-text'>Invalid validation</p>}
+              
+                {/*like post error ends */}
                 </div>
                 }
+                 {/* error messages start */}
+                    {userbannedError && updateMode && <p className='paragraph-text red-text'>You are blocked from performing this action</p>}
+                    {userNotFoundError && updateMode &&<p className='paragraph-text red-text'>User not found</p>}
+                    {notVerifiedError &&  updateMode && <p className='paragraph-text red-text'>Only verified user can update their posts</p>}
+                    {postTitleMaxError &&  updateMode && <p className='paragraph-text red-text'>Post title should not be more than 60 characters</p>}
+                    {postTitleEmptyError &&  updateMode && <p className='paragraph-text red-text'>Post title should not be empty</p>}
+                    {postTitleMinError &&  updateMode && <p className='paragraph-text red-text'>Post title should not be less than 10 characters</p>}
+                    {postNotFoundError &&  updateMode && <p className='paragraph-text red-text'>Post not found</p>}
+                    {somethingWentWrongError &&  updateMode && <p className='paragraph-text red-text'>Something went wrong, contact support</p>}
+                    {notAuthorizedError &&  updateMode && <p className='paragraph-text red-text'>You are not authorized to update this post</p>}
+                    {/* Error messages end */}
+                  
                
-                {updatePostError && <p className='paragraph-text topMargin-medium red-text'>Post Image must not be empty</p>}
-
                
- 
-               
+              
                
            {updateMode && <button className="button-general singlePostButton" onClick={handleUpdate}>Update</button>} 
           
@@ -241,6 +481,11 @@ const handleLike = async ()=>{
                {/*  Like button */}
 
                {post.postLikes}
+                {/* post like error starts  */}
+                {userNotFoundError && postLikeError &&<p className='paragraph-text red-text'>User not found</p>}
+                {postNotFoundError &&  postLikeError && <p className='paragraph-text red-text'>Post not found</p>}
+                {somethingWentWrongError && postLikeError && <p className='paragraph-text red-text'>Something went wrong, contact support</p>}
+
 
                {!updateMode && <div className='like-icon-div padding-bottom'>
                     <AiOutlineLike className={singleItem.postLikes.includes(logUser?.userId)?'like-icon like-icon-liked':  'like-icon' }onClick={handleLike}/>
@@ -267,10 +512,11 @@ const handleLike = async ()=>{
         
        {!updateMode && <Comments/>}
         
-           
+     
      </div>
        
        }
+      
         </>
 
        

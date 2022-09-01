@@ -21,7 +21,7 @@ const uploadCloudinary = async (fileToUpload)=>{
 };
 
 const deleteCloudinary = async (fileToDelete) =>{
-    const deleteResponse = await cloudinary.uploader.destroy(fileToDelete, function(result, err){
+    const deleteResponse = await cloudinary.uploader.destroy(fileToDelete, function(err, result){
         if(err){
                 //delete file from local server storage
                return console.log(err)
@@ -37,12 +37,12 @@ const deleteCloudinary = async (fileToDelete) =>{
 //delete multiple files
 
 const deleteAllFiles = async (filesToDelete) =>{
-    const deleteAllFilesResponse = await cloudinary.api.delete_resources(filesToDelete, function(result, err){
+    const deleteAllFilesResponse = await cloudinary.api.delete_resources(filesToDelete, function(err, result){
         if(err){
             console.log(err)
             return console.log('deleting all images failed')
         }
-
+        console.log(result)
         return result
     });
     return deleteAllFilesResponse

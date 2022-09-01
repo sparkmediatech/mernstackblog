@@ -125,7 +125,7 @@ const deleteComment = async (req, res) =>{
         };
         if(comment.author == req.body.author || adminUser.role === 'admin'){
             try{
-                await Post.findByIdAndUpdate(userId, { $pull: {usercomments: comment._id } });
+                await User.findByIdAndUpdate(userId, { $pull: {usercomments: comment._id } });
                 await Post.findByIdAndUpdate(id, { $pull: { comments: comment._id } });
                 await Comment.findByIdAndDelete(comment._id);
                 return res.status(200).json("Comment has been deleted");

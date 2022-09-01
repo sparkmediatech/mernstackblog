@@ -1,4 +1,4 @@
-const TokenReducer = (state, action) =>{
+/*const TokenReducer = (state, action) =>{
      switch(action.type){
              case "LOG_SESSION":
                 return{

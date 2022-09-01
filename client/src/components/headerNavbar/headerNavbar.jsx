@@ -8,31 +8,49 @@ import { Link } from 'react-router-dom';
 import {FaFacebookF, FaTwitter, FaLinkedinIn, FaYoutube, FaSearch} from 'react-icons/fa';
 import {AiOutlineInstagram} from 'react-icons/ai';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import {LogContext} from '../../context/LogContext';
-import  BASE_URL from '../../hooks/Base_URL'
+import  BASE_URL from '../../hooks/Base_URL';
+import { useLocation } from 'react-router';
+import single from '../../pages/single/single';
 
 
 function HeaderNavbar() {
+    const location = useLocation()
+    const path = location.pathname.split("/")[1];
     const axiosPrivate = useAxiosPrivate();
     const PF = "http://localhost:5000/images/" 
     const [topMenuBar, setTopMenuBar] = useState(false);
     const [headerValues, setHeaderValues] = useState([]);  
-    const {auth, setAuth, logUser, websiteName, setWebsiteName} = useContext(AuthContext);
-    const {logdispatch} = useContext(LogContext);
-    const [query, setQuery] = useState('')
+    const [pathAliasName, setPathAliasName] = useState('')
+    const {auth, setAuth, logUser, setWebsiteName, setAboutWebsite, setQuery,  searchState, setSearchState,  blogPageName, pathName,  writePageName,
+    pathLocation, setPathLocation, blogPageAliasName, writePageAliasName, setgeneralFetchError
+    } = useContext(AuthContext);
+    //const [searchState, setSearchState] = useState(false);
+    
 
   
-
+console.log(path, 'home')
 useEffect(() => {
 
       const fetchFrontendValue = async () =>{
-          const res = await axios.get(`${ BASE_URL}/headervalue`);
-          setHeaderValues(res.data)
+         try{
+                const res = await axios.get(`${ BASE_URL}/headervalue`);
+                setHeaderValues(res.data)
+         }catch(err){
+            if(err.response.data === 'no value found'){
+                return setgeneralFetchError(true)
+            }
+            if(err.response.data === 'something went wrong'){
+                return setgeneralFetchError(true)
+            }
+         }
           //console.log(res)
       }
      fetchFrontendValue()
   }, [])
   console.log(headerValues)
+
+
+  
 //turn on edit mode function
 const handleMenuClickOpen = ()=>{
           setTopMenuBar(!topMenuBar)       
@@ -51,9 +69,9 @@ const handleLogout = async (e) =>{
         await axiosPrivate.post(`/v1/auth/logout`,  logId, { withCredentials: true,
         headers:{authorization: `Bearer ${auth.token}`}})
         setAuth(null);
-        logdispatch({type:"LOG_SESSION", payload: null});
         
-        //window.location.replace('/login')
+        
+        window.location('/login')
         }catch(err){
             setAuth(null)
         }
@@ -74,11 +92,24 @@ const customHeaderColor = {
    backgroundColor: arrayHeaderValues.headerColor
 }
 
-//setWebsiteName for global state management
+//setWebsiteName and aboutWebsite for global state management
 useEffect(()=>{
      setWebsiteName(arrayHeaderValues.websiteName)
+     setAboutWebsite(arrayHeaderValues.aboutWebsite)
 }, [headerValues])
 
+
+//handle search query to avoid the API calls from running on each time the user types a word. I want the search api to be called only when the user clicks the search icon
+//the setSearchState has been set as a useContext state and can be gotten globally. Whenever there is a change on this state, the API can be called
+
+const handleSearchQuery = ()=>{
+
+    setSearchState(!searchState)
+}
+
+useEffect(()=>{
+    setPathLocation(path)
+}, [pathLocation, pathName])
   return (
       <>
       {/* Top navbar section*/}
@@ -108,7 +139,7 @@ useEffect(()=>{
                 </ul>
                {
                auth?.token ? (
-                   <Link to="/settings">
+                   <Link to={`/settings/${logUser.userId}`}>
                     <img className='topimg' 
                         src={logUser.profilepicture} alt="" 
                     />
@@ -133,7 +164,7 @@ useEffect(()=>{
               
            </div>
         </div>
-         </div>
+         
 
 
       {/*Header section */}
@@ -144,63 +175,106 @@ useEffect(()=>{
                 </div>
             <div className='navBar-top-div'>
                  <ul className='topList '>
-                        <div className='flex home-div '>
-                            <Link className='link ' to={'/'}>
-                                <li className='topListItem home-custom-color  '>
-                                    Home
+                    
+
+                    {pathName.map((singlePath)=>{
+                                if(singlePath.aliasName === 'HOME'){
+                                    const {pathName, aliasName, _id, menuName} = singlePath || {}
+                                        return(
+                                            <div className={!path && path.toUpperCase() !==blogPageAliasName && path.toUpperCase() !== writePageAliasName  ? 'flex home-div ' : 'flex' }>
+                         
+                                                <>
+                                                    <Link className='link ' to={'/'}>
+                                                        <li className={!path && path.toUpperCase() !==blogPageAliasName && path.toUpperCase() !== writePageAliasName ? 'topListItem home-custom-color  ' :"topListItem " }>
+                                                            {menuName}
                                 
-                                </li> 
-                            </Link>
+                                                        </li> 
+                                                    </Link>
+                                                </>  
                             
-                        </div>
+                                            </div>
+                                        )
+                                        }
+                                    })}
+                   
 
-                       <div className='custom-topList-Item '>
-                            <li className='topListItem'> 
-                            <Link className='link ' to='/about'>
-                                ABOUT
-                            </Link>
-                        </li>
+                   
 
-                         <li className='topListItem'> 
-                            <Link className='link' to='/write'>
-                                WRITE
-                            </Link>
-                        </li>
+                    {pathName.map((singlePathName, key) =>{
+                         const {pathName, aliasName, _id, menuName} = singlePathName || {}
+                        if(aliasName !== 'HOME'){
+                            console.log(writePageAliasName)
+                        return(
+                            <>
+                                <div key={key} className={path == singlePathName.pathName ? 'flex customItemDiv colorBG marginLeft-extraSmall':   'flex customItemDiv marginLeft-extraSmall '}>
+                                    <Link className='link ' to={singlePathName.aliasName == blogPageAliasName ? `/${blogPageName.toLowerCase()}/page/${Number(1)}`: singlePathName.aliasName == 'CONTACT'? `#`: 
+                                        singlePathName.aliasName === writePageAliasName ? `/${writePageName?.toLowerCase() }`: `/`
+                            
+                                
+                                        }>
+                                        <li key={singlePathName._id}   className={path == singlePathName.pathName ? 'topListItem home-custom-color' : 'topListItem '}>
+                                        {menuName}
+                                
+                                        </li> 
+                                    </Link>
+                            
+                                </div>
+                            
+                            </>
+                        )
+                        }
+                        
+                        })}
+                        
 
-                        <li className='topListItem'> 
-                            <Link className='link' to='/contact'>
-                                CONTACT
-                            </Link>
-                        </li>
-
-                        <li className='topListItem'> 
-                            <Link className='link' to='/#'>
-                               CATEGORIES
-                            </Link>
-                        </li>
-
-                       </div>
+                      
+                       
                     </ul>
 
                    
             </div>
             
              <div className='custom-topList-section2'>
-                        <div className='search-input-div '>
+                        {path !== 'allPosts' ? 
+                        
+                            <div className='search-input-div '>
                             <input className='search-custom' type="text" placeholder='Search Blog Posts'
                                 onChange={(e)=>setQuery(e.target.value)}
                             /> 
                                 <div className='search-icon-div'>
-                                    <Link className='link' to={`/?searches=${query}`}>
-                                        <FaSearch className='fa-search'/>
-                                    </Link>
+                                   <Link to={`allPosts/page/${Number(1)}`}>
+                                        <FaSearch className='fa-search' />
+                                   </Link>
+                                        
+                                    
                                     
                                 </div>
                             </div>
+                            :
+
+                            <div className='search-input-div '>
+                            <input className='search-custom' type="text" placeholder='Search Blog Posts'
+                                onChange={(e)=>setQuery(e.target.value)}
+                            /> 
+                                <div className='search-icon-div'>
+                                  
+                                        <FaSearch className='fa-search' onClick={handleSearchQuery}/>
+                                  
+                                        
+                                    
+                                    
+                                </div>
+                            </div>
+                        
+                        }
+
+                        
+                            
                     </div>
         </div>
        
     </article>
+</div>
       </>
    
   )

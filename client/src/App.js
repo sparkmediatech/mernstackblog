@@ -16,7 +16,6 @@ import {AuthContext} from '../src/context/AuthProvide';
 import PasswordResetEmail from '../src/pages/passwordReset/PasswordResetEmail';
 import ChangePassword from './pages/passwordReset/ChanagePassword';
 import ResendVerifyLink from './pages/Email Activation/ResendVerifyLink';
-import {LogContext} from '../src/context/LogContext';
 import  PageLoader from "../src/components/pageLoader/PageLoader";
 import Usersmanager from './pages/Admindashboard/Usersmanager';
 import CursorNotallowed from './pages/cursonnotallowed/CursorNotallowed';
@@ -24,6 +23,14 @@ import WebsiteSettings from './pages/Admindashboard/WebsiteSettings';
 import SingleUser from './pages/singleUser/SingleUser';
 import PageSettings from './pages/Admindashboard/PageSettings';
 import UsersPosts from './pages/UsersPosts/usersPosts';
+import Texteditor from './pages/Texteditor/Texteditor';
+import Blog from './pages/Blogpage/Blog';
+import axios from 'axios';
+import Menu from './pages/Admindashboard/Menu';
+import FetchingError from './pages/GeneralErrorPages/FetchingError';
+import UserProfilePublic from './pages/userprofilePublic/UserProfilePublic';
+
+
 
 
 import {
@@ -33,27 +40,63 @@ import {
   Link
 } from "react-router-dom";
 import Helmethome from './components/helmet/Helmethome';
+import axiosPrivate from './hooks/AxiosPrivate';
 
 
 
 function App() {
-
-  const {logUser,temp, isLoading, cursorState} = useContext(AuthContext);
-  const {session} = useContext(LogContext)
-
-  const [reload, setReload] = useState(false)
+  
+  const {logUser,temp, isLoading, auth, cursorState,   componentName, setComponentName, pathName, setPathName,
+  blogPageName, setBlogPageName, contactPageName,  setContPageName, writePageName, setWritePageName, pathNameMount, pathLocation,
+  blogPageAliasName, setBlogPageAliasName, writePageAliasName, setWritePageAliasName, generalFetchError, setgeneralFetchError, 
+  } = useContext(AuthContext);
+  
+  
+  const [reload, setReload] = useState(false);
+  const [menuControler, setMenuControler] = useState(false);
+  //const [menuNameArray,  setMenuNameArray] = useState([])
 
   useEffect(()=>{
   setTimeout(() => {
     setReload(true)
   }, 500);
 }, [])
+
+
+
+console.log(pathLocation)
+useEffect(() =>{
+  console.log('testing pathnams')
+  pathName.map((singlePath) =>{
+    componentName.map((singleComponent)=>{
+      if(singlePath.aliasName == 'BLOG' && singlePath.aliasName == singleComponent.componentName){
+        setBlogPageName(singlePath.pathName);
+        setBlogPageAliasName(singlePath.aliasName)
+      }
+      if(singlePath.aliasName == 'CONTACT'&& singlePath.aliasName == singleComponent.componentName){
+        setContPageName(singlePath.pathName)
+      }
+       if(singlePath.aliasName === 'WRITE' && singlePath.aliasName == singleComponent.componentName){
+      setWritePageName(singlePath.pathName);
+      setWritePageAliasName(singlePath.aliasName)
+    }
+    })
+    
+   
+    
+  })
+}, [pathLocation, pathNameMount, pathName])
+
+ 
+console.log(writePageAliasName)
   return (
     <Router>
       {cursorState  && <CursorNotallowed/>}
       { (!reload || isLoading) && <PageLoader />}
      
       {!isLoading && reload && <HeaderNavbar/>}
+
+      {generalFetchError && <FetchingError/>}
       <Helmethome/>
       <Switch>
         
@@ -70,37 +113,50 @@ function App() {
           {reload && <Login />}
         </Route>
 
-        <Route path="/write">
-          {session? <Write /> : <Register/>}
+        <Route path={`/${writePageName?.toLowerCase()}`}>
+          {auth?.token ?<Texteditor/> : <Register/>}
         </Route>
 
-        <Route path="/settings">
-          {session ? <Settings />: <Register/>}
+         <Route path={`/${blogPageName?.toLowerCase()}/page/:id`}>
+          {<Blog/>}
         </Route>
 
-         
+        <Route path="/settings/:profileId">
+          {auth?.token  ? <Settings />: <Register/>}
+        </Route>
+
+       <Route path="/userProfile/:publicprofileId">
+          <UserProfilePublic/>
+        </Route>
+        
+        
       <Route path="/admin">
            <Admin/> 
         </Route>
-       <Route path="/usersdashboard">
-          {session && logUser?.role == "admin"  ?  <Usersmanager/> : <Register/> }
+       <Route path="/usersdashboard/page/:pageId">
+          {logUser?.role == "admin" && auth?.token  ?  <Usersmanager/> : <Register/> }
         </Route>
          <Route path="/websitesettings">
-          {session && logUser?.role == "admin"  ?  <WebsiteSettings/> : <Register/> }
+          {logUser?.role == "admin" && auth?.token  ?  <WebsiteSettings/> : <Register/> }
         </Route>
         <Route path="/pagesettings">
-          {session && logUser?.role == "admin"  ?  <PageSettings/> : <Register/> }
+          {logUser?.role == "admin" && auth?.token ?  <PageSettings/> : <Register/> }
         </Route>
-         
+
+         <Route path="/menu">
+          {logUser?.role == "admin" && auth?.token ?  <Menu/> : <Login/> }
+        </Route>
         <Route path="/users/:userId">
-          {session ?  <SingleUser/>: <Login/>}
+          {auth?.token  ?  <SingleUser/>: <Login/>}
         </Route>
+
         <Route path="/post/:postId">
           <Single />
         </Route>
-         <Route path="/usersposts">
-          <UsersPosts/>
+         <Route path="/usersposts/:id/:pageId">
+          {auth?.token ? <UsersPosts/>: <Login/>}
         </Route>
+        
       <Route path="/confirm/:tokenId">
           {temp?.emailToken ? <ConfirmEmail/>: <Login /> }
         </Route>

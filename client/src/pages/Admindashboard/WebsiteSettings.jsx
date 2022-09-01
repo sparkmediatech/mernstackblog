@@ -19,7 +19,7 @@ function WebsiteSettings() {
     const [navColor, setNavColor] = useState("");
     const PF = "http://localhost:5000/images/";
     const [usersDashboardMode, setUsersDashboardMode] = useState(false);
-    const {logUser, auth, dashboardEditMode, dispatch} = useContext(AuthContext);
+    const {logUser, auth, dashboardEditMode, dispatch, setgeneralFetchError} = useContext(AuthContext);
     const axiosPrivate = useAxiosPrivate();
     const [updating, setUpdating] = useState(false);
     const [textUpdate, setTextUpdate] = useState(false);
@@ -45,25 +45,29 @@ function WebsiteSettings() {
 
 //UseEffct to get the header values
    useEffect(() => {
-    try{
-         const fetchFrontendValue = async () =>{
-          const res = await axiosPrivate.get("/v1/headervalue");
-          const headerValueObject = Object.assign({}, ...res.data)
-          setHeaderValues(headerValueObject);
-          setHeaderColor(headerValueObject.headerColor);
-          setNavColor(headerValueObject.navColor);
-          setAboutWebsite(headerValueObject.aboutWebsite)
-          //console.log(res)
-      }
-     fetchFrontendValue()
-   
-    }catch(err){
 
-    }   
+    const fetchFrontendValue = async () =>{
+          try{
+                const res = await axiosPrivate.get("/v1/headervalue");
+                const headerValueObject = Object.assign({}, ...res.data)
+                setHeaderValues(headerValueObject);
+                setHeaderColor(headerValueObject.headerColor);
+                setNavColor(headerValueObject.navColor);
+                setAboutWebsite(headerValueObject.aboutWebsite)
+          }catch(err){
+            if(err.response.data === 'no value found'){
+              return setgeneralFetchError(true)
+            }
+            if(err.response.data === 'something went wrong'){
+              return setgeneralFetchError(true)
+            }
+          }
+    }
+   fetchFrontendValue()
   }, [])
 
 
-
+console.log(aboutWebsite)
 //create website values
 const handleHeaderValueCreation = async ()=>{
    dispatch({type:"CURSOR_NOT_ALLOWED_START"});
@@ -279,7 +283,7 @@ e.preventDefault()
 
       < AdminSidebar/>
 
-   <div className='other-pages '>
+   <div className='other-pages topMargin-medium '>
       <div>
            <h2 className='text-general-Medium margin-small'>Website Information</h2>
           {!dashboardEditMode && headerValues.length !== 0 && <button className='button-general-2' onClick={handleEditMode}>Edit</button>} 

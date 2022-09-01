@@ -4,6 +4,7 @@ const {getPagination} = require("../services/query");
 const Category = require("../models/Categories");
 const {deleteCloudinary, uploadCloudinary, deleteAllFiles} = require('../middleware/CloudinaryFunctions')
 const fs = require('fs');
+const {upload} = require('../middleware/multer');
 
 
 
@@ -73,6 +74,8 @@ const createNewPost =  async (req, res) =>{
          _id: req.body._id,
          username: req.body.username,
          postPhoto: req.body.postPhoto,
+         photoPublicId: JSON.parse(req.body.photoPublicId),
+         postPhotoArray: JSON.parse(req.body.postPhotoArray),
          title: uppercaseTitle,
          description: req.body.description,
          categories: req.body.categories 
@@ -82,43 +85,13 @@ const createNewPost =  async (req, res) =>{
         user.userPosts.push(newPost);
         //save new post and user
         const createdPost = await newPost.save();
-        //save user model
-        await user.save();       
-        
-        //upload image to cloudinary
-    try {
-        const fileStr = req.file.path
-        
-        if(!fileStr){
-           if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
-            return res.status(500).json( 'No image found');
-        }else{
-        //calling the cloudinary function for upload
-        const uploadResponse = await uploadCloudinary(fileStr)
-            
-        const result = {
-        url: uploadResponse.secure_url,
-        publicId: uploadResponse.public_id
-        }
-        const savedPost = await Post.findByIdAndUpdate(createdPost._id, {
-        photoPublicId: result.publicId,
-        postPhoto: result.url
-
-        }, {new: true})
-            
-            return res.status(200).json(savedPost)
-        }
-        
-    
-    } catch (err) {
-        if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
-        return res.status(500).json({ err: 'Something went wrong with image' });
        
-    }
+        //save user model
+        await user.save();
+
+        
+        return res.status(200).json(createdPost)
+
    
   }catch(err){
        if(req.file){
@@ -129,10 +102,11 @@ const createNewPost =  async (req, res) =>{
   
 };
 
-
 //Update post
 const updatePost = async (req, res)=>{
     try{
+    const postTitle = req.body.title;
+    const title = postTitle.toUpperCase()
     const user = await User.findById(req.user.userId);
     if(!user){
        if(req.file){
@@ -153,6 +127,23 @@ const updatePost = async (req, res)=>{
          return res.status(401).json("Sorry, only verified users can update their posts");
     };
 
+    if(!title){
+        return res.status(500).json('post title can not be empty')
+    }
+
+    if(title.length > 61){
+         if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
+        return res.status(500).json('post title should not be more than 60 characters')
+    }
+    if(title.length < 10){
+        if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
+        return res.status(500).json('post title should not be less than 10 characters')
+    }
+    
     try{
         const post = await Post.findById(req.params.id);
 
@@ -162,40 +153,14 @@ const updatePost = async (req, res)=>{
            }
             return res.status(401).json("No post with this Id found");
             };
-        //get the current user profile pics public id for cloudinary delete operations
-        const currentPostPhotoPublicId = post.photoPublicId
+        //check if user is the owner of the post
        
                 if(post.username.toString() == user._id.toString() ){
                     const updatedPost = await Post.findByIdAndUpdate(req.params.id, {
                         
-                        $set: req.body
+                        $set: req.body,
+                        title: title
                     }, {new: true, runValidators: true});
-                    
-                    //update image
-                     if(req.file){
-                        const fileStr = req.file.path;
-
-                         //calling the cloudinary function for upload
-                        const uploadResponse = await uploadCloudinary(fileStr);
-                        const result = {
-                            url: uploadResponse.secure_url,
-                            publicId: uploadResponse.public_id
-                            };
-
-                        //push image to upated user
-                        const updatePostImage = await Post.findByIdAndUpdate(updatedPost._id, {
-                            photoPublicId  : result.publicId,
-                            postPhoto: result.url
-                        }, {new: true});
-
-                         //get the updated post image public id for cloudinary delete operations
-                        const updatedPostImagePublicId = updatePostImage.photoPublicId;
-                        //compare the two public ids. If they are not same and the value is not an empty string, the cloudinary delete method would run
-                       if(currentPostPhotoPublicId !== "" && currentPostPhotoPublicId !== updatedPostImagePublicId && updatePostImage.photoPublicId !== "" ){
-                            await deleteCloudinary(post.photoPublicId)
-                       }  
-
-                    }
      
                    return res.status(200).json(updatedPost);
 
@@ -207,12 +172,14 @@ const updatePost = async (req, res)=>{
 
          }  
     }catch(err){
+        console.log(err)
        if(req.file){
                  fs.unlinkSync(req.file.path);
            }
        return res.status(500).json(err);
     };
 }catch(err){
+    console.log(err)
     if(req.file){
                  fs.unlinkSync(req.file.path);
            }
@@ -229,6 +196,12 @@ const likePost = async (req, res)=>{
         if(!user){
             return res.status(404).json('No user found')
         };
+        if(user.isBlocked == true){
+            return res.status(401).json('you are not athourized')
+        }
+        if(user.isVerified == false){
+            return res.status(401).json('you are not verified yet')
+        }
         //find post
         const post = await Post.findById(req.params.id);
         if(!post){
@@ -273,30 +246,21 @@ const deletePost = async (req, res)=>{
             return res.status(401).json("Post not found");
          }
          if(post.username.toString() == user._id.toString()){
-                //get the category of this post and remove the post from the category post array
-                const getCategory = await Category.findOne({catName: post.categories});
-                if(!getCategory){
-                        await Post.findByIdAndDelete(post._id); 
-                        //delete post image from cloudinary
-                        await deleteCloudinary(post.photoPublicId)
-                        return res.status(200).json('no category found, post deleted');
 
-                }
-                const postIndex = getCategory.postCategories.indexOf(post._id)
-                getCategory.postCategories.splice(postIndex, 1);
-                await getCategory.save()
-
-                await Post.findByIdAndDelete(post._id); 
-               //delete post image from cloudinary
-                await deleteCloudinary(post.photoPublicId)
-                                     
-                    res.status(200).json("Post has been deleted");
+            //delete image from cloudinary 
+            await deleteAllFiles(post.photoPublicId)
+            //delete post from mongodb
+            await Post.findByIdAndDelete(post._id);                  
+            
+            return res.status(200).json("Post has been deleted");      
+                
          } else{
              res.status(401).json("you can only delete your posts");
          };
 
        
     }catch(err){
+        console.log(err)
         res.status(500).json(err)
     };
   }catch(err){
@@ -319,37 +283,47 @@ try{
          return res.status(500).json('Sorry, you are blocked, you can not perform any action until you are unblocked');
     }; 
     const userId = user._id
-    try{
-       const posts = await Post.find({username:  userId});
+
+       const posts = await Post.find({username: userId});
+       console.log(posts,'these are posts')
        if(!posts){
            return res.status(404).json('posts not found')
        }
+        //check if the user has the permission to delete all the posts. Only owners can delete all their posts
+        //this checks the array of posts and return true if any of the post(s)  does not match with post.username and user.username
+        const postUserName = posts.map((singlePostUsername) =>{
+            return singlePostUsername.username.toString() !== user._id.toString();
+        })
+        //if the postUsername variable which is an array has true bolean value, pls reject this operation. This means the user is not the owner of one or all the selected posts
+        if(postUserName.includes(true)){
+            return res.status(401).json('You can not perform this action')
+        }
         //delete all post images associated with this user from cloudinary
         //get the public id object and return as a single array of publicIds
-        const arrayOfPostsImagePublicId = posts.map((singleImagePublicId)=>{
-            //console.log(singleImagePublicId)
+        let arrayOfPostsImagePublicId = posts.map((singleImagePublicId)=>{
+            //console.log(singleImagePublicId, 'single image id')
             return singleImagePublicId.photoPublicId
         })
-        //pass the array of public image ids to the cloudinary deleteall method
         
-        await deleteAllFiles(arrayOfPostsImagePublicId, function(result, err){
-            if(err){
-                return res.status(500).json('deleting image, failed. Contact admin')
-            }
-            return result
-        })
-        //delete all the current user's posts
-        await Post.deleteMany({username: user._id}, function(err, result){
-            if(err){
+            //the public ids came out as an arrray in an array. The cloudinary multiple file delete method requires a flattened array containing the ids
+            //break up the array into a string
+            arrayOfPostsImagePublicId = arrayOfPostsImagePublicId + ""
+            //using the split method, convert each into a string in array with coma.
+            arrayOfPostsImagePublicId = arrayOfPostsImagePublicId.split(',')
+            //console.log(arrayOfPostsImagePublicId, 'it is arrray of image')
+            //pass the array of public image ids to the cloudinary deleteall method
+        
+            await deleteAllFiles(arrayOfPostsImagePublicId)
+            //delete all the current user's posts
+            await Post.deleteMany({username: user._id}, function(err, result){
+                if(err){
                 return err
-            }
-            return result
-        });
-        return res.status(200).json('All your posts deleted')
+                }
+                return result
+            });
+            return res.status(200).json('All your posts deleted')
 
-    }catch(err){
-        return res.status(500).json('something went wrong with finding posts')
-    }
+   
 }catch(err){
     return res.status(500).json('something went wrong with finding user')
 }
@@ -386,26 +360,47 @@ const handleDeleteSelectedPosts = async (req, res) =>{
             return res.status(404).json('user not found');
 
         };
+        if(user.isBlocked === true){
+            return res.status(401).json('you are blocked')
+        }
+        if(user.isVerified === false){
+            return res.status(401).json('you are not verified yet')
+        }
         //find posts with the ids
         const posts = await Post.find({_id: ids});
+
+        if(!posts){
+            return res.status(404).json('no post found')
+        }
+
+        //check if the user has the permission to delete the selected posts. Only owner of post can delete selected posts
+        //this checks the array of posts and return true if any of the post(s) selected by the user does not match with post.username and user.username
+        const postUserName = posts.map((singlePostUsername) =>{
+            return singlePostUsername.username.toString() !== user._id.toString();
+        })
+        //if the postUsername variable which is an array has true bolean value, pls reject this operation. This means the user is not the owner of one or all the selected posts
+        if(postUserName.includes(true)){
+            return res.status(401).json('You can not perform this action')
+        }
+       
         //find the public ids of the found posts
-        const arrayOfPostsImagePublicId = posts.map((singleImagePublicId)=>{
-            //console.log(singleImagePublicId)
+        let arrayOfPostsImagePublicId = posts.map((singleImagePublicId)=>{
+            console.log(singleImagePublicId)
             return singleImagePublicId.photoPublicId
         })
-
-        await deleteAllFiles(arrayOfPostsImagePublicId, function(result, err){
-            if(err){
-                return res.status(500).json('deleting image, failed. Contact admin')
-            }
-            return result
-        })
+        //the public ids came out as an arrray in an array. The cloudinary multiple file delete method requires a flattened array containing the ids
+        //break up the array into a string
+         arrayOfPostsImagePublicId = arrayOfPostsImagePublicId + ""
+         //using the split method, convert each into a string in array with coma.
+         arrayOfPostsImagePublicId = arrayOfPostsImagePublicId.split(',')
+            //pass the flattened array containing string of public ids to the cloudinary delete method
+            await deleteAllFiles(arrayOfPostsImagePublicId)
             //delete selected posts
                 await Post.deleteMany({_id: ids})
                 return res.status(200).json('Selected posts deleted')
       
     }catch(err){
-        return res.status(500).json('something went wrong with finding user')
+        return res.status(500).json('something went wrong')
     }
 }
 
@@ -413,10 +408,6 @@ const handleDeleteSelectedPosts = async (req, res) =>{
 const getAllPosts = async (req, res) =>{
     const {skip, limit} = getPagination(req.query);
     const username = req.query.user;
-    const catName = req.query.cat;
-    const {searches} = req.query;
-    const keys = [req.body.title]
-   console.log(searches)
 
     try{
        let posts;
@@ -425,18 +416,6 @@ const getAllPosts = async (req, res) =>{
            .skip(skip)
            .limit(limit)  
        }
-       else if(catName){
-            posts = await Post.find({categories: catName}).populate('username', 'username').sort({createdAt:-1})
-            .skip(skip)
-           .limit(limit)  
-       }
-
-       else if(searches){
-           posts = await Post.find({title: {$regex: searches.toString(), "$options": "i"}}).populate('username', 'username').sort({createdAt:-1})
-           .skip(skip)
-           .limit(limit)  
-               
-       }
 
        else{
            posts = await Post.find().populate('username', 'username').sort({createdAt:-1})
@@ -444,12 +423,50 @@ const getAllPosts = async (req, res) =>{
            .limit(limit)  
        }
 
-    res.status(200).json(posts)
+        return res.status(200).json(posts)
     }catch(err){
-        res.status(500).json(err)
+        return res.status(500).json('something went wrong')
     };
 };
 
+//get posts for search results and blog section
+
+const getPostSearchResults = async (req, res)=>{
+    const {skip, limit} = getPagination(req.query);
+    const search = req.body.search;
+    const catName = req.body.catName;
+    const username = req.body.username
+    console.log(username, 'iam search')
+
+    try{
+        let posts;
+        if(search){
+        posts = await Post.find({title: {$regex: search.toString(), "$options": "i"}}).populate('username', 'username').sort({createdAt:-1})
+           .skip(skip)
+           .limit(limit)  
+    }
+    else if(catName){
+            posts = await Post.find({categories: catName}).populate('username', 'username').sort({createdAt:-1})
+            .skip(skip)
+           .limit(limit)  
+       }
+
+    else if(username){
+            posts = await Post.find({username: username}).populate('username', 'username').sort({createdAt:-1})
+           .skip(skip)
+           .limit(limit)  
+    }
+
+    else{
+           posts = await Post.find().populate('username', 'username').sort({createdAt:-1})
+           .skip(skip)
+           .limit(limit)  
+       }
+       return res.status(200).json(posts)
+    }catch(err){
+        console.log(err)
+    }
+}
 //get post based on category model indexes. I need to create 8 routes for this as the category model has 
 const getPostCategory_1 = async (req, res)=>{
         try{
@@ -478,7 +495,84 @@ const getPostCategory_1 = async (req, res)=>{
         }
 }
 
+//posts that would be displayed as slider
+//This is based on randomly generated numbers and these numbers are used to generate array of posts. These posts would be displayed in frontend
 
+const getRandomPostS = async (req, res)=>{
+
+    try{
+    //find all the posts in the posts model but exclude certain fields such as description, username, etc. I will be needing only few fields in the post model
+   //the exclusion is called using .select and I listed out the fields to exclude
+    const posts = await Post.find().select("-description -username -photoPublicId -comments -postReplyComments -postLikes -updatedAt   -__v");
+   //check if there are no post then return this error
+    if(!posts){
+        return res.status(404).json('no post found')
+    };
+    //get the length of the posts found
+    const postTotalLenght = posts.length;
+   //create a new array that is empty
+    const newArrayPost = []
+    //using for loop method, I need just 5 posts from the post model for the frontend, I simply asked the loop to stop at 5 starting from 1
+    for (let i = 1; i !== 8; i++){
+    //using the math.floor(math.random()) methods, I multiplied this with the total post length to generate random numbers. This would run 5 times
+         const newPosts = Math.floor(Math.random() * postTotalLenght);
+    //each time a number is randomly generated, push that number into the newArrayPost array variable
+          newArrayPost.push(newPosts)
+       
+    }
+    //the newArrayPost vairable now contains randomly generated numbers
+    //using the map method, the newArrayPost method was used to fetch posts based on their index that match the randomly generated numbers found in the newArrayPost
+    const currentPost = newArrayPost.map(singlePost => posts[singlePost])
+    return res.status(200).json(currentPost)
+    }catch(err){
+        return res.status(500).json('something went wrong with post')
+    }
+   
+}
+//handle upload post image. This is needed since the react application is using a text editor that requres the image to be sent to server first before previewing inside the post. 
+const uploadImage = async(req, res) =>{
+        try {
+       
+        const fileStr = req.file.path
+        console.log(fileStr, 'check filestr')
+        
+        if(!fileStr){
+           if(req.file){
+                 fs.unlinkSync(req.file.path);
+           }
+            return res.status(500).json( 'No image found');
+        }else{
+        //calling the cloudinary function for upload
+        const uploadResponse = await uploadCloudinary(fileStr)
+            
+        const result = {
+        url: uploadResponse.secure_url,
+        publicId: uploadResponse.public_id
+        }
+            
+            return res.status(200).json( result)
+        }
+        
+    
+    } catch (err) {
+        if(req.file.path){
+                 fs.unlinkSync(req.file.path);
+           }
+           console.log(err)
+        return res.status(500).json({ err: 'Something went wrong with image' });
+       
+    }
+}
+
+//handle deletion of image from cloudinary and database. 
+
+const handleImageDelete = async (req, res) =>{
+    //find the post with the image
+    const post = await Post.findById(req.params.id);
+    //find the image to delete using cloudinary public id of the image
+    
+    console.log(post)
+}
 
 module.exports = {
     createNewPost,
@@ -490,5 +584,9 @@ module.exports = {
     handleDeleteSelectedPosts,
     getAllPosts, 
     getPostCategory_1,
+    getRandomPostS,
+    uploadImage,
+    handleImageDelete,
+    getPostSearchResults,
    
 }

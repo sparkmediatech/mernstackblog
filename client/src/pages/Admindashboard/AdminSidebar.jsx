@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import {AuthContext} from '../../context/AuthProvide';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {FaHome, FaUserAlt} from 'react-icons/fa';
-import {AiOutlineSetting} from 'react-icons/ai';
+import {AiOutlineSetting, AiOutlineMenu} from 'react-icons/ai';
 import {FiActivity} from 'react-icons/fi';
-import {RiPagesLine} from 'react-icons/ri'
+import {RiPagesLine} from 'react-icons/ri';
+
 
 
 function AdminSidebar() {
@@ -18,8 +19,8 @@ const [setDashboardEditMode] = useState(false);
 
 
   return (
-    <div className='admin-sidebar flex-2'>
-        <div className='admin-sdiebar-user-details flex-2 center-flex-align-display'>
+    <div className='admin-sidebar flex-2 '>
+        <div className='admin-sdiebar-user-details flex-2 center-flex-align-display topMargin-medium'>
            <label className='custom-label topMargin-medium'>{logUser.username}</label>
           <div className='admin-profeile-pic topMargin-medium'>
            <img className='profile-pics' src={ logUser.profilepicture}></img>
@@ -53,7 +54,7 @@ const [setDashboardEditMode] = useState(false);
             <div className='flex-3 admin-custom-icon-div'>
             <FaUserAlt className='admin-custom-icon-div-icons'/>
              <div >
-               <Link className='link' to={'/usersdashboard'}>
+               <Link className='link' to={`/usersdashboard/page/${Number(1)}`}>
                   <p  className='settingText' >Users</p>
                </Link>
                 
@@ -73,10 +74,20 @@ const [setDashboardEditMode] = useState(false);
                <Link className='link' to={'/pagesettings'}>
                   <p className='settingText' >Pages</p>
                </Link>
-                 
+              
              </div>
           </div>
           
+
+          <div className='flex-3 admin-custom-icon-div'>
+            <AiOutlineMenu className='admin-custom-icon-div-icons'/>
+             <div >
+               <Link className='link' to={'/menu'}>
+                  <p className='settingText' >Menu</p>
+               </Link>
+              
+             </div>
+          </div>
         </div>
        
         

@@ -4,14 +4,12 @@ import React, {useRef, useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import {AuthContext} from '../../context/AuthProvide';
 import '../../CSS files/utilities.css';
-import {LogContext} from '../../context/LogContext'
 import  BASE_URL from '../../hooks/Base_URL'
 
 
 
 export default function Login() {
     const {setAuth} = useContext(AuthContext);
-    const {logdispatch} = useContext(LogContext);
     const userRef = useRef();
     const passwordRef = useRef();
     const [wrongCredentialError, setWrongCredentialError] = useState(false);
@@ -31,10 +29,10 @@ export default function Login() {
                 headers: {'Content-Type': 'application/json'},
                 withCredentials: true
             });
-            logdispatch({type:"LOG_SESSION", payload: response.data.sessionId});
+           
              localStorage.removeItem('ogB');
             setAuth(response.data);
-            window.location.replace('/')
+            window.location = '/'
                    
         }catch(err){
             if(err.response.data === "Wrong credentials"){
@@ -62,16 +60,23 @@ useEffect(() =>{
   if(wrongCredentialError){
       setTimeout(() => {
           setWrongCredentialError(false)
-      }, 5000);
+      }, 3000);
   };
   if(unauthorizedError){
           setTimeout(() => {
           setUnauthorizedError(false)
-      }, 5000);
+      }, 3000);
   }
+
+    setTimeout(() => {
+         setUnverifiedError(false)
+      }, 3000);
+
+   setTimeout(() => {
+        setSomethingWentWrongError(false)
+      }, 3000);
   
-  
-}, [wrongCredentialError, unauthorizedError])
+}, [wrongCredentialError, unauthorizedError, somethingWentWrongError, unverifiedError])
     return (
         <>
 
@@ -88,14 +93,19 @@ useEffect(() =>{
                     <input className='loginInput' type="password" placeholder='Enter your password' 
                         ref={passwordRef}
                     />
-                    {wrongCredentialError && <h4 className='paragraph-text red-text'>Wrong credentials</h4>}
-                    {unauthorizedError && <h4 className='paragraph-text red-text'>You're not authorized to use this channel</h4>}
-                     {somethingWentWrongError && <h4 className='paragraph-text red-text'>Something went wrong</h4>}
+                   
+                  
+                   
                     <button className="loginButton" type="submit" >{/* enabled me to disble the cursor when isFething is true */}
                         Login
                         </button>
                 </form>
-                
+           
+                    {unverifiedError &&  <p className='paragraph-text red-text center-text'>Your account is yet to be verified. Check your email to verify your account</p>}
+                    {wrongCredentialError &&  <p className='paragraph-text red-text center-text'>Wrong credentials</p>}
+                    {unauthorizedError && <p className='paragraph-text red-text center-text'>You're not authorized to use this channel</p>}
+                    {somethingWentWrongError &&  <p className='paragraph-text red-text center-text'>Something went wrong</p>}
+
                 <button className="loginRegisterButton">
                     <Link className='link' to='/register'>Register</Link>
                 </button>

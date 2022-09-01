@@ -1,10 +1,11 @@
 import './write.css';
-import React,{useContext, useState, useEffect} from 'react';
+import React,{useContext, useState, useEffect, useRef} from 'react';
 import axios from "axios";
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {AuthContext} from '../../context/AuthProvide';
 import PageLoader from '../../components/pageLoader/PageLoader';
 import BASE_URL from '../../hooks/Base_URL';
+import {GrMultimedia} from 'react-icons/gr'
 
 
 
@@ -30,7 +31,9 @@ export default function Write() {
     const [duplicatePostTitleError, setDubplicateTitleError] = useState(false);
     const [postTitleMaxError, setPostTitleMaxError] = useState(false);
     const [postTitleEmptyError, setPostTitleEmptyError] = useState(false);
-    const [postTitleMinError, setPostTitleMinError] = useState(false)
+    const [postTitleMinError, setPostTitleMinError] = useState(false);
+    const [videoUpload, setVideoUpload] = useState()
+    const uploadRef = useRef()
   
    
 
@@ -71,6 +74,7 @@ const handleSubmit = async (e) =>{
         data.append("title", title);
         data.append("description", description);
         data.append("categories", selectedCategoryId);
+        console.log(data, 'write data')
         try{
        
             const response = await axiosPrivate.post('/v1/posts',  data,{ withCredentials: true,
@@ -170,7 +174,13 @@ const handleShowCategory = () =>{
     setShowCategories(!showCategories)
 };
 
-//handl clear category input box
+//handle video upload call
+
+const handleVideoUploadCall = (file)=>{
+  
+   
+
+}
 
 
     return (
@@ -197,13 +207,18 @@ const handleShowCategory = () =>{
                      autoFocus={true} 
                      onChange={e=> setTitle(e.target.value)}
                     />
+                
                 </div>
+                <div className='media-uploader-div'><GrMultimedia onClick={handleVideoUploadCall}  className='media-uploader'/></div>
                     <div className="writeFormGroup">
                         <textarea placeholder='Tell your story...' 
                         type='text' 
                         className='writeInput writetext'
-                        onChange={e => setDescription(e.target.value)}
-                        ></textarea>
+                        onChange={e => {setDescription(e.target.value); }}
+                        ref={uploadRef}
+                        >
+
+                        </textarea>
                                    {/* I need to create the option to write category */}
                     </div>
                     {/* error messages start */}
@@ -227,8 +242,6 @@ const handleShowCategory = () =>{
 
                             <div>
                                     <button onClick={handleShowCategory} className='margin-small select-category-custom-BTN button-general ' type='button'>Select Category</button>
-
-                               
 
                                     <div className={showCategories ? 'margin-small category-display-main-div category-display-main-div-animated': 'category-display-main-div'}>
                                         {catName.map((singleCat)=>{

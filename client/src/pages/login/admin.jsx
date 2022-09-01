@@ -14,7 +14,6 @@ export default function AdminLogin() {
     const [adminPassword, setAdminPassword] = useState("");
     const {setAuth, auth, temp, logUser} = useContext(AuthContext);
     const [isFetching, setIsFetching] = useState(false);
-    const {logdispatch} = useContext(LogContext);
     const [notPermittedError, setNotPermittedError] = useState(false);
     const [notVerifiedError, setNotVerifiedError] = useState(false);
     const [wrongCredentialError, setWrongCredetialError] = useState(false);
@@ -30,9 +29,7 @@ export default function AdminLogin() {
             const response = await axios.post("/auth/admin", {
                  username: adminUser,
                  password: adminPassword
-            });
-            logdispatch({type:"LOG_SESSION", payload: response.data.sessionId});
-           
+            });           
             setAuth(response.data)
            
                 window.location.replace('/websitesettings') 
@@ -81,8 +78,8 @@ useEffect(()=>{
 
     return (
     <article className='mainWrapper custom-main-wrapper'>
-         <div className='mainContainer center-flex-justify-display admin-main-custom-div'>
-            <div className={notPermittedError || notVerifiedError || wrongCredentialError || noUserError || somethingWentWrongError ? 'box-div admin-login-custom-div admin-login-custom-div2 ': "box-div admin-login-custom-div"}>
+         <div className='mainContainer center-flex-justify-display admin-main-custom-div '>
+            <div className={notPermittedError || notVerifiedError || wrongCredentialError || noUserError || somethingWentWrongError ? 'box-div admin-login-custom-div admin-login-custom-div2  ': "box-div admin-login-custom-div"}>
                 <h2 className=" text-general-Medium center-text admin-custom-text color1 ">Admin Login</h2>
                 <form className="admininform" onSubmit={handleSubmit}>
                     <label className='label'>Username</label>

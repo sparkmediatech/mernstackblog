@@ -60,7 +60,11 @@
     
 }
 /* text section  */
-.page1-custom-title{
-    
+.page3-post-line-div{
+    width: 0;
+    height: 1px;
+    background-color:#FF661F;
 }
-
+.animated-page3-post-line-div{
+    width: var(--postTitleLine);
+}

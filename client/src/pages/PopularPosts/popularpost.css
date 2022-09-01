@@ -13,3 +13,11 @@
     transition: 0.5s ease-in-out;
     color: #FF661F;
 }
+.popular-post-title-line{
+    width: 0;
+    height: 1px;
+    background-color: red;
+}
+.animated-popular-post-title-line{
+    width: var(--postTitleLine);
+}

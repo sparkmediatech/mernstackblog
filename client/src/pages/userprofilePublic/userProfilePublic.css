@@ -1,0 +1,32 @@
+.userProfile-custom-div{
+    background-color:#FDFEFE;
+}
+.custom-main-userProfile-div{
+    height: auto;
+    max-width: 1500px;
+    
+    
+}
+.user-profile-pics-div{
+    width: 40%;
+    height: 500px;
+    overflow: hidden;   
+}
+.custom-user-profile-pics{
+    width: 95%;
+    height: 95%;
+    border-radius: 50%;
+    border: 7px solid #FF661F;
+}
+.custom-user-detail-div{
+    padding-right: 20px;
+    margin-left: 150px;
+    width: 45%;
+    height: 45vh;
+    padding-bottom: 15px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.about-user-custom-div{
+    width: 100%;
+}

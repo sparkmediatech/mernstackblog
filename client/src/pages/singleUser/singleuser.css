@@ -1,5 +1,5 @@
 .display-single-user-custom-div{
-    height: 100%;
+   height: auto;
 }
 .single-user-custom-div{
     background-color: hsl(180, 14%, 97%);
@@ -9,26 +9,24 @@
 }
 .user-details-custom-div{
     width: 90%;
-    height: 25%;
+    height: 20%;
+   
 
 }
 /*user's profile pics section */
-.user-profile-pics-div{
-    width: 70%;
-    height: 20%;
+.custom-user-profile-pics-div-wrapper{
+    width: 90%;
+    height: 300px;
 }
 
-.user-profile-pics{
-    width: 20%;
+.custom-user-main-profile-pics{
+    width: 30%;
     height: 100%;
     border-radius: 100%;
     border: 10px solid #FF661F;
 }
 
 /* user buttons */
-.user-custom-btn-div{
-  
-}
 .message-btn{
     display: flex;
     justify-content: center;
@@ -88,4 +86,8 @@
 }
 .date-time-custom-input{
     width: 100%;
+}
+.custom-BTN-div{
+    width: 100%;
+    padding-bottom: 30px;
 }

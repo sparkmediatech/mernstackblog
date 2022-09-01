@@ -9,14 +9,14 @@ import App from './App';
 
 ReactDOM.render(
   <React.StrictMode>
-      < LogContextProvider>
+    
       <AuthProvider>
 
        
         <App />
       
        </AuthProvider>
-        </LogContextProvider>
+       
   
     
   </React.StrictMode>,
