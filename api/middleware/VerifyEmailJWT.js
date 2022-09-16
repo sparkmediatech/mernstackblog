@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
 const client = require('../reditConnect');
 const User = require('../models/User');
-const {sendConfirmationEmail, resetPasswordLink } = require('../services/Emailservice');
+const Subscribers = require('../models/Subscribers');
+const {sendConfirmationEmail, resetPasswordLink, subscribeEmailConfirmation } = require('../services/Emailservice');
 const bcrypt = require("bcrypt")
 
 
@@ -11,7 +12,7 @@ const Emailverify = async (req, res, next) =>{
     
     try{
         const tokenId = req.params.tokenId;
-        const user = await User.findById(req.body._id);
+        const user = await User.findById(req.params.userId);
         console.log(user.username)
         if(user.isVerified === true){
              return res.status(500).json('Account has been verified already');
@@ -169,12 +170,84 @@ const changePassword = async (req, res) =>{
     }
 };
 
+//function to verify subscriber email
 
+const verifySubscriberEmail = async (req, res)=>{
+    try{
+         const tokenId = req.params.tokenId;
+        const userId = req.params.userId;
+        console.log(tokenId, userId, 'check id and token')
+         if(!tokenId){
+            return res.status(404).json('verification id must be present')
+         }
+         if(!userId){
+            return res.status(404).json('user id must be present')
+         }
+        
+         const user = await Subscribers.findById({_id: userId});
+         console.log(user)
+          if(!user){
+            return res.status(404).json('user not found')
+          }
+
+          if(user.isVerified == true){
+            return res.status(500).json('user email has been verified already')
+          }
+          jwt.verify(tokenId, process.env.EMAIL_JWT_SECRET, async (err, user)=>{
+            if(err){
+                console.log(err)
+                return res.status(403).json("Unable to verify expired token, please resend token");
+            };
+            
+
+            await Subscribers.findByIdAndUpdate({_id: userId,}, {
+                    isVerified:true
+                }, {new: true});
+                
+            return res.status(200).json("Email has been verified") 
+
+        });
+
+        
+
+    }catch(err){
+        return res.status(500).json('something went wrong')
+    }
+}
+
+//function to resend email verification link for a user who is yet to be verified
+const resendSubscriberEmailVerification = async (req, res) =>{
+    try{
+        const subscriberEmail = req.params.userId;
+        console.log(subscriberEmail)
+
+        const user = await Subscribers.findById({_id:subscriberEmail});
+        if(!user){
+            return res.status(404).json('subscriber not found')
+        }
+
+        if(user.isVerified === false){
+            
+            const emailToken = await subscribeEmailConfirmation(user, res);
+
+            return res.status(200).json({Id:user._id, emailToken})
+        }else{
+             return res.status(500).json("User has already been verified")
+        };
+        
+    }catch(err){
+        console.log(err)
+        return res.status(401).json('Something went wrong')
+    };
+
+};
 
 module.exports = {Emailverify,
 resendVerificationLink,
  resetPassword,
  verifyPasswordResetLink,
  changePassword,
+ verifySubscriberEmail,
+ resendSubscriberEmailVerification,
 
 }

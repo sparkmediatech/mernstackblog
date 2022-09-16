@@ -19,7 +19,8 @@ import  BASE_URL from '../../hooks/Base_URL'
 export default function ConfirmEmail() {
 const {temp, regUser, dispatch} = useContext(AuthContext)
 const location = useLocation();
-const paramId = location.pathname.split("/")[2];
+const userId = location.pathname.split("/")[2];
+const tokenId = location.pathname.split("/")[3];
 const [resDate, setResData] = useState({});
 const [loading, setIsloading] = useState(false);
 const [error, setError] = useState(false);
@@ -35,11 +36,9 @@ const [alreadyVerified, setAlreadyVerified] = useState(false)
 
 const handleVerifyEmailLink = async ()=>{
     setIsloading(true)
-    const getUser = {
-        _id:temp.Id,       
-    };
+    
     try{
-        const response = await axios.post(`${BASE_URL}/confirm/${temp.emailToken}`, getUser);
+        const response = await axios.get(`${BASE_URL}/confirm/${userId}/${tokenId}`);
         setIsloading(false)
         setResData(response)
     }catch(err){
@@ -71,16 +70,9 @@ const handleVerifyEmailLink = async ()=>{
 
 
 useEffect(() => {
-    if(temp.emailToken === paramId){
-       handleVerifyEmailLink();
-        setIsloading(false)
-    }
-       if(temp.emailToken !== paramId && !resendLink){
-            setBrokenLinkError(true);
-            setIsloading(false)
-        }
-             
-    }, [paramId]);
+   handleVerifyEmailLink()
+           
+    }, [userId, tokenId]);
     
   
 return(

@@ -83,6 +83,7 @@
 
 .block-custom-selection-div {
     width: 100%;
+    justify-content: space-around;
 }
 .date-time-custom-input{
     width: 100%;
@@ -90,4 +91,14 @@
 .custom-BTN-div{
     width: 100%;
     padding-bottom: 30px;
+}
+
+.custom-date-time-inner-div{
+    width: 35%;
+}
+.custom-block-user-BTN{
+    width: 70%;
+}
+.custom-block-BTN-div{
+    width: 100%;
 }

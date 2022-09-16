@@ -1,3 +1,14 @@
 .already-verified-custom-div{
   height: 40vh;
 }
+
+.custom-subVerify-div{
+  
+}
+.custom-sub-expiry-div{
+  width: 50%;
+  background-color: #F4F6F7;
+  padding-bottom: 30px;
+  padding-top: 15px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

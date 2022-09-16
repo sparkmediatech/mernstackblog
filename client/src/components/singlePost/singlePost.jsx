@@ -36,11 +36,9 @@ export default function SinglePost() {
     const [username, setUsername] = useState();
     const [isLoading, setIsLoading] = useState(false);   
     let currentUrl = `http://www.localhost:3000/post/${path}`;
-    const {auth, logUser, dispatch, authorDetails, setAuthorDetails, imageDetails, tokenError} = useContext(AuthContext);
+    const {auth, logUser, dispatch, authorDetails, setAuthorDetails, imageDetails, tokenError, generalFetchError, setgeneralFetchError} = useContext(AuthContext);
     const [liked, setLiked] = useState();
-    const [file, setFile] = useState("");
-    const [editImageMode, setEditImageMode] = useState(false);
-    const [showCategories, setShowCategories] = useState(false);
+    //const [showCategories, setShowCategories] = useState(false);
     const imagePlugin = createImagePlugin();
     const [editEditorState, setEditEditorState] = useState();
     const [maineditorState, setMainEditorState] = useState();
@@ -58,6 +56,7 @@ export default function SinglePost() {
     const [postTitleMaxError, setPostTitleMaxError] = useState(false);
     const [postTitleEmptyError, setPostTitleEmptyError] = useState(false);
     const [postTitleMinError, setPostTitleMinError] = useState(false);
+    
 
    
 
@@ -86,7 +85,13 @@ export default function SinglePost() {
             setIsLoading(false)
             
            }catch(err){
-
+              setIsLoading(false)
+            if(err.response.data === 'no post found'){
+                return setgeneralFetchError(true)
+            }
+            if(err.response.data === 'something went wrong'){
+                return setgeneralFetchError(true)
+            }
            }
        
        };
@@ -173,7 +178,7 @@ const handleUpdate = async () =>{
                 
                     dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
                     setUpdateMode(false);
-                    setShowCategories(false);
+                    //setShowCategories(false);
                     setReload(!reload)
                     //window.location.reload("/")
         }catch(err){
@@ -221,7 +226,7 @@ const handleUpdate = async () =>{
                 
                     dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
                     setUpdateMode(false);
-                    setShowCategories(false);
+                    //setShowCategories(false);
                     setReload(!reload)
                     //window.location.reload("/")
         }catch(err){

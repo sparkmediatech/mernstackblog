@@ -27,7 +27,8 @@ const PopularPosts = require('./routes/popularPost');
 const Categories = require('./routes/Categories');
 const NavigationMenu = require('./routes/NavigationMenu');
 const ClientComponent = require('./routes/ClientComponent');
-const ClientPathName = require('./routes/ClientPathName')
+const ClientPathName = require('./routes/ClientPathName');
+const EmailSubscribers = require('./routes/Email')
 
 
 
@@ -119,10 +120,10 @@ app.use("/api/v1/", searchRout);
 app.use("/api/v1/category", Categories);
 app.use("/api/v1/menu", NavigationMenu);
 app.use("/api/v1/component", ClientComponent);
-app.use("/api/v1/pathname", ClientPathName )
+app.use("/api/v1/pathname", ClientPathName );
+app.use("/api/v1/emailsub", EmailSubscribers)
 
-
-//app.use(notFoundMiddleware);
+app.use(notFoundMiddleware);
 
 
 app.get('*', (req, res)=>{
@@ -130,6 +131,8 @@ app.get('*', (req, res)=>{
 })
 
 //app.use("/api", (req, res, next) => {console.log(req.originalUrl); next()}, verifyEmailRoute);
+
 app.use(checkDB);
+
 
 module.exports = app;

@@ -44,6 +44,14 @@ export const AuthProvider = ({children})=>{
     const [writePageAliasName, setWritePageAliasName] = useState();
     const [generalFetchError, setgeneralFetchError] = useState(false);
     const [tokenError,  setTokenError] = useState(false)
+    const [ allSubscribersState, setAllsubscribersState] = useState(false);
+    const [allSubscribers, setAllSubscribers] = useState([]);
+    //this is for email list pagination
+    const [pageNumber, setPageNumber] = useState(()=> sessionStorage.getItem('subscribersPageNum') || 1);
+    const [fetchPreviousEmail, setFetchPreviousEmail] = useState(false);
+    const [fetchAllScheduledEmail, setFetchAllScheduledEmail] = useState(false);
+    const [emailUpdateMode, setEmailUpdateMode] = useState(false);
+    const [editModeState, setEditModeState] = useState(false);
 
 
     
@@ -190,6 +198,14 @@ console.log(aboutWebsite)
             writePageAliasName, setWritePageAliasName,
             generalFetchError, setgeneralFetchError,
             tokenError,  setTokenError,
+            allSubscribersState, setAllsubscribersState,
+            allSubscribers, setAllSubscribers,
+            pageNumber, setPageNumber,
+            fetchPreviousEmail, setFetchPreviousEmail,
+            setFetchAllScheduledEmail, fetchAllScheduledEmail,
+            emailUpdateMode, setEmailUpdateMode,
+            editModeState, setEditModeState,
+
            
 
         }}>

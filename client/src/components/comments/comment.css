@@ -11,3 +11,14 @@
     color: red;
     cursor: pointer;
 }
+.comment-btn{
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    background-color: #FE661F;
+    border: none;
+    color: white;
+    font-family: 'Source Sans Pro', sans-serif;
+}

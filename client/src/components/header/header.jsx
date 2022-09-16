@@ -6,6 +6,7 @@ import axios from 'axios';
 import {AuthContext} from '../../context/AuthProvide';
 import  BASE_URL from '../../hooks/Base_URL'
 import {MdNavigateNext, MdNavigateBefore} from 'react-icons/md'
+import { Link } from 'react-router-dom';
 //import {useLocation} from "react-router-dom"
 
 const DIRECTIOM_TYPE = {
@@ -171,8 +172,7 @@ useEffect(()=>{
         <MdNavigateNext  onClick={handleNextSlide} className={showSlideIcons ? 'next-icon slideIcon showSlideIcons': "next-icon slideIcon" }onMouseEnter={handleShowSlideIcons} onMouseLeave={handleHideSlideIcons}/>
          <MdNavigateBefore onClick={handlePrevSlide} className={showSlideIcons ? 'previous-icon slideIcon showSlideIcons': "previous-icon slideIcon"}onMouseEnter={handleShowSlideIcons} onMouseLeave={handleHideSlideIcons}/>
          {sliderPosts.map((singleSliderPost, index) =>{
-             console.log(index)
-             console.log(slider1, slider2, slider3)
+             
              const {title, _id, postPhoto, createdAt, categories} = singleSliderPost || {}
               
              const percentage = 100;
@@ -198,7 +198,7 @@ useEffect(()=>{
                       
                       <div className='postSlider-detail-div'>
                         <div className='margin-left-sm1 postSlider-category-div '><p className='white-text text-general-small'>{categories}</p></div>
-                        <div className='postSlider-title-div margin-left-sm1 margin-small flex-2'><p className={selectedId === _id ? 'postTitle-animated-color postTitle  ': 'postTitle white-text '}>{title}</p></div>
+                        <div className='postSlider-title-div margin-left-sm1 margin-small flex-2'><Link to={`/post/${_id}`} className='link'><p className={selectedId === _id ? 'postTitle-animated-color postTitle  ': 'postTitle white-text '}>{title}</p></Link></div>
 
                           
                           <div className={selectedId == _id ? 'postTitleLine animated-post-title-line': 'postTitleLine'}></div>

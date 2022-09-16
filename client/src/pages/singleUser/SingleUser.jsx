@@ -20,6 +20,8 @@ function SingleUser(props ) {
     const [unblockUser, setUnblockUser] = useState(false);
     const [blockDateSetting, setBlockDateSetting] = useState(false);
     const expDateRef = useRef();
+    const expTime = useRef();
+    const dateTime = expDateRef?.current?.value + '-' + expTime?.current?.value
     //error states
     const [userNotFoundError, setUserNotFoundError] = useState(false);
     const [somethingWentWrongError, setSomethingWentWrongError] = useState(false);
@@ -70,6 +72,7 @@ const handleBlockingUser = async() =>{
       dispatch({type:"CURSOR_NOT_ALLOWED_START"});
       const expdate = {
           expDate: expDateRef.current.value,
+          expTime: expTime.current.value
       }
     try{
             const res = await axiosPrivate.patch(`/v1/users/${singleUser._id}/block`, expdate, { withCredentials: true,
@@ -178,6 +181,11 @@ useEffect(() =>{
         setUserAlreadyUblockedError(false)
     }, 2000);
 }, [userNotFoundError, somethingWentWrongError, dateExpError, notAuthorizedError, userAlreadyBlockedError, actionNotCompletedError, userAlreadyUnblockedError])
+
+
+
+
+console.log(dateTime)
    
   return (
 
@@ -215,13 +223,27 @@ useEffect(() =>{
                             singleUser && singleUser.isBlocked !== true &&
                                 < div className='blockDate-custom-setting-div flex-2 topMargin-medium'>
                                     <p className='paragraph-text'>Choose Expiry Date</p>
-                                        <div className='block-custom-selection-div flex-3 center-flex-justify-display topMargin-medium'>
-                                            <input className='input-general date-time-custom-input' type="datetime-local" 
+                                        <div className='block-custom-selection-div flex-3  margin-small '>
+
+                                           <div className='flex-2 custom-date-time-inner-div '>
+                                             <p className='color1 text-general-small center-text'>Date</p>
+                                            <input className='input-general date-time-custom-input margin-small-small' type="date" 
                                                  ref={expDateRef}
+                                            />  
+                                           </div>
+                                           
+                                           <div className='flex-2 custom-date-time-inner-div marginRight-sm'>
+                                             <p className='color1 text-general-small center-text'>Time</p>          
+                                            <input className='input-general date-time-custom-input margin-small-small' type="time" 
+                                                 ref={expTime}
                                             />             
+                                           </div>
                                         </div>
-                                        <button onClick={handleBlockingUser} className='button-general'>Block User</button>
-                                            {blockDateSetting && singleUser && singleUser.isBlocked !== true && <button onClick={turnOffBlockingDateSetting} className='button-general-2 block-user-custom-btn '>Cancel</button>}
+                                        
+                                        <div className='custom-block-BTN-div flex-2 center-flex-align-display'>
+                                              <button onClick={handleBlockingUser} className='button-general custom-block-user-BTN flex'>Block User</button>
+                                                {blockDateSetting && singleUser && singleUser.isBlocked !== true && <button onClick={turnOffBlockingDateSetting} className='button-general-2 block-user-custom-btn custom-block-user-BTN flex '>Cancel</button>}
+                                        </div>
 
                                             {dateExpError && <p className='paragraph-text red-text'>You must provide block expiry date</p>}
                                             {userAlreadyBlockedError && <p className='paragraph-text red-text'>User already blocked</p>}

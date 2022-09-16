@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import {AuthContext} from '../../context/AuthProvide';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {FaHome, FaUserAlt} from 'react-icons/fa';
-import {AiOutlineSetting, AiOutlineMenu} from 'react-icons/ai';
+import {AiOutlineSetting, AiOutlineMenu, AiOutlineMail} from 'react-icons/ai';
 import {FiActivity} from 'react-icons/fi';
 import {RiPagesLine} from 'react-icons/ri';
 
@@ -88,7 +88,19 @@ const [setDashboardEditMode] = useState(false);
               
              </div>
           </div>
+
+          <div className='flex-3 admin-custom-icon-div'>
+            <AiOutlineMail className='admin-custom-icon-div-icons'/>
+             <div >
+               <Link className='link' to={'/email-demon'}>
+                  <p className='settingText' >Email Demon</p>
+               </Link>
+              
+             </div>
+          </div>
+          
         </div>
+       
        
         
       </div>

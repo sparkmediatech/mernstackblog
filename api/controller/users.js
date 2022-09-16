@@ -10,6 +10,11 @@ const { findByIdAndUpdate } = require("../models/Post");
 const { ConnectionStates } = require("mongoose");
 const { updatePost } = require("./posts");
 const util = require('util');
+const dayjs = require("dayjs");
+const utc = require("dayjs/plugin/utc");
+const customParseFormat = require('dayjs/plugin/customParseFormat');
+const dayJsUTC = dayjs.extend(utc)
+const dayJsDate = dayJsUTC.extend(customParseFormat)
 
 
 
@@ -295,12 +300,22 @@ const handleBlocking = async (req, res) =>{
     try{
         const userToBlock = await User.findById(req.params.userId);
         const adminUser = await User.findOne({username: req.user.username});
-        const expDate = req.body.expDate
-        
+        const expDate = req.body.expDate;
+        const expTime = req.body.expTime;
+        const calDate = expDate + 'T' + expTime
+
+       
+       
+        console.log(calDate, 'check cal')
         if(!expDate){
             return res.status(401).json("You must provide expiry date")
         }
-    
+        
+        if(!dayJsDate(calDate, "YYYY-MM-DDTH:mm", true).isValid()){
+                console.log(calDate)
+                return res.status(500).json('invalid date')
+            }
+        
         if(!userToBlock || !adminUser){
             return res.status(404).json("User not found")
         };
@@ -314,7 +329,7 @@ const handleBlocking = async (req, res) =>{
     if(userToBlock._id.toString() === req.params.userId){
           const user = await User.findByIdAndUpdate(req.params.userId,{
                     isBlocked: true, 
-                    expDate: expDate
+                    expDate: calDate
                }, {new: true}); 
          return res.status(200).json( user);
     }else{
@@ -322,6 +337,7 @@ const handleBlocking = async (req, res) =>{
     };
 
     }catch(err){
+        console.log(err)
         return res.status(500).json('something went wrong')
     }
         

@@ -344,10 +344,14 @@ const getPost = async (req, res) =>{
           populate: "author"
       }],
    }) 
+
+   if(!post){
+    return res.status(404).json('no post found')
+   }
        return res.status(200).json(post);
 
     }catch(err){
-      return  res.status(500).json(err);
+      return  res.status(500).json('something went wrong');
     }
 }
 

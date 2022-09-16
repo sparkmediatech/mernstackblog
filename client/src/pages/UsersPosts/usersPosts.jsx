@@ -39,7 +39,7 @@ function UsersPosts() {
    const fillArray = new Array(totalPosts).fill(false)
    const [checkedState, setCheckedState] = useState();
 
-   console.log(checkedState)
+ 
 
 //useEffecct to set the check state
 useEffect(()=>{

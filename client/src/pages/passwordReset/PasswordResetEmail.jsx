@@ -53,18 +53,18 @@ useEffect(()=>{
       <article className='mainWrapper'>
            <div className='mainContainer flex-2 center-flex-align-display topMargin-Extral-Large '>
             { !sent ?
-               <div className={userNotFoundError ? 'passwordreset-custom-div2 box-div flex-2 center-flex-justify-display passwordreset-custom-div': ' box-div flex-2 center-flex-justify-display passwordreset-custom-div'}>
+               <div className={userNotFoundError ? 'passwordreset-custom-div2 box-div flex-2 center-flex-justify-display passwordreset-custom-div topMargin-Extral-Large': ' box-div flex-2 center-flex-justify-display passwordreset-custom-div topMargin-Extral-Large'}>
                    <h2 className='text-general-BIG resetTitle'>Reset Password</h2>
                    <label className='label-general reset-lebel '>Email</label>
                     <input className='input-general' type="text"  ref={emailRef} required/>
 
-                    {userNotFoundError && <p className='paragraph-text red-text'>There is no user with such email</p>}
+                    {userNotFoundError && <p className='paragraph-text red-text topMargin-Extral-Large'>There is no user with such email</p>}
                     {somethingWentWrongError && <p className='paragraph-text red-text'>Something Went Wrong, ensure you are using valid email</p>}
                     <button onClick={handleSendResetPasswordEmailLink} className='button-general'>Reset</button>
                     <p className='support-team-text center-text'>Nodejs and Reactjs Blog application team</p>
                </div>
                :
-              <div className='box-div flex-2 flex passwordreset-custom-div passwordreset-custom-div2 '>
+              <div className='box-div flex-2 flex passwordreset-custom-div passwordreset-custom-div2 topMargin-Extral-Large'>
                    <h2 className='text-general-BIG resetTitle'>Reset Password Sent</h2>
                     <MdOutlineMail className='Icon password-reset-custom-email-icon'/>
                     <p className='center-text paragraph-text'>Kindly check your email inbox or spam box for your password reset link. Click on the link to reset your password</p>

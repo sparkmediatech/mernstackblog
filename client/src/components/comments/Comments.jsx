@@ -89,6 +89,7 @@ const handleCommentUpdate = async (id) =>{
            })
            dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
             setCommentState(!commentState);
+            setUpdateComment(false)
             
            
     }catch(err){
@@ -129,9 +130,10 @@ const handleReply = async (id) =>{
        await axiosPrivate.post(`/v1/reply/posts/${path}/comments/${id}/reply`, newReply, { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}});
             dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
+            setCommentState(!commentState)
             setShowReply(false)
             replycomment.current.value = null
-            setCommentState(!commentState)
+            
     }catch(err){
         console.log(err);
         dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
@@ -260,11 +262,14 @@ const handleDeleteComment = async (id, replyId)=>{
                                                 {
                                                     editReplyMode == replyId ?
                                                      <div className='comment-div' key={replyId} >
-            
-                                                        <textarea className='comment-wrapper' type='text' 
+
+                                                        <div className='flex-3'>
+                                                            <textarea className='comment-wrapper' type='text' 
                                                             onChange={(e) => setCurrentReply(e.target.value)} value={currentReply}>
 
                                                         </textarea>
+                                                        <MdCancel className='general-cursor-pointer' onClick={()=> setEditReplyMode(false)}/>
+                                                        </div>
                                                         <button className='comment-btn' onClick={() => handleReplyUpdate(replyId)}>Update Reply</button>
                                                           
                                                      </div>:

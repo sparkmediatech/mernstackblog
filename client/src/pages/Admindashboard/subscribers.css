@@ -1,0 +1,103 @@
+.custom-other-page-subscribers{
+    position: relative;
+    width: 83%;
+    height: 89vh;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+   
+}
+.custom-subscriber-sub-div{
+    width: 98%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.custom-subscriber-icon-div{
+    background-color:#FF661F;
+    border-radius: 100px;
+    width:140px;
+    height: 140px;
+}
+.custom-subscribers-icon{
+    font-size: 90px;
+    color: white;
+   
+}
+.custom-subscribers-sub-text-div{
+    width: 50%;
+}
+.custom-subscribers-BTN-div{
+    width: 35%;
+    justify-content: right;
+}
+.custom-subscribers-BTN{
+    font-family: "Varela Round", sans-serif;
+    cursor: pointer;
+    border-radius: 3px;
+    color: white;
+    background-color: #FF661F;
+    padding: 15px 30px 15px 30px;
+    outline: none;
+    border: none;
+}
+
+.custom-display-allSubscribers-div{
+    background-color: #F4F6F7;
+    position: absolute;
+    z-index: 999;
+    width: 50%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding-bottom: 20px;
+}
+.custom-subscribers-heading-div{
+    justify-content: space-between;
+}
+.custom-subscribers-listing-div{
+    justify-content: space-between;
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding-left: 5px;  
+    padding-right: 5px;
+    height: 35px; 
+}
+.custom-sub-subscribers-heading-text-div{
+    justify-content: space-between;
+}
+.custom-subscriber-list-header-div{
+    width: 25%;
+}
+.custom-verified-div{
+    justify-content: right;
+}
+.custom-disabled-screen{
+    position: fixed;
+    width: 100%;
+    height: 85vh;
+    z-index: 99;
+    cursor: not-allowed;   
+}
+.custom-subscribers-cancel-icon{
+    color: red;
+    cursor: pointer;
+    font-size: 15px;
+}
+.custom-subscribers-cancel-main-title-div{
+    justify-content: right;
+}
+.customNavigation-subscribers-icon{
+    color: #FF661F;
+    font-size: 30px;
+}
+.custom-reminder-subscriber-text{
+    color: #FF661F;
+    cursor: pointer;
+    
+}
+.custom-subscribers-loading-div{
+    width: 98%;
+    height: auto;
+    position: absolute;
+}

@@ -1,0 +1,166 @@
+/* create email div */
+
+.custom-createEmail-div{
+    width: 100%;
+}
+.custom-email-textArea{
+    min-width: 98%;
+    max-width: 98%;
+    min-height: 300px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    text-indent: 15px;
+}
+.custom-email-subject-input{
+    border: none;
+    outline: none;
+    width: 98%;
+    padding: 10px 0 10px 0;
+    border-bottom: 3px solid #ECF0F1;
+    border-radius: 5px;
+    text-indent: 10px;
+}
+.custom-email-send-BTN{
+    width: 30%;
+    padding: 13px 70px 13px 70px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 700;
+    margin-top: 20px;
+    font-size: 18px;
+    background-color: #FE661F;
+    border: none;
+    color: white;
+    border-radius: 5px;
+}
+.custom-delivery-mode-BTN{
+    width: 20%;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    padding: 10px 0 10px 0;
+    background-color: black;
+    border-radius: 5px;
+    color: white;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 13px;
+}
+.custom-delivery-mode-div{
+    width: 80px;
+    background-color: #ECF0F1;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 3px 0 3px 0;
+}
+.custom-email-recivers-BTN{
+    font-family: 'Source Sans Pro', sans-serif;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background-color: #D0D3D4;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.custom-list-email-sendEmail-div{
+    position: fixed;
+    z-index: 999;
+    background-color: #D0D3D4;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 10px;
+    padding-bottom: 35px;
+    width:40.7%;
+}
+.custom-subscribers-list-item-div{
+    justify-content: space-between;
+    background-color: #F0F3F4;
+    padding: 3px 0 3px 0;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.custom-email-list-general-div{
+    width: 13%;
+}
+.custom-done-sendEmail-BTN{
+    font-family: 'Source Sans Pro', sans-serif;
+    cursor: pointer;
+    color: white;
+    width: 10%;
+    padding: 5px 0 5px 0;
+    border: none;
+    outline: none;
+    background-color: #FF661F;
+    border-radius: 5px;
+}
+.custom-navigation-sendEmail-icon{
+    color: #FF661F;
+    font-size: 30px;
+}
+.custom-email-no-cursor-div{
+    position: absolute;
+    background-color: #F8F9F9;
+    width: 96%;
+    height: 68vh;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.custom-email-delivery-text-div{
+    position: fixed;
+    width: 42%;
+    height: 550px;
+    z-index: 999;
+    cursor: not-allowed;
+}
+.custom-sent-email-icon{
+    color: green;
+    font-size: 50px;
+}
+
+/* previous email section starts   */
+
+.custom-previous-email-title-div{
+    width: 60%;
+}
+.custom-prev-email-main-div{
+    justify-content: space-between;
+    background-color: #ECF0F1;
+    height: 50px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.custom-prev-email-notification-div{
+    width: 98%;
+}
+
+/* sceduled email section */
+
+.custom-scheduled-email-title-div{
+    justify-content: space-between;
+    background-color: #ECF0F1;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+.custom-display-subscribers-scheduled-div{
+    position: fixed;
+    z-index: 999;
+    background-color: #D0D3D4;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 10px;
+    padding-bottom: 35px;
+    width: 40.7%;
+    
+}
+.empty-email-space-custom-div{
+    width: 100%;
+    background-color: red;
+}
+.custom-scheduled-email-unclick-div{
+    background-color: red;
+    width: 94%;
+    height: 600px;
+    position: absolute;
+}
+.custom-scheduled-email-loading-div{
+    background-color: red;
+    width: 94%;
+    height: auto;
+    position: absolute;
+}

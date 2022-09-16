@@ -85,19 +85,19 @@ useEffect(() =>{
 return (
   <>
       <article className='mainWrapper'>
-          <div className='mainContainer center-flex-justify-display'>
+          <div className='mainContainer center-flex-justify-display topMargin-Extral-Large'>
         {
          update &&
-          <div className='box-div flex-2 padding-left-right topMargin '>
+          <div className='box-div flex-2 padding-left-right topMargin  '>
        
                 <h4 className='text-general-small2 color1 center-text topMargin-medium'>Reset Your Password</h4>
-              <label className='label-general '>password</label>
+              <label className='label-general color1 '>password</label>
                 <input className='input-general margin-small' type="password" ref={passwordRef} />
 
-                <label className='label-general margin-small'>confirmpassword</label>
+                <label className='label-general margin-small color1'>confirmpassword</label>
                 <input className='input-general margin-small' type="password"  ref={confirmPasswordRef}/>
 
-                {notMatchError && <h4 className='paragraph-text notMatchCustomText '>Password does not match</h4>}
+                {notMatchError && <h4 className='paragraph-text notMatchCustomText  '>Password does not match</h4>}
                 {notUpdatedError && <h4 className='paragraph-text notMatchCustomText '>Password not updated, please ensure that you provide all required details</h4>}
                  {userNotFoundError && <h4 className='paragraph-text notMatchCustomText '>User not found in our database</h4>}
                 <button onClick={handleChangePassword } className='button-general'>Reset</button>

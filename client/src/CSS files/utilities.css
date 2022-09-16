@@ -17,6 +17,9 @@
     cursor: not-allowed;
 }
 
+.pointer-events-none {
+    pointer-events: none;
+}
 .general-cursor-pointer{
     cursor: pointer;
 }
@@ -142,6 +145,9 @@ font-style: italic;
 .color3{
     color:#626567;
 }
+.color4{
+    color: #27AE60;
+}
 .transitionText{
     transition: 0.2s ease-in;
 }
@@ -251,7 +257,9 @@ margin-top: 15px;
 font-size: 150px;
 color: #FF661F;
 }
-
+.iconSM{
+    font-size: 20px;
+}
 
 /* full width*/
 .full-width{
@@ -321,7 +329,12 @@ color: #FF661F;
     border-bottom: #d1d1d1 solid 1px;
     border-top: #d1d1d1 solid 1px;
 }
-
+.bg-blur{
+    filter: blur(4px);
+}
+.custom-fontSize{
+    font-size: 25px;
+}
 /* animation */
 .customParaText{
     opacity: 0;

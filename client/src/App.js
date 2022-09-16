@@ -29,6 +29,8 @@ import axios from 'axios';
 import Menu from './pages/Admindashboard/Menu';
 import FetchingError from './pages/GeneralErrorPages/FetchingError';
 import UserProfilePublic from './pages/userprofilePublic/UserProfilePublic';
+import Subscribers from './pages/Admindashboard/Subscribers';
+import SubscriberConfirmation from './pages/ConfirmEmail/SubscriberConfirmation';
 
 
 
@@ -146,6 +148,11 @@ console.log(writePageAliasName)
          <Route path="/menu">
           {logUser?.role == "admin" && auth?.token ?  <Menu/> : <Login/> }
         </Route>
+
+         <Route path="/email-demon">
+          {logUser?.role == "admin" && auth?.token ?  <Subscribers/> : <Login/> }
+        </Route>
+
         <Route path="/users/:userId">
           {auth?.token  ?  <SingleUser/>: <Login/>}
         </Route>
@@ -157,6 +164,10 @@ console.log(writePageAliasName)
           {auth?.token ? <UsersPosts/>: <Login/>}
         </Route>
         
+      <Route path="/subverify/:subId/:tokenId">
+          {<SubscriberConfirmation/>}
+        </Route>
+
       <Route path="/confirm/:tokenId">
           {temp?.emailToken ? <ConfirmEmail/>: <Login /> }
         </Route>
