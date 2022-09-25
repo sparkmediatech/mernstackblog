@@ -102,3 +102,47 @@
     opacity: 0.3;
     width: 100%;
 }
+/*tablet mode */
+@media (max-width: 768px){
+    .custom-footer-recent-post-section{
+        width: 30%;
+    }
+    .custom-footer-link-section{
+        width: 17%;
+    }
+    .custom-footer-title-text{
+        font-size: 17px !important;
+    }
+    .site-about-text {
+        font-size: 12px !important;
+    }
+    .social-media-footer-icon {
+        font-size: 20px;       
+        }
+    .recent-post-postTitle{
+        font-size: 12px !important;
+   
+    }
+    .recent-post-img{
+        width: 90%;
+    }
+    .site-link-text {
+
+        font-size: 13px !important;
+    }
+    .subscribe-emai-input {
+        height: 40px;
+    }
+   
+    .footer-section1{
+        margin-top: 0px !important;
+       
+    }
+    .subscibe-custom-BTN {
+        padding: 10px 0 10px 0;
+        font-size: 15px;
+    }
+    .custom-footer-main-wrapper{
+        padding-top: 20px;
+    }
+}

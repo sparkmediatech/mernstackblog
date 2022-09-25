@@ -87,4 +87,14 @@
         width: 48%;
         height: 80%;
     }
+    .page2-homePage-custom-div {
+        height: 80%;
+       
+    }
+    .page2-custom-image {
+        height: 100%;
+    }
+    .page2-custom-main-div {
+        padding-bottom: 0px;
+    }
 }

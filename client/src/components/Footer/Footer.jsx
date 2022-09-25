@@ -154,7 +154,7 @@ noCategoryFound
             <div className=' footer-custom-main-div flex-3'>
                 <div className='homePage-post-div custom-footer-main-wrapper '>
                         <div className='footer-section1 topMargin-medium flex-2'>
-                            <h4 className='text-general-small2 color1'>{websiteName}</h4>
+                            <h4 className='text-general-small2 color1 custom-footer-title-text'>{websiteName}</h4>
                             <p className='text-general-small white-text margin-small site-about-text'>
                                 {aboutWebsite}
                             </p>
@@ -168,9 +168,9 @@ noCategoryFound
 
                         </div>
 
-                        <div className='footer-section1 topMargin-medium'>
+                        <div className='footer-section1 custom-footer-recent-post-section topMargin-medium'>
                            
-                            <h4 className='text-general-small2 color1'>Recent Posts</h4>
+                            <h4 className='text-general-small2 color1 custom-footer-title-text'>Recent Posts</h4>
                              {posts.slice(0, 3).map((singlePost) =>{
                                const {title, _id, createdAt, postPhoto} = singlePost;
                                return (
@@ -184,8 +184,8 @@ noCategoryFound
                             })}
                         </div>
 
-                        <div className='footer-section1 topMargin-medium'>
-                            <h4 className='text-general-small2 color1'>Links</h4>
+                        <div className='footer-section1 topMargin-medium custom-footer-link-section'>
+                            <h4 className='text-general-small2 color1 custom-footer-title-text'>Links</h4>
                             {categories?.map((singleCategory, key)=>{
                                 const {catName, _id} = singleCategory
                                 return(
@@ -208,7 +208,7 @@ noCategoryFound
                         <div className='footer-section1 topMargin-medium'>
                             
                            
-                            <h4 className='text-general-small2 color1'>Subscribe</h4>
+                            <h4 className='text-general-small2 color1 custom-footer-title-text'>Subscribe</h4>
 
                             {subscribedText && 
                                     <div className='flex-2 center-flex-align-display'>

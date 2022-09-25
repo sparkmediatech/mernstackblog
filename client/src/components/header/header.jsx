@@ -6,11 +6,12 @@ import {AuthContext} from '../../context/AuthProvide';
 import  BASE_URL from '../../hooks/Base_URL'
 import {MdNavigateNext, MdNavigateBefore} from 'react-icons/md'
 import { Link } from 'react-router-dom';
+import { useMediaQuery } from '../../hooks/CustomMediaQuery';
 
 
 export default function Header() {
-     const {auth, isLoading, dispatch} = useContext(AuthContext);
-   
+    const {auth, isLoading, dispatch} = useContext(AuthContext);
+    let   tabletMode = useMediaQuery('(max-width: 768px)')    
     const [headerValues, setHeaderValues] = useState([]);
     const [sliderPosts,  setSliderPosts] = useState([])
     const [slider1, setSlider1] = useState(0)
@@ -69,16 +70,24 @@ export default function Header() {
     useEffect(()=>{
      const lastIndex = sliderPosts.length - 3;
     if(slider1 < 0 || slider2 < 0 || slider3 < 0) {
-      setMovePosition(0);
-      setTabletModeMovePosition(25)
+      if(!tabletMode){
+       setMovePosition(0)
+     }
+      if(tabletMode){
+        setTabletModeMovePosition(25)
+      }
     }
     if (slider1 > lastIndex || slider2 > lastIndex || slider3 > lastIndex ) {
       
       setSlider1(0);
       setSlider2(1);
       setSlider3(2);
-      setMovePosition(0)
-      setTabletModeMovePosition(25)
+     if(!tabletMode){
+       setMovePosition(0)
+     }
+      if(tabletMode){
+        setTabletModeMovePosition(24.5)
+      }
      
     }
   }, [slider1, slider2, slider3,])
@@ -90,8 +99,13 @@ export default function Header() {
         setSlider1(slider1 + 1);
         setSlider2(slider2 + 1);
         setSlider3(slider3 + 1);
-        setMovePosition(movePosition - 33)
-        setTabletModeMovePosition(tabletModeMovePosition - 50)
+        if(!tabletMode){
+          setMovePosition(movePosition - 33)
+        }
+        if(tabletMode){
+           setTabletModeMovePosition(tabletModeMovePosition - 50)
+        }
+       
        
       }, 2000);
     return () => {
@@ -104,22 +118,30 @@ export default function Header() {
 
 
   const handleNextSlide = ()=>{
-    
       setSlider1(slider1 + 1);
       setSlider2(slider2 + 1);
       setSlider3(slider3 + 1);
+      if(!tabletMode){
+     
       setMovePosition(movePosition - 33)
-      setTabletModeMovePosition(tabletModeMovePosition - 50)
+      }
+      if(tabletMode){
+        setTabletModeMovePosition(tabletModeMovePosition - 50)
+      }
   } 
   
   //handle previous slide
   const handlePrevSlide = ()=>{
-    
-   setSlider1(slider1 -1)
-   setSlider2(slider2 -1)
-   setSlider3(slider3 -1)
-   setMovePosition(movePosition + 33);
-   setTabletModeMovePosition(tabletModeMovePosition + 50)
+    setSlider1(slider1 -1)
+    setSlider2(slider2 -1)
+    setSlider3(slider3 -1)
+  if(!tabletMode){
+   
+    setMovePosition(movePosition + 33);
+  }
+   if(tabletMode){
+    setTabletModeMovePosition(tabletModeMovePosition + 50)
+   }
    
   }
 
@@ -138,7 +160,7 @@ const handleHideSlideIcons = () =>{
 }
 
 
-console.log(slideAnimation)
+
 useEffect(()=>{
 
       document.documentElement.style.setProperty('--tx', `${movePosition}vw`);

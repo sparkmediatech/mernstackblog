@@ -26,4 +26,9 @@
   .latest-text{
     font-size: 20px;
   }
+  .home{
+    overflow: hidden !important;
+   
+  }
+  
 }

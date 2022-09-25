@@ -24,6 +24,7 @@
     background-color: #F6F6F6;
     height: 10vh;
     
+    
    
 }
 .navBar-header-div{
@@ -198,7 +199,8 @@
 /* HeaderNavbar section  */
 @media(max-width: 768px) {
    .top-div{
-    padding-top: 5px;
+    padding-top: 0px;
+    margin-bottom: -8vh;
    }
     .navBar-top-div {
         display: none;
@@ -219,7 +221,7 @@
         display: flex;
         flex-direction: row;
         padding: 0 40px;
-        padding-bottom: 0;
+        padding-bottom: 0 !important;
         height: auto;
     
     }

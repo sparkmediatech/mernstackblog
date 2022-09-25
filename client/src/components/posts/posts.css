@@ -91,6 +91,7 @@
   -webkit-box-orient: vertical;
 }
 
+/*tablet mode */
 @media (max-width: 768px) {
   .post {
     width: 47%;

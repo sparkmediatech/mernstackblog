@@ -3,12 +3,16 @@ import axios from 'axios';
 import './categorypages.css';
 import  BASE_URL from '../../hooks/Base_URL';
 import { Link } from 'react-router-dom';
+import { useMediaQuery } from '../../hooks/CustomMediaQuery';
+
 
 function Page2() {
     const [page2, setPage2] = useState([]);
     const [pageTitle, setPageTitle] = useState('');
     const [selectedId, setSelectedId] = useState('')
-    const [postSelectedPostTitle, setSelectedPostTitle] = useState('')
+    const [postSelectedPostTitle, setSelectedPostTitle] = useState('');
+    const [screenMode, setScreenMode] = useState();
+    let   tabletMode = useMediaQuery('(max-width: 768px)') 
   //fetch page1 based on category index[0]
 useEffect(()=>{
     const fetchPage1 = async ()=>{
@@ -40,6 +44,18 @@ useEffect(()=>{
      
   }
 }, [selectedId, setSelectedId]);
+
+//This fucntion gets the window's size and passes number based on the winodow size. This number is called to be used to slice method for rendering posts number
+useEffect(()=>{
+    if(tabletMode){
+        setScreenMode(2)
+    }
+    if(!tabletMode){
+        setScreenMode(3)
+    }
+}, [ tabletMode, screenMode]);
+
+
 
   return (
     <>
