@@ -6,19 +6,35 @@ import  BASE_URL from '../../hooks/Base_URL';
 
 
 function UserProfilePublic() {
+      
      const location = useLocation()
      const path = location.pathname.split("/")[2];
-    const [user,  setUser] = useState({})
+    const [user,  setUser] = useState({});
+    const [isFetch, setIsFetch] = useState(false)
 
 //fetch user
 useEffect(()=>{
-    const fetchSingleUser = async () =>{
-        const response = await axios.get(`/users/singleUser/${path}`)
-        setUser(response.data)
+ const ourRequest = axios.CancelToken.source() 
+  
+  const fetchSingleUser = async () =>{
+        const response = await axios.get(`/users/singleUser/${path}`, {cancelToken: ourRequest.token})
+          
+      
+        setUser(response.data);
+       
+    
+   
     }
 
+    
     fetchSingleUser()
-}, [path])
+
+       return () => {
+    ourRequest.cancel() // <-- 3rd step
+  }
+      
+    
+}, [])
 
 console.log(user)
 

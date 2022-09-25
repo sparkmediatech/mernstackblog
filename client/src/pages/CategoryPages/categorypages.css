@@ -40,8 +40,7 @@
 .page3-main-custom-div{
     overflow: hidden;
     height: 600px;
-    width: 100%;
-    
+    width: 100%;    
 }
 
 .homePage3-post-div {
@@ -54,7 +53,6 @@
     overflow: hidden;
 }
 .singlePost-page3-div{
-    background-color: green;
     width: 32%;
     height: 90%;
     
@@ -67,4 +65,26 @@
 }
 .animated-page3-post-line-div{
     width: var(--postTitleLine);
+}
+
+/* tablet mode  */
+@media (max-width: 768px){
+    .singlePost-div{
+    width: 48%;
+    height: 80%;
+    }
+    .singlePost-page3-div{
+        width: 48%;
+        height: 80%;
+    }
+    .page-title-text{
+        font-size: 20px;
+    }
+    .page3-main-custom-div {
+        height: 450px;       
+    }
+    .homePage3-post-div{
+        width: 48%;
+        height: 80%;
+    }
 }

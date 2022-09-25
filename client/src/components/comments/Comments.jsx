@@ -32,10 +32,11 @@ export default function Comments() {
 
 //fetched comment from database here
     useEffect(() => {
+        const ourRequest = axios.CancelToken.source() 
         const getPost = async () =>{
              dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
             try{
-                 const response = await axios.get(`${BASE_URL}/posts/`+path )
+                 const response = await axios.get(`${BASE_URL}/posts/`+path, {cancelToken: ourRequest.token})
                  setComments(response.data.comments);
                  dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
               
@@ -45,6 +46,9 @@ export default function Comments() {
             }
         }
        getPost()
+        return () => {
+    ourRequest.cancel() // <-- 3rd step
+  }
     }, [commentState])
 
 
@@ -202,7 +206,7 @@ const handleDeleteComment = async (id, replyId)=>{
                             {updateComment == _id ? 
                              <div className='comment-div' key={_id} >
             
-                        <div className='flex-3'>
+                        <div className='flex-3' >
                             <textarea className='comment-wrapper' type='text' 
                                 onChange={(e) => setCommentDescription2(e.target.value)} value={commentdescription2}>
 
@@ -253,7 +257,7 @@ const handleDeleteComment = async (id, replyId)=>{
 
                                         {/* comment replies section */}
 
-                                        {replies.map((singleReply) =>{
+                                        {replies.map((singleReply, index) =>{
 
                                             //console.log(singleReply)
                                             const {_id: replyId, author, createdAt, replycomment} = singleReply
@@ -261,7 +265,7 @@ const handleDeleteComment = async (id, replyId)=>{
                                                 <>
                                                 {
                                                     editReplyMode == replyId ?
-                                                     <div className='comment-div' key={replyId} >
+                                                     <div className='comment-div' key={_id} >
 
                                                         <div className='flex-3'>
                                                             <textarea className='comment-wrapper' type='text' 

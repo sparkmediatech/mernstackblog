@@ -17,3 +17,13 @@
   font-size: 30px;
   color: black;
 }
+
+/*Tablet */
+@media (max-width: 768px){
+  .custom-homePage-component{
+    margin-top: 0 !important;
+  }
+  .latest-text{
+    font-size: 20px;
+  }
+}

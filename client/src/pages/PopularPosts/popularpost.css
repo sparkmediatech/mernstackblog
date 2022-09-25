@@ -21,3 +21,12 @@
 .animated-popular-post-title-line{
     width: var(--postTitleLine);
 }
+
+@media (max-width: 768px){
+    .popular-posts {
+        width: 47%;
+    }
+    .postTitle {
+        font-size: 20px;
+    }
+}

@@ -1,5 +1,4 @@
 import './header.css';
-import TopBar from '../topbar/TopBar';
 import { useState, useEffect, useContext } from 'react';
 import Dashboard from '../../pages/Admindashboard/Dashboard';
 import axios from 'axios';
@@ -7,12 +6,7 @@ import {AuthContext} from '../../context/AuthProvide';
 import  BASE_URL from '../../hooks/Base_URL'
 import {MdNavigateNext, MdNavigateBefore} from 'react-icons/md'
 import { Link } from 'react-router-dom';
-//import {useLocation} from "react-router-dom"
 
-const DIRECTIOM_TYPE = {
-  next: "NEXT",
-  prev: "PREV"
-};
 
 export default function Header() {
      const {auth, isLoading, dispatch} = useContext(AuthContext);
@@ -25,7 +19,9 @@ export default function Header() {
     const PF = "http://localhost:5000/images/";
     const [showSlideIcons, setShowSlideIcons] = useState(false);
     const [slideAnimation, setSlideAnimation] = useState(true)
-    const [movePosition, setMovePosition] = useState(0) 
+    const [movePosition, setMovePosition] = useState(0);
+    const [tabletModeMovePosition, setTabletModeMovePosition] = useState(25)
+    
     const [current, setCurrent] = useState(2)
     const [transition, setTransition] = useState(false);
     const [direction, setDirection] = useState(0);
@@ -73,30 +69,29 @@ export default function Header() {
     useEffect(()=>{
      const lastIndex = sliderPosts.length - 3;
     if(slider1 < 0 || slider2 < 0 || slider3 < 0) {
-     setTransition(false)
-      setSlider1(lastIndex);
-      setSlider2(lastIndex -1);
-      setSlider3(lastIndex - 2);
-      setMovePosition(0)
+      setMovePosition(0);
+      setTabletModeMovePosition(25)
     }
     if (slider1 > lastIndex || slider2 > lastIndex || slider3 > lastIndex ) {
-       setTransition(false)
+      
       setSlider1(0);
       setSlider2(1);
       setSlider3(2);
       setMovePosition(0)
+      setTabletModeMovePosition(25)
      
     }
   }, [slider1, slider2, slider3,])
 
  useEffect(()=>{  
       if(slideAnimation == true){
-        setTransition(true)
+       
         let slider = setInterval(() => {
         setSlider1(slider1 + 1);
         setSlider2(slider2 + 1);
         setSlider3(slider3 + 1);
         setMovePosition(movePosition - 33)
+        setTabletModeMovePosition(tabletModeMovePosition - 50)
        
       }, 2000);
     return () => {
@@ -113,7 +108,8 @@ export default function Header() {
       setSlider1(slider1 + 1);
       setSlider2(slider2 + 1);
       setSlider3(slider3 + 1);
-     setMovePosition(movePosition - 33)
+      setMovePosition(movePosition - 33)
+      setTabletModeMovePosition(tabletModeMovePosition - 50)
   } 
   
   //handle previous slide
@@ -122,7 +118,8 @@ export default function Header() {
    setSlider1(slider1 -1)
    setSlider2(slider2 -1)
    setSlider3(slider3 -1)
-   setMovePosition(movePosition + 33)
+   setMovePosition(movePosition + 33);
+   setTabletModeMovePosition(tabletModeMovePosition + 50)
    
   }
 
@@ -145,9 +142,10 @@ console.log(slideAnimation)
 useEffect(()=>{
 
       document.documentElement.style.setProperty('--tx', `${movePosition}vw`);
+      document.documentElement.style.setProperty('--tabletModeTX', `${tabletModeMovePosition}vw`);
      const nextSlide = (getComputedStyle(document.documentElement).getPropertyValue('--tx'))
      //console.log(nextSlide, 'here here her')
-}, [movePosition, ])
+}, [movePosition, tabletModeMovePosition ])
 
 //this controls the line animation under each post title
 useEffect(()=>{
@@ -175,16 +173,6 @@ useEffect(()=>{
              
              const {title, _id, postPhoto, createdAt, categories} = singleSliderPost || {}
               
-             const percentage = 100;
-              let position = 'nextSlide';
-               const lastIndex = sliderPosts.length - 1;
-              
-
-              if(slider1 === index || slider2 === index || slider3 == index){
-                position = 'currentSlide'
-                
-              }
-
             
               
 

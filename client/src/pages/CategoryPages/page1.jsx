@@ -3,6 +3,7 @@ import React, {useEffect, useContext, useState} from 'react';
 import './categorypages.css';
 import  BASE_URL from '../../hooks/Base_URL';
 import { Link } from 'react-router-dom';
+import { useMediaQuery } from '../../hooks/CustomMediaQuery';
 
 
 
@@ -11,7 +12,9 @@ function Page1() {
   const [page1, setPage1] = useState([]);
   const [pageTitle, setPageTitle] = useState('');
   const [selectedId, setSelectedId] = useState('');
-  const [postSelectedPostTitle, setSelectedPostTitle] = useState('')
+  const [postSelectedPostTitle, setSelectedPostTitle] = useState('');
+  const [screenMode, setScreenMode] = useState();
+  let   tabletMode = useMediaQuery('(max-width: 768px)')    
   //fetch page1 based on category index[0]
 useEffect(()=>{
     const fetchPage1 = async ()=>{
@@ -43,8 +46,23 @@ useEffect(()=>{
       //const nextSlide = (getComputedStyle(document.documentElement).getPropertyValue('--postTitleLine'))
      
   }
-}, [selectedId, setSelectedId])
+}, [selectedId, setSelectedId]);
 
+
+
+//This fucntion gets the window's size and passes number based on the winodow size. This number is called to be used to slice method for rendering posts number
+useEffect(()=>{
+    if(tabletMode){
+        setScreenMode(2)
+    }
+    if(!tabletMode){
+        setScreenMode(3)
+    }
+}, [ tabletMode, screenMode]);
+
+
+
+console.log(page1)
   return (
       <>
         <div className='page1-main-custom-div'>
@@ -58,7 +76,7 @@ useEffect(()=>{
 
             </div>
             <div className='homePage-post-div  '>
-                {page1.slice(0, 3).map((singlePagePost)=>{
+                {page1.slice(0, screenMode).map((singlePagePost)=>{
                  const {title, _id, postPhoto, username,createdAt} = singlePagePost
                   return(
                     <>

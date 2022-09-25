@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import { Helmet } from "react-helmet";
 
 export default function HelmetMetaData({pathURL, description, title, image}) {
@@ -36,3 +36,4 @@ export default function HelmetMetaData({pathURL, description, title, image}) {
   </Helmet>
  )
 }
+*/

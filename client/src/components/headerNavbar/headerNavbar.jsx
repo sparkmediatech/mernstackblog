@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import './headerNavbar.css';
 import '../../CSS files/utilities.css';
-import 'animate.css';
 import axios from 'axios';
 import {AuthContext} from "../../context/AuthProvide";
 import { Link } from 'react-router-dom';
@@ -10,7 +9,11 @@ import {AiOutlineInstagram} from 'react-icons/ai';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import  BASE_URL from '../../hooks/Base_URL';
 import { useLocation } from 'react-router';
-import single from '../../pages/single/single';
+import {FiMenu} from 'react-icons/fi'
+import {MdOutlineCancel} from 'react-icons/md'
+
+
+
 
 
 function HeaderNavbar() {
@@ -24,6 +27,7 @@ function HeaderNavbar() {
     const {auth, setAuth, logUser, setWebsiteName, setAboutWebsite, setQuery,  searchState, setSearchState,  blogPageName, pathName,  writePageName,
     pathLocation, setPathLocation, blogPageAliasName, writePageAliasName, setgeneralFetchError
     } = useContext(AuthContext);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     //const [searchState, setSearchState] = useState(false);
     
 
@@ -51,15 +55,7 @@ useEffect(() => {
 
 
   
-//turn on edit mode function
-const handleMenuClickOpen = ()=>{
-          setTopMenuBar(!topMenuBar)       
-    }
-//turn off edit mode function   
-const handleMenuClickClose = ()=>{
-    setTopMenuBar(false)
 
-}
 //handle logout
 const handleLogout = async (e) =>{
     const logId ={
@@ -109,31 +105,47 @@ const handleSearchQuery = ()=>{
 
 useEffect(()=>{
     setPathLocation(path)
-}, [pathLocation, pathName])
+}, [pathLocation, pathName]);
+
+
+//this controls mobile menu toogle open state
+const handleOpenMobileMenu = ()=>{
+    setMobileMenuOpen(true)
+}
+
+//closes the mobile menu view
+const handleCloseMobileMenu = ()=>{
+    setMobileMenuOpen(false)
+}
+
+
+
+
+
   return (
       <>
       {/* Top navbar section*/}
-        <div className="top-div" style={customHeaderColor}>
+        <div className="top-div " style={customHeaderColor}>
        
-            <i className="fas open fa-bars" onClick={handleMenuClickOpen}></i>
-            <div className={`top flex-3 ${topMenuBar ? 'top2slidein': 'top2slideOut'}`} >
-                <i className="fas close fa-times" onClick={handleMenuClickClose}></i> 
+           
+            <div className='top flex-3 ' >
+               
                 <div className='topLeft flex'>
-                <div className='radius-circle flex'><FaFacebookF className='topicon'/></div>
-                <div className='radius-circle flex'><FaTwitter className='topicon'/></div>
-                <div className='radius-circle flex'><AiOutlineInstagram className='topicon'/></div>
-                <div className='radius-circle flex'><FaLinkedinIn className='topicon'/></div>
-                <div className='radius-circle flex'><FaYoutube className='topicon'/></div>
-           </div>
+                    <div className='mobile-radius radius-circle flex '><FaFacebookF className='topicon'/></div>
+                    <div className='mobile-radius radius-circle flex'><FaTwitter className='topicon'/></div>
+                    <div className='mobile-radius radius-circle flex'><AiOutlineInstagram className='topicon'/></div>
+                    <div className='mobile-radius radius-circle flex'><FaLinkedinIn className='topicon'/></div>
+                    <div className='mobile-radius radius-circle flex'><FaYoutube className='topicon'/></div>
+                </div>
           
-           <div className='topRight'>
+            <div className='topRight'>
                <ul className='topList'>               
                     {logUser.role == 'admin' && auth?.token && <li className='topListItem'>
-                        <Link className='link white-text text-general-small ' to='/websitesettings'>DASHBOARD</Link>
+                        <Link className='link white-text text-general-small custom-mobil-font' to='/websitesettings'>DASHBOARD</Link>
                     </li>} 
                     
                      {auth?.token && <li className='topListItem'>
-                        <Link className='link white-text text-general-small ' onClick={handleLogout}>LOGOUT</Link>
+                        <Link className='link white-text text-general-small custom-mobil-font' onClick={handleLogout}>LOGOUT</Link>
                     </li>} 
                    
                 </ul>
@@ -169,9 +181,16 @@ useEffect(()=>{
 
       {/*Header section */}
     <article className='navBar-header-wrapper   '  style={customNavColor}>
-        <div className='navBar-header-div flex-3'>
-                <div className='siteName-div'>
+        <div className='navBar-header-div flex-3 '>
+                <div className='siteName-div flex-3 '>
                     <h2 >{arrayHeaderValues.websiteName}</h2>
+
+                    <div className='cstom-mobile-view-menu-icons-div flex-3 center-flex-align-display'>
+                        {!mobileMenuOpen && <FiMenu onClick={handleOpenMobileMenu} className='custom-menuOpen-icon'/>}
+                        {mobileMenuOpen && <MdOutlineCancel onClick={handleCloseMobileMenu} className='custom-menuClose-icon'/>}
+                    </div>
+                    
+                    
                 </div>
             <div className='navBar-top-div'>
                  <ul className='topList '>
@@ -233,6 +252,47 @@ useEffect(()=>{
 
                    
             </div>
+
+            {/* This is for tablet views  */}
+
+            {mobileMenuOpen && 
+
+                 <div className={mobileMenuOpen ? 'mobile-view-custom-menu-div-animated mobile-view-custom-menu-div ' : 'mobile-view-custom-menu-div  '}>
+                     <ul className='  custom-mobile-view-ul margin-extra-small-Top'>
+
+                        {pathName.map((singlePathName, key) =>{
+                         const {pathName, aliasName, _id, menuName} = singlePathName || {}
+                       
+                            console.log(writePageAliasName)
+                        return(
+                            <>
+                                <div key={key} className={path == singlePathName.pathName ? ' customItemDiv colorBG  margin-extra-small-Top':   ' customItemDiv '}>
+                                    <Link className='link ' to={singlePathName.aliasName == blogPageAliasName ? `/${blogPageName.toLowerCase()}/page/${Number(1)}`: singlePathName.aliasName == 'CONTACT'? `#`: 
+                                        singlePathName.aliasName === writePageAliasName ? `/${writePageName?.toLowerCase() }`: `/`
+                            
+                                
+                                        }>
+                                        <li key={singlePathName._id}   className={path == singlePathName.pathName ? 'topListItem home-custom-color flex-2' : 'topListItem flex-2 '}>
+                                        {menuName}
+                                
+                                        </li> 
+                                    </Link>
+                            
+                                </div>
+                            
+                            </>
+                        )
+                        
+                        
+                        })}
+                        
+
+
+
+                     </ul>
+                    </div>
+            
+            }
             
              <div className='custom-topList-section2'>
                         {path !== 'allPosts' ? 

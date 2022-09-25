@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Comments from "../comments/Comments";
 import Share from '../socialshare/share';
-import HelmetMetaData from '../socialshare/Helmet';
+//import HelmetMetaData from '../socialshare/Helmet';
 import {AuthContext} from '../../context/AuthProvide';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import PageLoader from '../pageLoader/PageLoader';
@@ -56,6 +56,7 @@ export default function SinglePost() {
     const [postTitleMaxError, setPostTitleMaxError] = useState(false);
     const [postTitleEmptyError, setPostTitleEmptyError] = useState(false);
     const [postTitleMinError, setPostTitleMinError] = useState(false);
+    const [isFetching, setIsFetching] = useState(true)
     
 
    
@@ -67,24 +68,34 @@ export default function SinglePost() {
 
 //anytime the path changes, trigger the useeffects by fetching the posts with that path
     useEffect(() => {
-        
-       const getPost = async () => {
-      
-           try{
+        const ourRequest = axios.CancelToken.source() 
+         
+        const getPost = async () => {
+       
+
+         
+             try{
               setIsLoading(true)
-            const response = await axios.get(`${BASE_URL}/posts/${path}`)
+            const response = await axios.get(`${BASE_URL}/posts/${path}`,{cancelToken: ourRequest.token})
            
-            setUsername(response.data.username)
-            setPost([response.data]);
-            setTitle(response.data.title);
-            setDescription(response.data.description);
-            setCategories(response.data.categories);
-            setLiked(response.data.postLikes)
-            //set author's details globally
-            setAuthorDetails(response.data.username)
-            setIsLoading(false)
+                 setUsername(response.data.username)
+                setPost([response.data]);
+                setTitle(response.data.title);
+                setDescription(response.data.description);
+                setCategories(response.data.categories);
+                setLiked(response.data.postLikes)
+                //set author's details globally
+                setAuthorDetails(response.data.username)
+                setIsLoading(false)
+               
+           
+           
             
            }catch(err){
+            console.log(err, 'err name')
+                if(err.response){
+                    return console.log('request canceled')
+                }
               setIsLoading(false)
             if(err.response.data === 'no post found'){
                 return setgeneralFetchError(true)
@@ -93,11 +104,21 @@ export default function SinglePost() {
                 return setgeneralFetchError(true)
             }
            }
+          }
+           
+          
+      
+
        
-       };
-        
       getPost()
-    }, [path, reload]);
+          console.log('i fire once');
+       return () => {
+       
+    ourRequest.cancel() 
+  }
+       
+     
+    }, []);
    
     //handle the convertion of the the server content to editor content
     useEffect(()=>{
@@ -297,14 +318,14 @@ const handleLike = async ()=>{
 }
 
 
-const handleDeleteImage = async () =>{
-    axiosPrivate.post(`/v1/posts/${path}/deleteImage`)
-}
 
 //handle error states display
     
 useEffect(()=>{
- setTimeout(() => {
+    let isMounted = true;
+
+   
+        setTimeout(() => {
         setUserNotFounderError(false)
     }, 2000);
 
@@ -348,8 +369,9 @@ useEffect(()=>{
        setPostLikeError(false)
     }, 2000);
 
-   
 
+   
+   
 }, [userNotFoundError, userbannedError, notVerifiedError, postNotFoundError, notAuthorizedError, somethingWentWrongError,
  postTitleMaxError, postTitleMinError, postTitleEmptyError, deletePostErrorState, postLikeError, 
 ])
@@ -477,7 +499,7 @@ useEffect(()=>{
                
               
                
-           {updateMode && <button className="button-general singlePostButton" onClick={handleUpdate}>Update</button>} 
+           {updateMode && <div className='flex custom-update-BTN-div'><button className="button-general singlePostButton" onClick={handleUpdate}>Update</button></div>} 
           
            </div>
            
@@ -503,10 +525,10 @@ useEffect(()=>{
                 {!updateMode && <div className="social-media-display-div social-media-text">
             
             <h4 className='text-general-small color2 share-text'>Please share this post with your friends</h4>
-             <HelmetMetaData title={singleItem.title} description={singleItem.description.substring(0, 250)}
+            {/*  <HelmetMetaData title={singleItem.title} description={singleItem.description.substring(0, 250)}
                     image={PF + singleItem.postPhoto}
-                />
-            <Share link={currentUrl}/>
+                />  
+            <Share link={currentUrl}/>*/}
         </div> }
             </>
             )

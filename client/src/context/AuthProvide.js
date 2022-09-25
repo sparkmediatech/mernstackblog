@@ -130,7 +130,7 @@ useEffect(() => {
 useEffect(() =>{
     const getAllComponents = async () =>{
       try{
-          const response = await axios.get('/component')
+          const response = await axios.get(`${BASE_URL}/component`)
             setComponentName(response.data)
       }catch(err){
         if(err.response.data === 'No client component found'){
@@ -150,16 +150,16 @@ useEffect(()=>{
 const fetchPathName = async ()=>{
      try{
         dispatch({type:"CURSOR_NOT_ALLOWED_START"});
-        const response = await axios.get('/pathname');
+        const response = await axios.get(`${BASE_URL}/pathname`);
         setPathName(response.data);
          dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
         console.log(response.data, 'my name path')
         }catch(err){
         dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-       if(err.response.data === 'No pathname found'){
+       if(err?.response?.data === 'No pathname found'){
         return setgeneralFetchError(true)
        }
-    if(err.response.data == 'something went wrong'){
+    if(err?.response?.data == 'something went wrong'){
         return setgeneralFetchError(true)
     }     
     }

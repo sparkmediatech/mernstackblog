@@ -1,5 +1,6 @@
 :root {
     --tx: 0vw;
+    --tabletModeTX: 25vw;
     --lastSlide: -100vw;
     --nextSlide: 100vw;
     --postTitleLine: 0%

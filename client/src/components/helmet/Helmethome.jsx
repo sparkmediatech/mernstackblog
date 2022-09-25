@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import { Helmet } from 'react-helmet';
 
 export default function Helmethome() {
@@ -14,3 +14,4 @@ export default function Helmethome() {
  </Helmet>
  )
 }
+*/

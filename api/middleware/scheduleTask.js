@@ -12,7 +12,7 @@ const {subscribeEmailConfirmation, sendEmailSubscriber} = require('../services/E
 
 
 const autoUpdateDatabase = async () =>{
-    cron.schedule('* * * * *', async ()=>{
+    cron.schedule('0 0 */1 * * *', async ()=>{
          
         userToUpate = await User.find({isBlocked: true});  
             try{
@@ -44,7 +44,7 @@ const autoUpdateEmailSubscribers = async (req, res) =>{
     const utcDate = dayJsUTC(todayDate).format()
     
     console.log(utcDate, 'check me')
-    cron.schedule('43 14 * * *', async ()=>{
+    cron.schedule('0 10 * * *', async ()=>{
         const emails = await EmailBody.find({deliveryMode: 'later'})
         console.log(emails.length)
         if(emails.length > 0){

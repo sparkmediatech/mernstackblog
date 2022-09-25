@@ -13,7 +13,11 @@
 }
 .post{
   width: 32%;
+ 
   
+}
+.custom-tableMode-post{
+  display: none;
 }
 .latest-post-title-div{
   width: 100%;
@@ -89,16 +93,20 @@
 
 @media (max-width: 768px) {
   .post {
-    width: 100%;
+    width: 47%;
   }
-
   .postImg {
     width: 100%;
     height: 250px;
   }
 
-  .postTitle {
-    font-size: 20px;
+  .latest-post-title-div {
+    width: 100% !important;
+  
+  }
+  .custom-home-page-postTitle {
+    font-size: 15px !important;
+
   }
 
   .postDate {

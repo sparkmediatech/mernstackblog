@@ -19,6 +19,7 @@
     "nodemailer": "^6.7.2",
     "nodemailer-sendgrid": "^1.0.3",
     "nodemon": "^2.0.12",
+    "pm2": "^5.2.0",
     "redis": "^4.0.2"
   },
   "scripts": {

@@ -1,7 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
 import Single from './pages/single/single'
 import Home from './pages/home/home'
-import TopBar from "./components/topbar/TopBar";
 import HeaderNavbar from './components/headerNavbar/headerNavbar'
 import Write from './pages/write/write'
 import Settings from './pages/settings/settings'
@@ -41,7 +40,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import Helmethome from './components/helmet/Helmethome';
+//import Helmethome from './components/helmet/Helmethome';
 import axiosPrivate from './hooks/AxiosPrivate';
 
 
@@ -69,18 +68,19 @@ function App() {
 console.log(pathLocation)
 useEffect(() =>{
   console.log('testing pathnams')
-  pathName.map((singlePath) =>{
-    componentName.map((singleComponent)=>{
-      if(singlePath.aliasName == 'BLOG' && singlePath.aliasName == singleComponent.componentName){
-        setBlogPageName(singlePath.pathName);
-        setBlogPageAliasName(singlePath.aliasName)
+  pathName?.map((singlePath) =>{
+    componentName?.map((singleComponent)=>{
+      console.log(componentName)
+      if(singlePath.aliasName == 'BLOG' && singlePath?.aliasName == singleComponent?.componentName){
+        setBlogPageName(singlePath?.pathName);
+        setBlogPageAliasName(singlePath?.aliasName)
       }
-      if(singlePath.aliasName == 'CONTACT'&& singlePath.aliasName == singleComponent.componentName){
+      if(singlePath?.aliasName == 'CONTACT'&& singlePath?.aliasName == singleComponent.componentName){
         setContPageName(singlePath.pathName)
       }
-       if(singlePath.aliasName === 'WRITE' && singlePath.aliasName == singleComponent.componentName){
-      setWritePageName(singlePath.pathName);
-      setWritePageAliasName(singlePath.aliasName)
+       if(singlePath?.aliasName === 'WRITE' && singlePath.aliasName == singleComponent.componentName){
+      setWritePageName(singlePath?.pathName);
+      setWritePageAliasName(singlePath?.aliasName)
     }
     })
     
@@ -99,7 +99,7 @@ console.log(writePageAliasName)
       {!isLoading && reload && <HeaderNavbar/>}
 
       {generalFetchError && <FetchingError/>}
-      <Helmethome/>
+      {/*<Helmethome/>*/}
       <Switch>
         
         <Route exact path="/">

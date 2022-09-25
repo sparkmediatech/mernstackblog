@@ -1,7 +1,7 @@
 .top-div {
     color: white;
     width: 100%;
-    height: 50px;
+    height: auto;
     background-color: #111111;
     position: sticky;
     top: 0;
@@ -15,11 +15,15 @@
     margin: 0 auto;
     overflow: auto;
     padding: 0 40px;
+    align-items: center;
+    
+    
 }
 .navBar-header-wrapper{
     overflow: hidden;
     background-color: #F6F6F6;
     height: 10vh;
+    
    
 }
 .navBar-header-div{
@@ -29,8 +33,14 @@
     margin: 0 auto;
     overflow: auto;
     padding: 0 40px;
+    
    
 
+}
+.topicon {
+    font-size: 20px;
+    color: #FF661F;
+    cursor: pointer;
 }
 .siteName-div{
     cursor: pointer;
@@ -40,12 +50,24 @@
     color: #2C3E50;
     font-family: 'Roboto',sans-serif;     
 }
+.cstom-mobile-view-menu-icons-div{
+    display: none;
+}
+
+
+.custom-menuOpen-icon{
+    display: none;
+}
+.custom-menuClose-icon{
+    display: none;
+}
 .navBar-top-div{
     display: flex;
     align-items: center;
     height: 100%;
     width: 40%;
     margin-left: 2%; 
+    
 }
 
 
@@ -53,13 +75,13 @@
     height: 100%;
     display: flex;
     align-items: center;
+    
    
 }
 .custom-top-navbar-text{
     font-size: 10px;
 }
 .topimg {
-
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -76,6 +98,7 @@
     margin: 0;
     padding: 0;
     list-style: none;
+    
 }
 
 .nav-text-color{
@@ -167,12 +190,140 @@
 .search-custom:focus{
     background-color: #F7F9F9;
 }
-.dm{
-    width: 25%;
-    height: 100%;
-    padding: 0 0px 0 0px;
-    margin-left: 0px;
-    margin: 0;
-  
+
+
+
+
+/* Tablet and under */
+/* HeaderNavbar section  */
+@media(max-width: 768px) {
+   .top-div{
+    padding-top: 5px;
+   }
+    .navBar-top-div {
+        display: none;
+
+    }
+
+    .custom-mobil-font{
+        font-size: 13px !important;
+    }
+
+    .search-input-div {
+        display: none;
+    }
+
+    
+
+    .navBar-header-div {
+        display: flex;
+        flex-direction: row;
+        padding: 0 40px;
+        padding-bottom: 0;
+        height: auto;
+    
+    }
+
+    .mobile-view-custom-menu-div {
+        position: absolute;
+        transition: 2s ease;
+        width: 89.5%;
+        background-color:#F6F6F6;
+        right: 0px;
+        left: 40px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+
+    .siteName-div {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+        font-size: 20px;
+        justify-content: space-between;
+       
+    }
+
+    .cstom-mobile-view-menu-icons-div {
+        display: flex;
+    }
+
+    .mobile-view-custom-menu-div-animated {
+        animation-duration: 0.8s;
+        animation-name: slidein;
+        height: auto;
+        margin-top: 300px;
+        padding-bottom: 10px;
+
+    }
+        /* sttarts animation for menu bar from the top   */
+        @keyframes slidein {
+            from {
+                margin-top: 200px;
+                opacity: 0;
+    
+            }
+    
+            25% {
+                opacity: 0;
+            }
+    
+            to {
+                opacity: 1;
+                margin-top: 300px;
+    
+            }
+    
+            /* ends the animation for menu bar  */
+        }
+   
+
+
+    .custom-menuOpen-icon{
+        display: flex;
+    }
+    .custom-menuClose-icon{
+        display: flex;
+    }
+
+    .custom-mobile-view-ul{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: right;
+       
+    }
+    .customItemDiv{
+        padding-top: 10px;
+        padding-bottom: 10px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        width: 100%;
+        position: relative;
+        right: 20px;
+          
+    }
+    .topListItem{
+        margin-left: 5px;
+       
+    }
+   
+    .mobile-radius{
+        margin-right: 10px;
+        width: 25px !important;
+        height: 25px !important;
+        border-radius: 25px !important;
+       
+    }
+
+    .topicon{
+        font-size: 15px;
+    }
+    .topRight {
+        height: 100%;
+        display: flex;
+        align-items: flex-start;
+    
+        }
+    
    
 }

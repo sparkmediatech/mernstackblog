@@ -1,9 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import Header from '../../components/header/header';
 import Posts from '../../components/posts/posts';
-import Sidebar from '../../components/sidebar/sidebar';
 import './home.css'
-import "../responsive.css";
 import VideoComponent from '../Video Components/VideoComponent'
 
 import {useLocation} from "react-router-dom";
@@ -31,7 +29,7 @@ export default function Home() {
             <Header/>
             
                 <div className='home'>
-                <h4 className='latest-text margin-small '>Latest</h4>
+                <h4 className='latest-text margin-small custom-homePage-component '>Latest</h4>
                 <div className='flex-3 page-div'>
                      <hr className='page-line1 '/>
                      <hr className='page-line2 '/>
