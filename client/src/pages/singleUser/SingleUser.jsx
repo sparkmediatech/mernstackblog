@@ -29,7 +29,8 @@ function SingleUser(props ) {
     const [notAuthorizedError, setNotAuthorizedError] = useState(false);
     const [userAlreadyBlockedError, setUserAlreadyBlockedError] = useState(false);
     const [actionNotCompletedError, setActionNotCompletedError] = useState(false);
-    const [userAlreadyUnblockedError,  setUserAlreadyUblockedError] = useState(false)
+    const [userAlreadyUnblockedError,  setUserAlreadyUblockedError] = useState(false);
+    const [invalidDateError, setInvalidDateError] = useState(false)
     
 
 
@@ -104,6 +105,9 @@ const handleBlockingUser = async() =>{
         if(err.response.data === 'something went wrong'){
             return setSomethingWentWrongError(true)
         }
+        if(err.response.data === 'invalid date'){
+            return setInvalidDateError(true)
+        }
     }
 };
 
@@ -152,6 +156,8 @@ useEffect(()=>{
     setTimeout(() => {
         setUnblockUser(false)
     }, 2000);
+
+    
 }, [userBlocked, unblockUser])
 
 
@@ -180,7 +186,11 @@ useEffect(() =>{
      setTimeout(() => {
         setUserAlreadyUblockedError(false)
     }, 2000);
-}, [userNotFoundError, somethingWentWrongError, dateExpError, notAuthorizedError, userAlreadyBlockedError, actionNotCompletedError, userAlreadyUnblockedError])
+
+    setTimeout(() => {
+        setInvalidDateError(false)
+    }, 2000);
+}, [userNotFoundError, somethingWentWrongError, dateExpError, notAuthorizedError, userAlreadyBlockedError, actionNotCompletedError, userAlreadyUnblockedError, invalidDateError])
 
 
 
@@ -195,7 +205,7 @@ console.log(dateTime)
      
             < AdminSidebar/>
 
-                <div className='other-pages topMargin-Extral-Large'>
+                <div className='other-pages topMargin-medium'>
                     {
 
                     }
@@ -246,6 +256,7 @@ console.log(dateTime)
                                         </div>
 
                                             {dateExpError && <p className='paragraph-text red-text'>You must provide block expiry date</p>}
+                                            {invalidDateError && <p className='paragraph-text red-text'>Invalid date format</p>}
                                             {userAlreadyBlockedError && <p className='paragraph-text red-text'>User already blocked</p>}
                                             {actionNotCompletedError && <p className='paragraph-text red-text'>Action can not be completed, user not found</p>}
                                             {userAlreadyUnblockedError && <p className='paragraph-text red-text'>User already unblocked</p>}

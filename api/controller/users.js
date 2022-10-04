@@ -311,7 +311,7 @@ const handleBlocking = async (req, res) =>{
             return res.status(401).json("You must provide expiry date")
         }
         
-        if(!dayJsDate(calDate, "YYYY-MM-DDTH:mm", true).isValid()){
+        if(!dayJsDate(calDate, "YYYY-MM-DDTHH:mm", true).isValid()){
                 console.log(calDate)
                 return res.status(500).json('invalid date')
             }

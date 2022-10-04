@@ -364,6 +364,9 @@ const handleDeleteSelectedPosts = async (req, res) =>{
             return res.status(404).json('user not found');
 
         };
+        if(!ids.length < 0){
+            return res.status(500).json('no selected post')
+        }
         if(user.isBlocked === true){
             return res.status(401).json('you are blocked')
         }

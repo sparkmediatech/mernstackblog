@@ -219,7 +219,7 @@ useEffect(()=>{
    return(
     <div className='formating-bar '>
       <form onSubmit={handleSubmit} className='submit-form'>
-        <div className='editor-div topMargin-Extral-Large'>
+        <div className='editor-div '>
           <input type="text" placeholder='Write your post title here' className='custom-post-title-input'  onChange={e=> setTitle(e.target.value)}/>
           <Editor  editorState={editorState} 
           wrapperClassName="custom-editor-wrapper"

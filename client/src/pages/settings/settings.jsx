@@ -191,11 +191,11 @@ const handleUserAboutUpdateState = ()=> {
                 </div>
 
                 <div className="custom-user-data-div topMargin flex-2">
-                    <h4 className="text-general-Medium">Update Your Account</h4>
+                    <h4 className="text-general-Medium custom-update-acct-text">Update Your Account</h4>
 
                        
-                        <div className="topMargin-medium flex-2"><label className="text-general-small2">Username</label>
-                            {!userUpdateMode ? <label className="text-general-small2 margin-small ">{logUser.username}</label>:
+                        <div className="topMargin-medium flex-2"><label className="text-general-small2 custom-update-titleText">Username</label>
+                            {!userUpdateMode ? <label className="text-general-small2 margin-small custom-update-titleText ">{logUser.username}</label>:
 
                              <input className="margin-small input-general custom-username-input color1 " type="text" placeholder={logUser.username} 
                             onChange={(e) => setUsername(e.target.value)}
@@ -209,16 +209,16 @@ const handleUserAboutUpdateState = ()=> {
                     
                     {!userUpdateMode && 
                     <>
-                            <div className="margin-small "><label className="text-general-small2">About User</label></div>
+                            <div className="margin-small "><label className="text-general-small2 custom-update-titleText">About User</label></div>
                                 <div className="about-user-div ">
-                               <p className="text-general-small color1 margin-small">{logUser.aboutUser}</p>
+                               <p className="text-general-small color1 margin-small custom-update-about-text">{logUser.aboutUser}</p>
                             </div>
                       </> 
                     }
                        
                      {!aboutUserState && userUpdateMode && 
                         <>
-                            <div className="topMargin-medium "><label className="text-general-small2">About User</label></div>
+                            <div className="topMargin-medium "><label className="text-general-small2 custom-update-titleText">About User</label></div>
                                 <div className="about-user-div edit-user-details-custom-icon flex-3">
                                 <div className="custom-edit-paragraph-tag"><p className="text-general-small color1 margin-small">{logUser.aboutUser}</p></div>
                                 <FiEdit className="custom-edit-icon mousePointer-click-general"  onClick={handleUserAboutUpdateState}/>
@@ -234,7 +234,7 @@ const handleUserAboutUpdateState = ()=> {
                                
                               {aboutUserState &&
                                 <>
-                                    <label className="text-general-small2">About User</label>
+                                    <label className="text-general-small2 custom-update-titleText">About User</label>
                                     <div className="custom-edit-textbox-tag-div">
                                             <textarea 
                                             placeholder='About you...' 
@@ -271,33 +271,33 @@ const handleUserAboutUpdateState = ()=> {
                     
                         
 
-                        <div className="topMargin-medium  "><label className="text-general-small2">Settings</label></div>
+                        <div className="topMargin-medium  "><label className="text-general-small2 custom-update-titleText">Settings</label></div>
 
                         {
                             !userUpdateMode ? 
                             <div className="topMargin-medium flex-3 center-flex-align-display" onClick={handleUserUpdate}> 
                             
-                            <FiEdit className="custom-edit-icon mousePointer-click-general"/><label className="text-general-small2 margin-left-sm1 mousePointer-click-general">Edit User Details</label>
+                            <FiEdit className="custom-edit-icon mousePointer-click-general"/><label className="text-general-small2 margin-left-sm1 mousePointer-click-general custom-update-titleText">Edit User Details</label>
                             
                         </div> :
                         <div className="topMargin-medium flex-3 center-flex-align-display" onClick={handleUserUpdate}>
-                            <MdCancel  className="custom-edit-icon mousePointer-click-general"/><label className="text-general-small2 margin-left-sm1 mousePointer-click-general">Cancel Edit</label>
+                            <MdCancel  className="custom-edit-icon mousePointer-click-general"/><label className="text-general-small2 margin-left-sm1 mousePointer-click-general custom-update-titleText">Cancel Edit</label>
                         </div>
                         }
                         
                       {
                         !userUpdateMode && 
                         <div >
-                            <div className="flex-3 center-flex-align-display margin-small"><AiFillDelete  className="custom-edit-icon"/><label onClick={handleDelete} className="text-general-small2 margin-left-sm1 mousePointer-click-general">Delete Account</label></div>
+                            <div className="flex-3 center-flex-align-display margin-small"><AiFillDelete  className="custom-edit-icon"/><label onClick={handleDelete} className="text-general-small2 margin-left-sm1 mousePointer-click-general custom-update-titleText">Delete Account</label></div>
                             <Link to={`/usersposts/${logUser?.userId}/${Number(1)}`} className='link'>
-                                 <div className="flex-3 center-flex-align-display margin-small"><MdOutlineManageAccounts  className="custom-edit-icon"/><label className="text-general-small2 margin-left-sm1 mousePointer-click-general">Manage Posts</label></div>
+                                 <div className="flex-3 center-flex-align-display margin-small"><MdOutlineManageAccounts  className="custom-edit-icon"/><label className="text-general-small2 margin-left-sm1 mousePointer-click-general custom-update-titleText">Manage Posts</label></div>
                             </Link>
                            
                         </div>
                       }
-                   {userUpdateMode &&  <button className={ updated ? "settingsSubmit2 button-general": "button-general"} type="button" onClick={handleUpdate}>
+                   {userUpdateMode && <div className="custom-updateBTN-div flex"><button className={ updated ? "settingsSubmit2 button-general custom-update-BTN": "button-general custom-update-BTN"} type="button" onClick={handleUpdate}>
                         Update
-                        </button>}
+                        </button></div> }
                 </div>
                 
             </div>

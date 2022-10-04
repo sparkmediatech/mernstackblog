@@ -60,7 +60,9 @@ function App() {
   useEffect(()=>{
   setTimeout(() => {
     setReload(true)
-  }, 500);
+  }, 600);
+
+ 
 }, [])
 
 
@@ -90,12 +92,13 @@ useEffect(() =>{
 }, [pathLocation, pathNameMount, pathName])
 
  
-console.log(writePageAliasName)
+console.log(!isLoading && reload)
   return (
     <Router>
       {cursorState  && <CursorNotallowed/>}
-      { (!reload || isLoading) && <PageLoader />}
-     
+      {!reload  && <PageLoader/>}
+
+      {console.log(!isLoading && reload, 'I am trying page')}
       {!isLoading && reload && <HeaderNavbar/>}
 
       {generalFetchError && <FetchingError/>}

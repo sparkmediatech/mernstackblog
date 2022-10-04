@@ -22,10 +22,22 @@
     width: var(--postTitleLine);
 }
 
+/* tablet mode*/
 @media (max-width: 768px){
     .popular-posts {
         width: 47%;
     }
+    .postTitle {
+        font-size: 20px;
+    }
+}
+
+/* phone mode*/
+@media (max-width: 576px) {
+    .popular-posts {
+        width: 100%;
+    }
+
     .postTitle {
         font-size: 20px;
     }

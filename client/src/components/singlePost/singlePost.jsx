@@ -395,7 +395,7 @@ useEffect(()=>{
         return(
                 <>
                
-            <div className='singlePost topMargin-Extral-Large' key={postId}>
+            <div className='singlePost ' key={postId}>
                 <div className="singlePostWrapper" >
                 
                 {updateMode && <div><MdCancel className='cancel-edit-mode-btn' onClick={() => {setUpdateMode(false); setTitle(singleItem.title)}}/></div>}
@@ -417,14 +417,15 @@ useEffect(()=>{
                     </h1>
                  ) }
 
-                <div className="singlePostInfo">
+               {
+                !updateMode &&  <div className="singlePostInfo">
                     
                     <span 
                         className='singlePostAuthor'>
                             Author:  
                             <Link to={`/userProfile/${username._id}`} className="link">
                                   
-                                <p className='text-general-small post-title-custom-text'><b>{ username.username}</b></p>
+                                <p className='text-general-small post-title-custom-text custom-authorname-text'><b>{ username.username}</b></p>
                           
                             
                             </Link>
@@ -435,6 +436,7 @@ useEffect(()=>{
                          
                     </p>
                 </div>
+               }
 
 
                 {/*If updatemode is true, show textarea for user to write context, if not, show p tag */}

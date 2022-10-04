@@ -10,7 +10,8 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import  BASE_URL from '../../hooks/Base_URL';
 import { useLocation } from 'react-router';
 import {FiMenu} from 'react-icons/fi'
-import {MdOutlineCancel} from 'react-icons/md'
+import {MdOutlineCancel} from 'react-icons/md';
+import { useMediaQuery } from '../../hooks/CustomMediaQuery';
 
 
 
@@ -27,12 +28,13 @@ function HeaderNavbar() {
     const {auth, setAuth, logUser, setWebsiteName, setAboutWebsite, setQuery,  searchState, setSearchState,  blogPageName, pathName,  writePageName,
     pathLocation, setPathLocation, blogPageAliasName, writePageAliasName, setgeneralFetchError
     } = useContext(AuthContext);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    let   tabletMode = useMediaQuery('(max-width: 1200px)');
     //const [searchState, setSearchState] = useState(false);
     
 
   
-console.log(path, 'home')
+
 useEffect(() => {
 
       const fetchFrontendValue = async () =>{
@@ -51,8 +53,7 @@ useEffect(() => {
       }
      fetchFrontendValue()
   }, [])
-  console.log(headerValues)
-
+  
 
   
 
@@ -119,7 +120,13 @@ const handleCloseMobileMenu = ()=>{
 }
 
 
+/*check for screen size  to enable menu div to toggle */
 
+useEffect(()=>{
+    if(!tabletMode){
+        setMobileMenuOpen(false)
+    }
+}, [tabletMode])
 
 
   return (
@@ -183,15 +190,10 @@ const handleCloseMobileMenu = ()=>{
     <article className='navBar-header-wrapper   '  style={customNavColor}>
         <div className='navBar-header-div flex-3 '>
                 <div className='siteName-div flex-3 '>
-                    <h2 >{arrayHeaderValues.websiteName}</h2>
-
-                    <div className='cstom-mobile-view-menu-icons-div flex-3 center-flex-align-display'>
-                        {!mobileMenuOpen && <FiMenu onClick={handleOpenMobileMenu} className='custom-menuOpen-icon'/>}
-                        {mobileMenuOpen && <MdOutlineCancel onClick={handleCloseMobileMenu} className='custom-menuClose-icon'/>}
-                    </div>
-                    
-                    
+                    <div className='custom-siteName-title-div'><h2 >{arrayHeaderValues.websiteName}</h2></div>   
                 </div>
+
+        {!mobileMenuOpen &&
             <div className='navBar-top-div'>
                  <ul className='topList '>
                     
@@ -218,7 +220,7 @@ const handleCloseMobileMenu = ()=>{
                    
 
                    
-
+                                    
                     {pathName.map((singlePathName, key) =>{
                          const {pathName, aliasName, _id, menuName} = singlePathName || {}
                         if(aliasName !== 'HOME'){
@@ -252,6 +254,8 @@ const handleCloseMobileMenu = ()=>{
 
                    
             </div>
+        }
+            
 
             {/* This is for tablet views  */}
 
@@ -267,7 +271,7 @@ const handleCloseMobileMenu = ()=>{
                         return(
                             <>
                                 <div key={key} className={path == singlePathName.pathName ? ' customItemDiv colorBG  margin-extra-small-Top':   ' customItemDiv '}>
-                                    <Link className='link ' to={singlePathName.aliasName == blogPageAliasName ? `/${blogPageName.toLowerCase()}/page/${Number(1)}`: singlePathName.aliasName == 'CONTACT'? `#`: 
+                                    <Link onClick={()=> setMobileMenuOpen(false)} className='link ' to={singlePathName.aliasName == blogPageAliasName ? `/${blogPageName.toLowerCase()}/page/${Number(1)}`: singlePathName.aliasName == 'CONTACT'? `#`: 
                                         singlePathName.aliasName === writePageAliasName ? `/${writePageName?.toLowerCase() }`: `/`
                             
                                 
@@ -328,9 +332,15 @@ const handleCloseMobileMenu = ()=>{
                         
                         }
 
-                        
+                     
                             
                     </div>
+
+            <div className='cstom-mobile-view-menu-icons-div flex-3 center-flex-align-display'>
+                        {!mobileMenuOpen && <FiMenu onClick={handleOpenMobileMenu} className='custom-menuOpen-icon'/>}
+                        {mobileMenuOpen && <MdOutlineCancel onClick={handleCloseMobileMenu} className='custom-menuClose-icon'/>}
+                    </div>   
+            
         </div>
        
     </article>

@@ -3,8 +3,8 @@
     background-color: #FF661F;
     width: 100vw;
     position: fixed;
-    height: 100vh;
-    z-index: 10;
+    height: 100%;
+    z-index: 1200;
   
     
 }

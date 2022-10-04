@@ -91,6 +91,13 @@
   -webkit-box-orient: vertical;
 }
 
+
+
+
+@media (max-width: 992px){
+  
+}
+
 /*tablet mode */
 @media (max-width: 768px) {
   .post {
@@ -122,4 +129,11 @@
   .postCat {
     font-size: 12px;
   }
+}
+
+/*mobile screen mode */
+@media (max-width: 576px){
+    .post{
+      width: 100%;
+    }
 }

@@ -25,7 +25,8 @@ function Subscribers() {
     const [previousEmailState, setPreviousEmailState] = useState(false);
     const [scheduledEmailState, setScheduledEmailState] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [subDeletedState, setSubDeletedState] = useState(false)
+    const [subDeletedState, setSubDeletedState] = useState(false);
+    const [resendVerification, setResendVerification] = useState(false)
 
     //error states
     const [noUserFoundError, setNoUserFoundError] = useState(false);
@@ -47,11 +48,12 @@ function Subscribers() {
         const fetchAllSubscribers = async ()=>{
             try{
                 dispatch({type:"CURSOR_NOT_ALLOWED_START"});
-                const response = await axiosPrivate.get(`${BASE_URL}/emailsub/subscribers?page=${pageNumber}`, { withCredentials: true,
+                
+               const response = await axiosPrivate.get(`/v1/emailsub/subscribers?page=${Number(pageNumber)}`, { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}
             })
              dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-            
+                console.log(allSubscribers)
              setAllSubscribers(response.data)
             }catch(err){
                  dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
@@ -136,20 +138,20 @@ const handleCancelSubscribers = ()=>{
 
 
 //handle next page navigation
-
+console.log(typeof(pageNumber), 'pagenumber')
 const handleNextPage = () =>{
     if(allSubscribers.length == Number(9)){
         setAllsubscribersState(!allSubscribersState);
-        setPageNumber(pageNumber + 1)   
+        setPageNumber(Number(pageNumber) + Number(1))   
     }
     
 }
 
 //handle prev page 
 const handlePrevPage = () =>{
-    if(pageNumber > 1){
+    if(pageNumber > Number(1)){
          setAllsubscribersState(!allSubscribersState);
-        setPageNumber(pageNumber - 1)
+        setPageNumber(Number(pageNumber) - Number(1))
     }
    
 }
@@ -205,6 +207,7 @@ const handleVeryReminder = async(id)=>{
                 headers:{authorization: `Bearer ${auth}`}
             })
         dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+        setResendVerification(true)
     }catch(err){
         dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
         if(err.response.data === 'no user found'){
@@ -229,7 +232,8 @@ const handleVeryReminder = async(id)=>{
 useEffect(()=>{
     setTimeout(() => {
         setSubDeletedState(false);
-        setIsLoading(false)
+        setIsLoading(false);
+        setResendVerification(false)
     }, 3000);
 
     setTimeout(() => {
@@ -250,7 +254,7 @@ useEffect(()=>{
     
 
 
-}, [noUserFoundError, isLoading, notAuthorizedError, noSubscriberFoundError, somethingWentWrongError, userIdEmptyError])
+}, [noUserFoundError, isLoading, notAuthorizedError, noSubscriberFoundError, somethingWentWrongError, userIdEmptyError, resendVerification])
 
 
 
@@ -261,7 +265,7 @@ useEffect(()=>{
         <div className='admin-dashboard-custom-container flex-3'>
             <AdminSidebar/>
 
-            <div className={activeDisplayMode ? 'other-pages custom-other-page-subscribers topMargin-Extral-Large  ' : 'other-pages custom-other-page-subscribers topMargin-Extral-Large'}>
+            <div className={activeDisplayMode ? 'other-pages custom-other-page-subscribers margin-small  ' : 'other-pages custom-other-page-subscribers margin-small'}>
 
                 {
                     /* when this state is true, turn on the cursor not allowed div to disable clicks for divs under  */
@@ -294,7 +298,7 @@ useEffect(()=>{
                        {/* dsplay for subscribers list */
                         displaySubscribersMode && 
                         <>
-                            {!subDeletedState && <h4 className='center-text text-general-small color1'>Subscribers</h4>}
+                            {!subDeletedState && !resendVerification &&<h4 className='center-text text-general-small color1'>Subscribers</h4>}
                             <div className='flex-2 custom-subscribers-heading-div margin-small'>
                            
                                 <div className='flex-3 custom-sub-subscribers-heading-text-div margin-small'>
@@ -315,6 +319,15 @@ useEffect(()=>{
                                         <BsCheckLg className='color4 iconSM'/>
                                         <h3 className='color1 text-general-extral-small center-text'>Deleted</h3>
                                     </>
+                                }
+                                {
+                                    resendVerification &&
+
+                                    <>
+                                        <BsCheckLg className='color4 iconSM'/>
+                                        <h3 className='color1 text-general-extral-small center-text'>Email sent</h3>
+                                    </>
+
                                 }
                             </div>
                             

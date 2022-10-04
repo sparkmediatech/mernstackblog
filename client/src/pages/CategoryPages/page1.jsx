@@ -14,7 +14,11 @@ function Page1() {
   const [selectedId, setSelectedId] = useState('');
   const [postSelectedPostTitle, setSelectedPostTitle] = useState('');
   const [screenMode, setScreenMode] = useState();
-  let   tabletMode = useMediaQuery('(max-width: 768px)')    
+  let   tabletMode = useMediaQuery('(max-width: 768px)');
+  let   mobileMode = useMediaQuery('(max-width: 576px)');
+  let   biggerScreen1 = useMediaQuery('(max-width: 992px)');  
+  
+  
   //fetch page1 based on category index[0]
 useEffect(()=>{
     const fetchPage1 = async ()=>{
@@ -52,13 +56,20 @@ useEffect(()=>{
 
 //This fucntion gets the window's size and passes number based on the winodow size. This number is called to be used to slice method for rendering posts number
 useEffect(()=>{
-    if(tabletMode){
-        setScreenMode(2)
+    if(tabletMode && !mobileMode){
+       return setScreenMode(2)
     }
-    if(!tabletMode){
-        setScreenMode(3)
+    else if(!biggerScreen1 && !tabletMode && !mobileMode){
+        return setScreenMode(3)
     }
-}, [ tabletMode, screenMode]);
+
+    else if(biggerScreen1 && !tabletMode && !mobileMode){
+      return setScreenMode(2)
+    }
+    else if(mobileMode){
+      return setScreenMode(1)
+    }
+}, [ tabletMode, screenMode, mobileMode]);
 
 
 

@@ -112,15 +112,6 @@ return(
     </div> 
 
 }
-{brokenLinkError && !loading &&
-    <div className='mainContainer box-div flex-2 center-flex-align-display already-verified-custom-div'>
-        <BiUnlink className='Icon'/>
-        <h2 className='text-general-small2 color1 center-text' >Link is broken, resend the verification link</h2>
-         <Link to={'/resendemaillink'}>
-            <button className='button-general-2'>Resend Link</button>
-        </Link>
-    </div>
-}
 
 {parameterError && !loading &&
     <div className='mainContainer box-div flex-2 center-flex-align-display already-verified-custom-div'>

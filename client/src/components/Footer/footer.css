@@ -102,8 +102,16 @@
     opacity: 0.3;
     width: 100%;
 }
+
+
+
+
+
+
+
+
 /*tablet mode */
-@media (max-width: 768px){
+@media (max-width: 993px){
     .custom-footer-recent-post-section{
         width: 30%;
     }
@@ -144,5 +152,20 @@
     }
     .custom-footer-main-wrapper{
         padding-top: 20px;
+    }
+}
+
+/*phone mode */
+@media (max-width: 576px){
+    .custom-footer-main-wrapper{
+        display: flex !important;
+        flex-direction: column !important;
+        margin-left: 20px !important;
+    }
+    .footer-section1{
+        width: 95%;
+    }
+    .custom-footer-title-text{
+        margin-top: 15px !important;
     }
 }

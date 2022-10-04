@@ -1,5 +1,7 @@
 :root {
-    --tx: 0vw;
+    --biggerScreenTX: -25vw;
+     --phoneModeTX: 0vw;
+    --tx: 1vw;
     --tabletModeTX: 25vw;
     --lastSlide: -100vw;
     --nextSlide: 100vw;

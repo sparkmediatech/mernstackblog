@@ -69,6 +69,7 @@ const subscribeEmail = async (req, res)=>{
 //get all subscribers
 
 const getAllSubscribers = async (req, res) =>{
+    console.log('I am admin')
      const {skip, limit} = getSubscribersPagination(req.query);
    
     try{

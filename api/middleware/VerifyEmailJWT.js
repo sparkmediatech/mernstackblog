@@ -9,6 +9,7 @@ const bcrypt = require("bcrypt")
 
 //to verify the jwt email verification token sent to user
 const Emailverify = async (req, res, next) =>{
+    console.log('verify this acct')
     
     try{
         const tokenId = req.params.tokenId;
@@ -173,9 +174,10 @@ const changePassword = async (req, res) =>{
 //function to verify subscriber email
 
 const verifySubscriberEmail = async (req, res)=>{
+    console.log('verify email')
     try{
-         const tokenId = req.params.tokenId;
-        const userId = req.params.userId;
+         const tokenId = req.params.emailtokenId;
+        const userId = req.params.emailuserId;
         console.log(tokenId, userId, 'check id and token')
          if(!tokenId){
             return res.status(404).json('verification id must be present')

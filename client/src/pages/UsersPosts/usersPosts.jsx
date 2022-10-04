@@ -204,7 +204,9 @@ const handleDeleteAllPosts = async ()=>{
 };
   //handle prev
 const handlePrev = () =>{
-  history.push(`/usersposts/${logUser?.userId}/${pageNumber - 1}`);
+ if(!pageNumber == Number(1)){
+     history.push(`/usersposts/${logUser?.userId}/${pageNumber - 1}`);
+ }
   //setPage(page - 1)
 }
 
@@ -268,11 +270,11 @@ console.log(usersPosts.length)
 
           
 
-           <div className='usersPosts-custom-main-div mainContainer topMargin-Extral-Large'>
-                <h5 className='text-general-small2 center-text color1 topMargin-medium'>Manage Posts</h5>
+           <div className='mainContainer usersPosts-custom-main-div  margin-small '>
+                <h5 className='text-general-small2 center-text color1 topMargin-medium custom-managePosts-title'>Manage Posts</h5>
                 <div className='clear-selected-btn-div'>
-                    <p onClick={handleDeleteAllPosts} className=' clear-btn marginRight-sm text-general-small color2'>Delete All Posts</p>
-                     <p onClick={handleClearSelected} className=' clear-btn marginRight-sm text-general-small color2'>Clear Selected</p>
+                    <div className='custom-userPosts-delete-BTN-div'> {usersPosts.length > 1 &&<p onClick={handleDeleteAllPosts} className=' clear-btn marginRight-sm text-general-small color2'>Delete All Posts</p>}</div>
+                    <div className='custom-userPosts-clear-BTN-div'> {usersPosts.length > 1 && <p onClick={handleClearSelected} className=' clear-btn marginRight-sm text-general-small color2'>Clear Selected</p>}</div>
                     </div>
               {usersPosts.map((singlePost, index) =>{
                
@@ -347,11 +349,13 @@ console.log(usersPosts.length)
                 }
                 
               </div>
-              <div className='delete-BTN-div flex topMargin-medium'>
-                   {
-                    usersPosts.length > 0 &&  <button onClick={handleSelectedPosts} className={selectedPosts.length > 1 ? 'button-general-2 ' : "delet-selected-custom button-general-2 delet-selected-custom"}>Delete Selected Posts</button>
-                   }
+              
+              {
+                selectedPosts.length > 1 && <div className='delete-BTN-div flex topMargin-medium'>
+                   <button onClick={handleSelectedPosts} className={selectedPosts.length > 1 ? 'button-general-2 ' : "delet-selected-custom button-general-2 delet-selected-custom"}>Delete Selected Posts</button>
+                   
               </div>
+              }
               
            </div>
         

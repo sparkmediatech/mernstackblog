@@ -2,8 +2,9 @@
   height: 40vh;
 }
 
-.custom-subVerify-div{
-  
+.emailSub-custom-main-div{
+  width: 100%;
+  height: 100%;
 }
 .custom-sub-expiry-div{
   width: 50%;

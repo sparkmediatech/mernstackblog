@@ -11,7 +11,10 @@ function Page3() {
   const [selectedId, setSelectedId] = useState('')
   const [postSelectedPostTitle, setSelectedPostTitle] = useState('')
   const [screenMode, setScreenMode] = useState();
-  let   tabletMode = useMediaQuery('(max-width: 768px)')   
+  let   tabletMode = useMediaQuery('(max-width: 768px)');
+  let   mobileMode = useMediaQuery('(max-width: 576px)');
+  let   biggerScreen1 = useMediaQuery('(max-width: 1200px)');  
+  //let   biggerScreen2 = useMediaQuery('(max-width: 1200px)');     
 
   //fetch page1 based on category index[0]
 useEffect(()=>{
@@ -49,17 +52,27 @@ useEffect(()=>{
 
 //This fucntion gets the window's size and passes number based on the winodow size. This number is called to be used to slice method for rendering posts number
 useEffect(()=>{
-    if(tabletMode){
-        setScreenMode(2)
+   if(!biggerScreen1 && !tabletMode && !mobileMode){
+        return setScreenMode(3)
     }
-    if(!tabletMode){
-        setScreenMode(3)
-    }
-}, [ tabletMode, screenMode]);
 
+ 
+    else if(biggerScreen1 && !tabletMode && !mobileMode){
+      return setScreenMode(2)
+    }
+
+    else if(tabletMode && !mobileMode){
+       return setScreenMode(2)
+    }
+   
+    
+    else if(mobileMode){
+      return setScreenMode(1)
+    }
+}, [ tabletMode, screenMode, mobileMode, biggerScreen1, ]);
   return (
       <>
-        <div className='page1-main-custom-div page3-main-custom-div'>
+        <div className='page1-main-custom-div page3-main-custom-div custom-page3-main-div'>
             <div className='page-title-custom-div page3-title-custom-div  '>
               <h3 className='page-title-text'>{pageTitle}</h3>
               <div className='flex-3 page-line '>

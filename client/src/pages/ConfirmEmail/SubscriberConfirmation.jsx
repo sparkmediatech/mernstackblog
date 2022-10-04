@@ -15,13 +15,13 @@ import {BiErrorCircle} from 'react-icons/bi'
 import {BsCheckLg} from 'react-icons/bs'
 
 function SubscriberConfirmation() {
-    const {dispatch} = useContext(AuthContext);
+    const {dispatch,} = useContext(AuthContext);
     const location = useLocation()
     const userId = location.pathname.split("/")[2];
     const tokenId = location.pathname.split("/")[3];
     const [verifiedState, setVerifiedState] = useState(false);
     const [expiredTokenError, setExpiredTokenError] = useState(false);
-    const [alreadyExpiredError, setAlreadyVerifiedError] = useState(true);
+    const [alreadyVerifiedError, setAlreadyVerifiedError] = useState(false);
     const [somethingWentWrongError, setSomethingWentWrongError] = useState(false);
     const [resendVerifyState, setResendVerifyState] = useState(false);
     const [subNotFound, setSubNotFound] = useState(false);
@@ -33,7 +33,7 @@ function SubscriberConfirmation() {
 
             try{
                  dispatch({type:"CURSOR_NOT_ALLOWED_START"});
-                const response = await axios.get(`${BASE_URL}/confirm/${userId}/${tokenId}`);
+                const response = await axios.get(`${BASE_URL}/emailconfirm/${userId}/${tokenId}`);
                 dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
                 setVerifiedState(true);
                 console.log(response.data)
@@ -61,8 +61,10 @@ function SubscriberConfirmation() {
 const handleResendVerification = async()=>{
     try{
         dispatch({type:"CURSOR_NOT_ALLOWED_START"});
+        dispatch({type:"ISLOADING_START"});
         const response = await axios.get(`${BASE_URL}/resendConfirm/${userId}`);
         dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+        dispatch({type:"ISLOADING_END"});
         return setResendVerifyState(true)
     }catch(err){
          dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
@@ -83,12 +85,12 @@ const handleResendVerification = async()=>{
 
 
   return (
-    <div>
-        <div className='mainContainer custom-subVerify-div flex-2 center-flex-align-display center-flex-justify-display'>
+    <div className='emailSub-custom-main-div'>
+        <div className='mainContainer custom-subVerify-div flex-2 center-flex-align-display '>
 
         {
-            verifiedState && !expiredTokenError && !resendVerifyState && !somethingWentWrongError &&
-           <div className='custom-sub-expiry-div flex-2 center-flex-align-display'>
+            verifiedState && !expiredTokenError && !resendVerifyState && !somethingWentWrongError && !alreadyVerifiedError &&
+           <div className='custom-sub-expiry-div flex-2 center-flex-align-display topMargin-Extral-Large'>
              <h3 className='color1 text-general-small'>Email verified</h3>
              <BsCheckLg className='Icon color4'/>
             <p className='text-general-extral-small color1'>Email verification successful</p>
@@ -99,7 +101,7 @@ const handleResendVerification = async()=>{
         {expiredTokenError && !verifiedState && !resendVerifyState && !somethingWentWrongError &&
         
         <>
-           <div className='custom-sub-expiry-div flex-2 center-flex-align-display'>
+           <div className='custom-sub-expiry-div flex-2 center-flex-align-display topMargin-Extral-Large'>
              <h3 className='color1 text-general-small'>Expired verification code</h3>
              <BiErrorCircle className='Icon'/>
             <p className='text-general-extral-small color1'>Verification code has expired, kindly resend verification code</p>
@@ -111,9 +113,9 @@ const handleResendVerification = async()=>{
         }
 
         {
-            !expiredTokenError && !verifiedState && !alreadyExpiredError && !somethingWentWrongError && !resendVerifyState &&
+            !expiredTokenError && !verifiedState && !alreadyVerifiedError && !somethingWentWrongError && !resendVerifyState &&
 
-            <div className='custom-sub-expiry-div flex-2 center-flex-align-display'>
+            <div className='custom-sub-expiry-div flex-2 center-flex-align-display topMargin-Extral-Large'>
              <h3 className='color1 text-general-small'>Broken verification code</h3>
              <BiErrorCircle className='Icon'/>
             <p className='text-general-extral-small color1'>Verification code broken, kindly resend verification code</p>
@@ -123,9 +125,9 @@ const handleResendVerification = async()=>{
         }
 
         {
-            alreadyExpiredError && !expiredTokenError && !verifiedState && !resendVerifyState &&
+            alreadyVerifiedError && !expiredTokenError && !verifiedState && !resendVerifyState &&
 
-            <div className='custom-sub-expiry-div flex-2 center-flex-align-display'>
+            <div className='custom-sub-expiry-div flex-2 center-flex-align-display topMargin-Extral-Large'>
              <h3 className='color1 text-general-small'>Email already verified</h3>
              <BsCheckLg className='Icon'/>
             <p className='text-general-extral-small color1'>Your email has been verified before</p>
@@ -135,7 +137,7 @@ const handleResendVerification = async()=>{
 
         }
 
-        {somethingWentWrongError &&  !alreadyExpiredError && !expiredTokenError && !verifiedState &&
+        {somethingWentWrongError &&  !alreadyVerifiedError && !expiredTokenError && !verifiedState &&
             
             <div className='custom-sub-expiry-div flex-2 center-flex-align-display'>
              <h3 className='color1 text-general-small'>Something went wrong</h3>

@@ -34,3 +34,22 @@
     width: 100%;
     align-items: flex-start;
 }
+
+/*Tablet */
+@media (max-width: 768px){
+    .sidebar{
+        margin-top: 0 !important;
+        align-items: center;
+    }
+    .custom-sidebar-item{
+        width: 90%;
+        display: flex;
+        
+    }
+    .sidebarTitle{
+        font-size: 13px !important;
+    }
+    .sidebarItem p{
+        font-size: 13px !important;
+    }
+}

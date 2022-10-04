@@ -13,7 +13,8 @@ import createImagePlugin from '@draft-js-plugins/image';
 
 export default function Posts() {//we picked the posts props and declared it
     const {auth, isLoading, dispatch, posts, setPosts} = useContext(AuthContext); 
-    let   tabletMode = useMediaQuery('(max-width: 768px)')     
+    let   tabletMode = useMediaQuery('(max-width: 768px)');
+    let   mobileMode = useMediaQuery('(max-width: 576px)')         
     const [loading, setLoading] = useState(false);
     const location = useLocation();// called the useLocation here under a variable called location
     const search = location.search;
@@ -57,13 +58,16 @@ useEffect(()=>{
 
 //This fucntion gets the window's size and passes number based on the winodow size. This number is called to be used to slice method for rendering posts number
 useEffect(()=>{
-    if(tabletMode){
+    if(tabletMode && !mobileMode){
         setScreenMode(2)
     }
-    if(!tabletMode){
+    if(!tabletMode && !mobileMode){
         setScreenMode(3)
     }
-}, [ tabletMode, screenMode])
+    if(mobileMode){
+        setScreenMode(1)
+    }
+}, [ tabletMode, screenMode, mobileMode])
   
 
     return (

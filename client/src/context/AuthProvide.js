@@ -47,11 +47,12 @@ export const AuthProvider = ({children})=>{
     const [ allSubscribersState, setAllsubscribersState] = useState(false);
     const [allSubscribers, setAllSubscribers] = useState([]);
     //this is for email list pagination
-    const [pageNumber, setPageNumber] = useState(()=> sessionStorage.getItem('subscribersPageNum') || 1);
+    const [pageNumber, setPageNumber] = useState(()=> sessionStorage.getItem('subscribersPageNum') || Number(1));
     const [fetchPreviousEmail, setFetchPreviousEmail] = useState(false);
     const [fetchAllScheduledEmail, setFetchAllScheduledEmail] = useState(false);
     const [emailUpdateMode, setEmailUpdateMode] = useState(false);
     const [editModeState, setEditModeState] = useState(false);
+    
 
 
     

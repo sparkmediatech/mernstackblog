@@ -12,7 +12,7 @@ router.post('/resendlink', resendVerificationLink);//resends email verification 
 router.post('/resetPassword', resetPassword);//reset password to get password reset link route
 //router.post('/reset/:passwordId', verifyPasswordResetLink)//verify the link for password reset route
 router.patch('/updatepassword/:passwordId',verifyPasswordResetLink, changePassword);//update password
-router.get('/confirm/:userId/:tokenId', verifySubscriberEmail);
+router.get('/emailconfirm/:emailuserId/:emailtokenId', verifySubscriberEmail);
 router.get('/resendConfirm/:userId', resendSubscriberEmailVerification)
 
 

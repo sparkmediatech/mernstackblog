@@ -18,6 +18,15 @@
   color: black;
 }
 
+
+@media (max-width: 992px){
+  .latest-text{
+    font-size: 23px;
+  }
+}
+
+
+
 /*Tablet */
 @media (max-width: 768px){
   .custom-homePage-component{

@@ -43,7 +43,7 @@ const subscribeEmailConfirmation = async (user, res) => {
     const emailToken = jwt.sign({userId: user._id, username: user.username}, process.env.EMAIL_JWT_SECRET,  {
             expiresIn: process.env.EMAIL_JWT_DURATION})
 
-    const url = `http://localhost:3000/confirm/${user._id}/${emailToken}`
+    const url = `http://localhost:3000/subverify/${user._id}/${emailToken}`
 
     //console.log(emailToken)
     transport.sendMail({

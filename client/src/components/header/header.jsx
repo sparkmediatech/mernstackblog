@@ -11,17 +11,23 @@ import { useMediaQuery } from '../../hooks/CustomMediaQuery';
 
 export default function Header() {
     const {auth, isLoading, dispatch} = useContext(AuthContext);
-    let   tabletMode = useMediaQuery('(max-width: 768px)')    
+    let   tabletMode = useMediaQuery('(max-width: 768px)');
+    let   mobileMode = useMediaQuery('(max-width: 576px)');
+    let   biggerScreen1 = useMediaQuery('(max-width: 1200px)'); 
     const [headerValues, setHeaderValues] = useState([]);
     const [sliderPosts,  setSliderPosts] = useState([])
-    const [slider1, setSlider1] = useState(0)
-    const [slider2, setSlider2] = useState(1)
-    const [slider3, setSlider3] = useState(2)
+    
+    const [desktopSlideCount, setDesktopSlideCount] = useState(0);
+    const [tabletModeSlideCount, setTabletModeSlideCount] = useState(0)
+    const [mobileModeSlideCount, setMobileModeSlideCount] = useState(0);
+    const [biggerScreenSlideCount, setBiggerScreenSlideCount] = useState(0)
     const PF = "http://localhost:5000/images/";
     const [showSlideIcons, setShowSlideIcons] = useState(false);
     const [slideAnimation, setSlideAnimation] = useState(true)
     const [movePosition, setMovePosition] = useState(0);
-    const [tabletModeMovePosition, setTabletModeMovePosition] = useState(25)
+    const [tabletModeMovePosition, setTabletModeMovePosition] = useState(25);
+    const [mobileModeMovePosition, setMobileModeMovePosition] = useState(0);
+    const [biggerScreenMovePosition, setBiggerScreenMovePosition] = useState(25)
     
     const [current, setCurrent] = useState(2)
     const [transition, setTransition] = useState(false);
@@ -69,41 +75,77 @@ export default function Header() {
 
     useEffect(()=>{
      const lastIndex = sliderPosts.length - 3;
-    if(slider1 < 0 || slider2 < 0 || slider3 < 0) {
-      if(!tabletMode){
+     const tabletLastIndex = sliderPosts.length - 1;
+    
+    
+     
+
+      if(!tabletMode && !mobileMode && (desktopSlideCount < 0)){
+        setDesktopSlideCount(2)
        setMovePosition(0)
      }
-      if(tabletMode){
+      if(tabletMode && !mobileMode && (tabletModeSlideCount < 2)){
+        setTabletModeSlideCount(4)
         setTabletModeMovePosition(25)
       }
-    }
-    if (slider1 > lastIndex || slider2 > lastIndex || slider3 > lastIndex ) {
-      
-      setSlider1(0);
-      setSlider2(1);
-      setSlider3(2);
-     if(!tabletMode){
-       setMovePosition(0)
-     }
-      if(tabletMode){
-        setTabletModeMovePosition(24.5)
+      if(mobileMode && (mobileModeSlideCount < 0) ){
+       
+        setMobileModeSlideCount(3)
+        setMobileModeMovePosition(0)
       }
-     
-    }
-  }, [slider1, slider2, slider3,])
+  
 
+  //run when the screen mode is more than tablet and mobile
+  if (!biggerScreen1 && !tabletMode && !mobileMode && ( desktopSlideCount > lastIndex)){  
+      setDesktopSlideCount(2);
+      setMovePosition(0)
+ } 
+ 
+ if(biggerScreen1 && !tabletMode && !mobileMode && (biggerScreenSlideCount > lastIndex)){
+    setBiggerScreenSlideCount(2);
+    setBiggerScreenMovePosition(-25)
+ }
+ //run on tablet mode
+ if(tabletMode == true && !mobileMode && ( tabletModeSlideCount >  tabletLastIndex)){
+     
+      setTabletModeSlideCount(3)
+       setTabletModeMovePosition(24.5)
+   }
+      
+      if(mobileMode && (mobileModeSlideCount > tabletLastIndex-2)){
+        setMobileModeSlideCount(1)
+        setMobileModeMovePosition(0)
+      }
+
+      console.log(mobileModeSlideCount)
+     
+  }, [desktopSlideCount, tabletModeSlideCount, mobileModeSlideCount, tabletMode, mobileMode, biggerScreen1, biggerScreenSlideCount])
+
+ 
+
+  //controls the auto animation and allows for pausing of animation slide when on hover
  useEffect(()=>{  
       if(slideAnimation == true){
        
         let slider = setInterval(() => {
-        setSlider1(slider1 + 1);
-        setSlider2(slider2 + 1);
-        setSlider3(slider3 + 1);
-        if(!tabletMode){
+        
+      if(!biggerScreen1 && !tabletMode && !mobileMode){
+          
+          setDesktopSlideCount(desktopSlideCount + 1)
           setMovePosition(movePosition - 33)
         }
-        if(tabletMode){
+        if(biggerScreen1 && !tabletMode && !mobileMode){
+          setBiggerScreenSlideCount(biggerScreenSlideCount + 1);
+          setBiggerScreenMovePosition(biggerScreenMovePosition - 53)
+        }
+        if(tabletMode && !mobileMode ){
+            setTabletModeSlideCount(tabletModeSlideCount + 1)
            setTabletModeMovePosition(tabletModeMovePosition - 50)
+           
+        }
+        if(mobileMode){
+          setMobileModeSlideCount(mobileModeSlideCount + 1)
+          setMobileModeMovePosition(mobileModeMovePosition  - 101)
         }
        
        
@@ -113,34 +155,49 @@ export default function Header() {
     };
       }
    
-  }, [slider1, slider2, slider3, slideAnimation, movePosition])
+  }, [desktopSlideCount, tabletModeSlideCount, slideAnimation, movePosition, mobileModeSlideCount, tabletModeMovePosition, mobileModeMovePosition, biggerScreenMovePosition])
   
 
 
   const handleNextSlide = ()=>{
-      setSlider1(slider1 + 1);
-      setSlider2(slider2 + 1);
-      setSlider3(slider3 + 1);
-      if(!tabletMode){
+      if(!tabletMode && !mobileMode){
+       
+      setDesktopSlideCount(desktopSlideCount + 1);
      
       setMovePosition(movePosition - 33)
       }
-      if(tabletMode){
+      if(tabletMode && !mobileMode){
+        setTabletModeSlideCount(tabletModeSlideCount + 1)
         setTabletModeMovePosition(tabletModeMovePosition - 50)
+      }
+      if(mobileMode ){
+        
+        setMobileModeSlideCount(mobileModeSlideCount + 1)
+        setMobileModeMovePosition(mobileModeMovePosition -100)
       }
   } 
   
   //handle previous slide
   const handlePrevSlide = ()=>{
-    setSlider1(slider1 -1)
-    setSlider2(slider2 -1)
-    setSlider3(slider3 -1)
-  if(!tabletMode){
    
+   
+  if(!biggerScreen1 && !tabletMode && !mobileMode){
+    setDesktopSlideCount(desktopSlideCount - 1)
     setMovePosition(movePosition + 33);
   }
-   if(tabletMode){
+
+  if(biggerScreen1 && !tabletMode && !mobileMode){
+      setBiggerScreenSlideCount(biggerScreenSlideCount - 1)
+      setBiggerScreenMovePosition(biggerScreenMovePosition + 50)
+  }
+   if(tabletMode && !mobileMode){
+    setTabletModeSlideCount(tabletModeSlideCount - 1)
     setTabletModeMovePosition(tabletModeMovePosition + 50)
+   }
+   if(mobileMode){
+    console.log(mobileModeSlideCount, 'I am mobile count')
+     setMobileModeSlideCount(mobileModeSlideCount - 1)
+    setMobileModeMovePosition(mobileModeMovePosition + 100)
    }
    
   }
@@ -160,14 +217,27 @@ const handleHideSlideIcons = () =>{
 }
 
 
-
+console.log(mobileModeMovePosition)
 useEffect(()=>{
 
-      document.documentElement.style.setProperty('--tx', `${movePosition}vw`);
-      document.documentElement.style.setProperty('--tabletModeTX', `${tabletModeMovePosition}vw`);
-     const nextSlide = (getComputedStyle(document.documentElement).getPropertyValue('--tx'))
-     //console.log(nextSlide, 'here here her')
-}, [movePosition, tabletModeMovePosition ])
+      if(!biggerScreen1 && !tabletMode && !mobileMode){
+        document.documentElement.style.setProperty('--tx', `${movePosition}vw`);
+      }
+      if(biggerScreen1 && !mobileMode && !tabletMode){
+         document.documentElement.style.setProperty('--biggerScreenTX', `${biggerScreenMovePosition}vw`); 
+      }
+      if(tabletMode && !mobileMode){
+        console.log('tablet mode also ran')
+         document.documentElement.style.setProperty('--tabletModeTX', `${tabletModeMovePosition}vw`);
+      }
+      if(mobileMode ){
+          document.documentElement.style.setProperty('--phoneModeTX', `${mobileModeMovePosition}vw`);
+      }
+     
+     const nextSlide = (getComputedStyle(document.documentElement).getPropertyValue('--biggerScreenTX'))
+     console.log(nextSlide, 'big screen')
+     
+}, [movePosition, tabletModeMovePosition, mobileModeMovePosition, biggerScreenMovePosition])
 
 //this controls the line animation under each post title
 useEffect(()=>{
@@ -179,9 +249,13 @@ useEffect(()=>{
        
       document.documentElement.style.setProperty('--postTitleLine', `${randomPostTitleCount}%`);
     const nextSlide = (getComputedStyle(document.documentElement).getPropertyValue('--postTitleLine'))
-     console.log(nextSlide, 'here here her')
+    
   }
 }, [selectedId])
+
+
+
+
 
 
     return (
