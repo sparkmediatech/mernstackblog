@@ -335,6 +335,9 @@ color: #FF661F;
 .bg-blur{
     filter: blur(4px);
 }
+.bg-blur2{
+    filter: blur(2px);
+}
 .custom-fontSize{
     font-size: 25px;
 }

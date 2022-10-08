@@ -6,7 +6,9 @@ import AdminSidebar from './AdminSidebar';
 import BASE_URL from '../../hooks/Base_URL'
 import { RiTruckLine } from 'react-icons/ri';
 import {FiEdit} from 'react-icons/fi';
-import {MdCancel, MdTrendingUp} from 'react-icons/md'
+import {MdCancel, MdTrendingUp} from 'react-icons/md';
+import {FiMenu} from 'react-icons/fi'
+import {MdOutlineCancel} from 'react-icons/md';
 
 function WebsiteSettings() {
     const [headerValues, setHeaderValues] = useState([])
@@ -19,12 +21,13 @@ function WebsiteSettings() {
     const [navColor, setNavColor] = useState("");
     const PF = "http://localhost:5000/images/";
     const [usersDashboardMode, setUsersDashboardMode] = useState(false);
-    const {logUser, auth, dashboardEditMode, dispatch, setgeneralFetchError} = useContext(AuthContext);
+    const {logUser, auth, dashboardEditMode, dispatch, setgeneralFetchError, openAdminSideBar, setOpenAdminSideBar, updateImageState, setUpdateImageState} = useContext(AuthContext);
     const axiosPrivate = useAxiosPrivate();
     const [updating, setUpdating] = useState(false);
     const [textUpdate, setTextUpdate] = useState(false);
-    const [updateImageState, setUpdateImageState] = useState(false);
+    
     const [editAboutWebsiteState, setEditAboutWebsite] = useState(false);
+   
    
    
     
@@ -140,6 +143,7 @@ const handleHeaderValueCreation = async ()=>{
      dispatch({type:"WEBSITE_SETTINGS_STATE_END"});
      setEditAboutWebsite(false);
      setUpdateImageState(false)
+     
    
   }
 
@@ -209,6 +213,7 @@ e.preventDefault()
 //Turns website edit mode on gotten from global state via useContext
   const handleEditMode = () =>{
      dispatch({type:"WEBSITE_SETTINGS_STATE"});
+      
     
   }
 
@@ -267,12 +272,25 @@ e.preventDefault()
   
   ])
 
+
+  const handleImageUpdateMode = ()=>{
+    setUpdateImageState(true)
+    
+  }
   //handle cancel edit image state
 
   const handleCancelEditImageState = ()=>{
     setUpdateImageState(false);
     setFile("")
   }
+const handleOpenSidebarMenu = ()=>{
+  if(openAdminSideBar == 'admin-sidebar-slideOut'){
+      setOpenAdminSideBar('admin-sidebar-slideIn')
+  }
+ 
+    
+}
+
 
   
   return (
@@ -280,18 +298,27 @@ e.preventDefault()
      <>
    <article className='dashboard-container'>
        <div className=" admin-dashboard-custom-container flex-3">
-
+      
       < AdminSidebar/>
+      
+  
+  {
+    openAdminSideBar === 'admin-sidebar-slideIn' && <div className='custom-cover-website-setting-div'></div>
 
-   <div className='other-pages topMargin-medium '>
-      <div>
-           <h2 className='text-general-Medium margin-small'>Website Information</h2>
-          {!dashboardEditMode && headerValues.length !== 0 && <button className='button-general-2' onClick={handleEditMode}>Edit</button>} 
-           {dashboardEditMode && <button className='button-general custom-admin-BTN' onClick={handleCancleEditMode}>Cancel Edit</button>}
+  }
+  
+ <FiMenu onClick={handleOpenSidebarMenu}  className={openAdminSideBar == 'admin-sidebar-slideOut' && !dashboardEditMode ?  'custom-sidebar-menuOpen' :  'custom-sidebar-menuOpen customMenuOpenOff' }/>
+   <div className={openAdminSideBar === 'admin-sidebar-slideIn' ? 'other-pages topMargin-medium custom-website-setting-div bg-blur2': 'other-pages topMargin-medium custom-website-setting-div'}>
+     
+      <div className='custom-sub-wensite-setting-div'>
+        
+           <h2 className='text-general-Medium margin-small custom-website-title-name'>Website Information</h2>
+          {!dashboardEditMode && headerValues.length !== 0 && <button className='button-general-2 custom-edit-website-BTN' onClick={handleEditMode}>Edit</button>} 
+           {dashboardEditMode && <button className='button-general custom-admin-BTN' onClick={handleCancleEditMode}>Cancel</button>}
           
      
              
-          <div  className={dashboardEditMode && !updateImageState ? "dashboard-wrapper custom-dashboard-wrapper-2  margin-small": updateImageState ?  " dashboard-wrapper custom-dashboard-wrapper " : !dashboardEditMode && "dashboard-wrapper custom-dashBoard-wrapper-3"}>
+          <div  className='dashboard-wrapper'>
              <div className="updatedText">{textUpdate && <h3>Updated successfully</h3>}</div>
             <form onSubmit={(e)=>handleHeaderValueUpdate(headerValues._id, e)} className="dashboard-form">
 
@@ -371,6 +398,8 @@ e.preventDefault()
                   
                 </textarea>
                  < MdCancel onClick={()=> setEditAboutWebsite(false)} className='custom-image-edit-icon'/>
+
+                 
               </div>
               
             }
@@ -390,7 +419,7 @@ e.preventDefault()
                <div className='empty-div-text customParaText '></div>
             
             }
-
+       
             {updateImageState && 
               <div className='flex-2 margin-small'>
                     <label>Upload Website Header Image</label>
@@ -399,20 +428,20 @@ e.preventDefault()
                   required/>
                 </div>
             }
+         
              {dashboardEditMode && 
-             <div className='dashboard-img-container custom-dashboard-img-container '>
-                  <div className='flex-3  custom-headerImg-div-1'>
-                 
-                          <p className='text-general-small color1'>Header Image</p>
+            
+                <>
+                 <p className='text-general-small color1'>Header Image</p>
                         <div className='sub-image-custom-div flex-3'>
                           <img className='headerValueImg customHeaderValueImage margin-small' src={file? URL.createObjectURL(file): headerValues.headerImg} alt="" />
-                          {!updateImageState && < FiEdit onClick={()=> setUpdateImageState(true)} className='custom-image-edit-icon'/>}
+                          {!updateImageState && < FiEdit onClick={handleImageUpdateMode} className='custom-image-edit-icon'/>}
                           {updateImageState && < MdCancel onClick={handleCancelEditImageState} className='custom-image-edit-icon'/>}
+                         
                         </div>
-              
-                    
-                  </div>
-              </div> 
+                
+                </> 
+            
              }
             
             {!dashboardEditMode && 
@@ -421,7 +450,7 @@ e.preventDefault()
                 <img className='headerValueImg  customHeaderValueImage-2' src={file? URL.createObjectURL(file): headerValues.headerImg} alt="" />
                </div>
             }
-            {dashboardEditMode && <button className={updating ? "updateModeBTN-unclick button-general" : "button-general"} type="submit">Update</button>}
+            {dashboardEditMode && <div className='custom-website-setting-update-BTN-div'><button className={updating ? "updateModeBTN-unclick button-general" : "button-general custom-website-setting-update-BTN"} type="submit">Update</button></div>}
 
             
              </form>

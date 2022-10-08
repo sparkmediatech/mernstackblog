@@ -10,6 +10,7 @@ import {AuthContext} from '../../context/AuthProvide';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import BASE_URL from '../../hooks/Base_URL';
 import axios from "axios";
+import { useMediaQuery } from '../../hooks/CustomMediaQuery';
 //import { convertFromRaw } from 'draft-js';
 
 
@@ -40,7 +41,7 @@ function Texteditor() {
   const [duplicatePostTitleError, setDubplicateTitleError] = useState(false);
   const [postTitleEmptyError, setPostTitleEmptyError] = useState(false);
   const [postTitleMinError, setPostTitleMinError] = useState(false);
-  
+
 
   
   //fetch caetgories
@@ -219,7 +220,7 @@ useEffect(()=>{
    return(
     <div className='formating-bar '>
       <form onSubmit={handleSubmit} className='submit-form'>
-        <div className='editor-div '>
+        <div className='editor-div'>
           <input type="text" placeholder='Write your post title here' className='custom-post-title-input'  onChange={e=> setTitle(e.target.value)}/>
           <Editor  editorState={editorState} 
           wrapperClassName="custom-editor-wrapper"
@@ -227,12 +228,19 @@ useEffect(()=>{
           toolbarClassName="toolbar-class"
           onEditorStateChange={onEditorStateChange}
           toolbar={{
-            textAlign: { inDropdown: true },
-            image: {uploadEnabled: true, uploadCallback: uploadImageCallBack,  previewImage: true, alt: { present: true }, defaultSize: {width: '700px', height: '400px'}},
-            fontSize: {
-            className: 'custom-fontzie',
+             options: ['inline', 'image', 'blockType',  'list', 'textAlign',  'history', ],
+                      inline: { inDropdown: true, className: 'custom-toolbox no-display', },
+                      list: { inDropdown: true, className: 'custom-toolbox no-display', },
+                      textAlign: { inDropdown: true, className: 'custom-toolbox ', },
+                      link: { inDropdown: true, className: 'custom-toolbox',},
+                      history: { inDropdown: true, className: 'custom-toolbox no-display',},
+                      image: {uploadEnabled: true, className: 'custom-toolbox custom-img', uploadCallback: uploadImageCallBack,  previewImage: true, alt: { present: true }, defaultSize: {width: '700px', height: '400px'}},
+                      
+                      
+                      
            
-          },
+            
+            
           }}
         />
 
@@ -248,7 +256,7 @@ useEffect(()=>{
               {postTitleMinError && <p className='paragraph-text red-text'>Post title should not be less than 10 characters</p>}
           {/* Error messages end */}
         </div>
-        <div className='category-div'><p className='text-general-small color3 '>Category</p>  <input className='input-general category-box margin-small  color3' type='text' placeholder='category here...'
+        <div className='category-div'><p className='text-general-small color3 custom-category-text-title '>Category</p>  <input className='input-general category-box margin-small  color3' type='text' placeholder='category here...'
                             value={selectedCategoryId}
                             
                            readOnly
@@ -256,13 +264,13 @@ useEffect(()=>{
           <div>
             <button onClick={handleShowCategory} className=' select-category-custom-BTN button-general ' type='button'>Select Category</button>
 
-              <div className={showCategories ? ' margin-small category-display-main-div category-display-main-div-animated': 'category-display-main-div'}>
+              <div className={showCategories ? ' margin-small category-display-main-div category-display-main-div-animated ': 'category-display-main-div'}>
                 {catName.map((singleCat)=>{
                   const {catName, _id: catId} = singleCat;
                     {console.log(catName)}
                       return (
                               <>
-                                <div className='custom-single-category-div'>
+                                <div className={showCategories ? 'custom-single-category-div' : 'no-display-cat'}>
                                   <p onClick={()=> handleSelectCategory(catName)} className='text-general-small category-name-text color3'>{catName}</p>
                                 </div>
                               </>   

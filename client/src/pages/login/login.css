@@ -2,13 +2,14 @@
   height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  
   align-items: center;
   background-color: #58595B;
   background-position: center;
 }
 .loginContainer {
   display: flex;
+  margin-top: 70px;
   padding-bottom: 20px;
   padding-top: 10px;
   flex-direction: column;
@@ -82,20 +83,23 @@
 }
 
 /* Admin login */
-
+.custom-main-wrapper{
+  height: 100vh !important;
+}
 .admin-login-custom-div{
   margin-top: 100px;
   border-radius: 10px;
-  width: 40%;
+  width: 50%;
   padding: 0 10px 0px 10px;
-  height: 37vh;
+  height: auto;
 }
 .admin-login-custom-div2 {
-  height: 40vh;
+  height: auto;
+  
 }
 
 .admin-main-custom-div{
-  height: 90vh;
+  height: auto;
   margin-top: 100px;
 }
 .admin-custom-text{
@@ -112,8 +116,48 @@
 
 }
 
+@media (max-width: 1200px){
+  .login{
+    justify-content: center;
+  }
+  .loginContainer{
+    margin-top: 0 !important;
+  }
+}
+
+
+@media (max-width: 768px){
+  /*admin section  */
+  .admin-login-custom-div{
+    width: 70%;
+  }
+}
+
+@media (max-width: 576px){
+.admin-login-custom-div {
+    width: 80%;
+  }
+}
+
+
+@media (max-width: 500px){
+  
+  .admin-main-custom-div{
+    max-width: 1700px !important;
+    padding: 0 10px !important;
+    
+  }
+  .admin-login-custom-div {
+      width: 100% !important;
+      
+  }
+ 
+}
+
+
+
 /* Mobile*/
-@media (max-width: 400px) and (min-width: 320px) {
+@media (max-width: 400px){
   .login {
     height: 100vh;
   }
@@ -126,4 +170,6 @@
   .loginInput {
     width: 90%;
   }
+
+  
 }

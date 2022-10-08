@@ -11,6 +11,8 @@ import Usersmanager from './Usersmanager';
 import SingleUser from '../singleUser/SingleUser';
 import WebsiteSettings from './WebsiteSettings';
 import AdminSidebar from './AdminSidebar';
+import {FiMenu} from 'react-icons/fi'
+import {MdOutlineCancel} from 'react-icons/md';
 
 
 
@@ -63,8 +65,8 @@ const singleUserMode = () =>{
    <>
    <article className='dashboard-container'>
        <div className=" admin-dashboard-custom-container flex-3">
-
-      < AdminSidebar/>
+       
+      <div className='custom-admin-sidebar-main-div'>< AdminSidebar /></div>
 
    <div className='other-pages '>
       <WebsiteSettings/>

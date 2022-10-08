@@ -7,21 +7,33 @@ import {FaHome, FaUserAlt} from 'react-icons/fa';
 import {AiOutlineSetting, AiOutlineMenu, AiOutlineMail} from 'react-icons/ai';
 import {FiActivity} from 'react-icons/fi';
 import {RiPagesLine} from 'react-icons/ri';
-
+import {MdOutlineCancel} from 'react-icons/md';
 
 
 function AdminSidebar() {
-const {logUser, auth, dispatch} = useContext(AuthContext);
+const {logUser, auth, dispatch, openAdminSideBar, setOpenAdminSideBar, updateImageState, setUpdateImageState} = useContext(AuthContext);
 const PF = "http://localhost:5000/images/";
 const [file, setFile] = useState(null);
 const [setDashboardEditMode] = useState(false);
  
+console.log(openAdminSideBar)
+
+
+const handleCloseSideBar = ()=>{
+  if(openAdminSideBar == 'admin-sidebar-slideIn'){
+    return setOpenAdminSideBar('admin-sidebar-slideOut')
+  }
+}
+
+
 
 
   return (
-    <div className='admin-sidebar flex-2 '>
+    <div className={!updateImageState ? `admin-sidebar flex-2 ${openAdminSideBar}`  : `admin-sidebar admin-sidebar-maxLength  ${openAdminSideBar}`}>
+     <div className='custom-sidebar-close-div'><MdOutlineCancel onClick={handleCloseSideBar} className='custom-sidebar-menuClose'/></div>
         <div className='admin-sdiebar-user-details flex-2 center-flex-align-display topMargin-medium'>
-           <label className='custom-label topMargin-medium'>{logUser.username}</label>
+          
+           <label className='custom-admin-name-custom-label topMargin-medium'>{logUser.username}</label>
           <div className='admin-profeile-pic topMargin-medium'>
            <img className='profile-pics' src={ logUser.profilepicture}></img>
           </div>

@@ -52,6 +52,11 @@ export const AuthProvider = ({children})=>{
     const [fetchAllScheduledEmail, setFetchAllScheduledEmail] = useState(false);
     const [emailUpdateMode, setEmailUpdateMode] = useState(false);
     const [editModeState, setEditModeState] = useState(false);
+
+    //admin side bar animation control
+     const [openAdminSideBar, setOpenAdminSideBar] = useState('admin-sidebar-slideOut');
+     //this state is used to adjust the height of the admin sidebar
+     const [updateImageState, setUpdateImageState] = useState(false);
     
 
 
@@ -206,6 +211,8 @@ console.log(aboutWebsite)
             setFetchAllScheduledEmail, fetchAllScheduledEmail,
             emailUpdateMode, setEmailUpdateMode,
             editModeState, setEditModeState,
+            openAdminSideBar, setOpenAdminSideBar,
+            updateImageState, setUpdateImageState
 
            
 

@@ -443,5 +443,15 @@
 .custom-topList-section2{
     display: none;
 }
+.custom-login-text-title{
+    font-size: 12px !important;
+}
+.custom-register-text-title{
+    font-size: 12px !important;
+}
+.topList{
+    padding-bottom: 10px;
+    margin-top: 5px;
+}
 
 }

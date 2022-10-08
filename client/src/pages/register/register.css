@@ -1,8 +1,8 @@
 .register {
-  height: calc(100vh - 50px);
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  
   align-items: center;
   background-color: #58595B;
   background-position: center;
@@ -15,13 +15,15 @@
 }
 
 .registerContainer {
-  height: 70vh;
+  margin-top: 60px;
+  height: auto;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #FFFFFF;
   width: 400px;
-  padding-bottom: 20px;
+  padding-bottom: 25px;
   box-shadow: 8px 8px 8px -6px black;
 }
 
@@ -67,12 +69,18 @@
   color: red;
   padding-bottom: 30px;
 }
+
+@media (max-width: 1200px){
+  .register{
+    justify-content: center;
+  }
+}
 /* Mobile*/
-@media (max-width: 400px) and (min-width: 320px) {
-  .login {
+@media (max-width: 400px){
+  .register {
     height: 100vh;
   }
-  .loginContainer {
+  .registerContainer{
     width: 90%;
   }
   .registerform {

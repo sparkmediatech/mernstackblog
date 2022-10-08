@@ -228,7 +228,7 @@ useEffect(() =>{
 
                 < AdminSidebar/>
 
-    <div className='other-pages topMargin-Extral-Large'>
+    <div className='other-pages custom-user-manager-main-div'>
         
     <div className='flex-3 custom-usermanger-title-div'>
         <h2 className='text-general-Medium topMargin-medium'>Users</h2>

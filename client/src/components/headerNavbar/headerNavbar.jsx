@@ -166,13 +166,13 @@ useEffect(()=>{
                ) : (
                    <ul className='topList'>
                         <li className='topListItem  '>
-                            <Link className='link white-text text-general-small' to='/login'>
+                            <Link className='link white-text text-general-small custom-login-text-title' to='/login'>
                                 LOGIN
                             </Link>
                         </li> 
 
                         <li className='topListItem'> 
-                            <Link className='link white-text text-general-small' to='/register'>
+                            <Link className='link white-text text-general-small custom-register-text-title' to='/register'>
                                 REGISTER
                             </Link>
                         </li>
