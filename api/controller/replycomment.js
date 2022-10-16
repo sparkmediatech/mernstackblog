@@ -19,9 +19,16 @@ try{
     if(user.isVerified === false){
         return res.status(401).json('Only verified users can create comment');
     }
+    
+    if(!req.body.replycomment){
+            return res.status(500).json('comment must not be empty')
+        }
+
+    if(!isNaN(req.body.replycomment)){
+            return res.status(500).json('comment should not be a number')
+            }
     const newReply = new Replycomment(req.body);
         
-    try{
             const currentComment = await Comment.findById(req.params.commentId)
             const currentUser = await User.findById(req.body.author);
             const currentPost = await Post.findById(req.params.id);
@@ -42,10 +49,7 @@ try{
             await currentUser.save();
             
         return res.status(200).json(savedNewReply)
-    }catch(err){
-        console.log(err)
-       return res.status(500).json('Something went wrong');
-    }
+   
 }catch(err){
  return res.status(500).json('Something went wrong');
 }
@@ -53,7 +57,7 @@ try{
 
 //get comment
 const getSingleReplyComment = async (req, res) =>{
-    console.log('hello testing')
+    
      try{
         const replies = await Replycomment.findById(req.params.replyId).populate('author', 'profilePicture username')
         res.status(200).json(replies)
@@ -77,7 +81,14 @@ try{
     if(user.isVerified === false){
         return res.status(401).json('Only verified users can edit their comment');
     }
-    try{
+
+     if(!req.body.replycomment){
+            return res.status(500).json('comment must not be empty')
+        }
+
+    if(!isNaN(req.body.replycomment)){
+            return res.status(500).json('comment should not be a number')
+            }
          const replyComment = await Replycomment.findById(req.params.replyId);
 
          if(!replyComment){
@@ -94,9 +105,7 @@ try{
                 return res.status(401).json("you can only update your comment");
             }
 
-    }catch(err){
-        return res.status(500).json("Something went wrong");   
-    };
+    
 }catch(err){
    return res.status(500).json("Something went wrong") ; 
 }   
@@ -118,25 +127,26 @@ const deleteReplyComment = async (req, res) =>{
             return res.status(401).json("Only verified users can delete their comment");
         }
 
+        if(user.isBlocked === true){
+                return res.status(500).json('Sorry, you are banned from performing this action at the moment');
+            };
+
         if(replycomment.author == req.body.author || user.role === "admin"){
             
-            try{
+           
                 await Comment.findByIdAndUpdate(commentId, { $pull: {replies: replycomment._id } });
                 await User.findByIdAndUpdate(userId, { $pull: {userReplyComments: replycomment._id } });
                 await Post.findByIdAndUpdate(post, {$pull: {postReplyComments: replycomment._id}});
                 await Replycomment.findByIdAndDelete(replycomment);
                return res.status(200).json("Comment has been deleted");
-            }catch(err){
-                console.log(err);
-                return res.status(401).json("Unauthorized access request")
-            }
+            
         }
         else{
              res.status(401).json("you can only delete your posts")
         }
     }catch(err){
-        console.log(err);
-        return res.status(401).json("Unauthorized access request")
+       
+        return res.status(401).json("something went wrong")
     }
 };
 

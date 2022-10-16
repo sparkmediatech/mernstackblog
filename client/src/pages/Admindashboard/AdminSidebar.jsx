@@ -8,6 +8,8 @@ import {AiOutlineSetting, AiOutlineMenu, AiOutlineMail} from 'react-icons/ai';
 import {FiActivity} from 'react-icons/fi';
 import {RiPagesLine} from 'react-icons/ri';
 import {MdOutlineCancel} from 'react-icons/md';
+import { useMediaQuery } from '../../hooks/CustomMediaQuery';
+import { useLocation } from 'react-router';
 
 
 function AdminSidebar() {
@@ -15,10 +17,14 @@ const {logUser, auth, dispatch, openAdminSideBar, setOpenAdminSideBar, updateIma
 const PF = "http://localhost:5000/images/";
 const [file, setFile] = useState(null);
 const [setDashboardEditMode] = useState(false);
+let   smallestScreenMode = useMediaQuery('(max-width: 399px)');
+const location = useLocation()
+const path = location.pathname.split("/")[1];
  
-console.log(openAdminSideBar)
 
 
+
+//this closes the admin sidebar
 const handleCloseSideBar = ()=>{
   if(openAdminSideBar == 'admin-sidebar-slideIn'){
     return setOpenAdminSideBar('admin-sidebar-slideOut')
@@ -37,7 +43,7 @@ const handleCloseSideBar = ()=>{
           <div className='admin-profeile-pic topMargin-medium'>
            <img className='profile-pics' src={ logUser.profilepicture}></img>
           </div>
-           <h3 className='paragraph-text'>Role: {logUser.role}</h3>
+           <h3 className='paragraph-text custom-admin-role-text'>Role: {logUser.role}</h3>
         </div>
 
         <div className='admin-sidebar-component topMargin-medium'>
@@ -54,8 +60,8 @@ const handleCloseSideBar = ()=>{
             <AiOutlineSetting className='admin-custom-icon-div-icons'/>
              <div >
                
-               <Link className='link' to={'/websitesettings'}>
-                     <p className='settingText' >Settings</p>
+               <Link className='link' to={'/settings'}>
+                     <p className={path == 'settings' ? 'settingText color2 settingText-line' : 'settingText'  }>Settings</p>
                </Link>
                   
               
@@ -66,25 +72,20 @@ const handleCloseSideBar = ()=>{
             <div className='flex-3 admin-custom-icon-div'>
             <FaUserAlt className='admin-custom-icon-div-icons'/>
              <div >
-               <Link className='link' to={`/usersdashboard/page/${Number(1)}`}>
-                  <p  className='settingText' >Users</p>
+               <Link className='link' to={`/users/page/${Number(1)}`}>
+                  <p  className={path == 'users'? 'settingText color2 settingText-line' : 'settingText' } >Users</p>
                </Link>
                 
              </div>
           </div>
           
-          <div className='flex-3 admin-custom-icon-div'>
-            <FiActivity className='admin-custom-icon-div-icons'/>
-             <div >
-                 <p className='settingText' >Activities</p>
-             </div>
-          </div>
+          
 
            <div className='flex-3 admin-custom-icon-div'>
             <RiPagesLine className='admin-custom-icon-div-icons'/>
              <div >
-               <Link className='link' to={'/pagesettings'}>
-                  <p className='settingText' >Pages</p>
+               <Link className='link' to={'/pages'}>
+                  <p className={path == 'pages' ? 'settingText color2 settingText-line' : 'settingText'} >Pages</p>
                </Link>
               
              </div>
@@ -95,21 +96,23 @@ const handleCloseSideBar = ()=>{
             <AiOutlineMenu className='admin-custom-icon-div-icons'/>
              <div >
                <Link className='link' to={'/menu'}>
-                  <p className='settingText' >Menu</p>
+                  <p className={path == 'menu' ? 'settingText color2 settingText-line' : 'settingText'} >Menu</p>
                </Link>
               
              </div>
           </div>
 
-          <div className='flex-3 admin-custom-icon-div'>
+         {!smallestScreenMode &&
+           <div className='flex-3 admin-custom-icon-div'>
             <AiOutlineMail className='admin-custom-icon-div-icons'/>
              <div >
                <Link className='link' to={'/email-demon'}>
-                  <p className='settingText' >Email Demon</p>
+                  <p className={path == 'email-demon' ? 'settingText color2 settingText-line' : 'settingText'} >Email-Demon</p>
                </Link>
               
              </div>
           </div>
+         }
           
         </div>
        

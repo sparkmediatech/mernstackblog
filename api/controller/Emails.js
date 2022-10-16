@@ -49,6 +49,14 @@ const subscribeEmail = async (req, res)=>{
     if(!isNaN(subscriberName)){
     return res.status(500).json('subscriber name should not be a number')
     }
+    
+    if(/\s/.test(subscriberName)){
+                return res.status(500).json('subscriberName must not contain empty space')
+    }
+
+    if(/\s/.test(subscriberEmail)){
+                return res.status(500).json('subscriber email must not contain empty space')
+    }
 
    const newSubsciber = new Subscribers({
         subscriberName: subscriberName,

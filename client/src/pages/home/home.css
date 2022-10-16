@@ -18,6 +18,14 @@
   color: black;
 }
 
+@media (max-width: 1200px){
+  .custom-homePage-latest-text{
+    margin-top: 80px !important;
+  }
+}
+
+
+
 
 @media (max-width: 992px){
   .latest-text{

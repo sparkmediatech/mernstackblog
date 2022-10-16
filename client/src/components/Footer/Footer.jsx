@@ -25,6 +25,8 @@ function Footer() {
     const [subEmailNumberError, setSubEmailNumberError] = useState(false);
     const [subNameNumberError, setSubNameNumberError] = useState(false);
     const [somethhingWentWrongError, setSomethingWentWrongError] = useState(false);
+    const [subNameSpaceError, setSubNameSpaceError] = useState(false);
+    const [subEmailSPaceError, setSubEmailSPaceError] = useState(false)
 
     //category error state
     const [noCategoryFound, setCategoryFound] = useState(false);
@@ -95,6 +97,12 @@ function Footer() {
                 if(err.response.data === 'something went wrong'){
                     return setSomethingWentWrongError(true)
                 }
+                if(err.response.data == 'subscriberName must not contain empty space'){
+                    return setSubNameSpaceError(true)
+                }
+                if(err.response.data == 'subscriber email must not contain empty space'){
+                    return setSubEmailSPaceError(true)
+                }
             }
    }
 
@@ -102,48 +110,79 @@ function Footer() {
     
 //handles notification
 useEffect(()=>{
-    setTimeout(() => {
-        setSubEmailEmptyError(false)
-    }, 3000);
 
-    setTimeout(() => {
-       setSubNameEmptyError(false)
-    }, 3000);
+if(subEmailEmptyError){
+ setTimeout(() => {
+    setSubEmailEmptyError(false)
+}, 3000);
+}
+   
+if(subNameEmptyError){
+setTimeout(() => {
+setSubNameEmptyError(false)
+}, 3000);
+}
 
-    setTimeout(() => {
-       setSubNameAlreadyExistError(false)
-    }, 3000);
+if(subNameAlreadyExistError){
+ setTimeout(() => {
+    setSubNameAlreadyExistError(false)
+}, 3000);
+}
+if(subEmailAlreadyExistError){
+setTimeout(() => {
+setSubEmailAlreadyExistError(false)
+}, 3000);
+}
+   
+if(subEmailNumberError){
+  setTimeout(() => {
+    setSubEmailNumberError(false)
+}, 3000);
+}
+    
+if(subNameNumberError){
+ setTimeout(() => {
+setSubNameNumberError(false)
+}, 3000);
+}
+  
+if(somethhingWentWrongError){
+ setTimeout(() => {
+    setSomethingWentWrongError(false)
+}, 3000);
+}
+   
+if(subscribedText){
+ setTimeout(() => {
+    setSubscribedText(false)
+}, 3000);
+}
+   
+if(somethingWentWrongCatError){
+setTimeout(() => {
+    setSomethingWentWrongCatError(false)
+}, 3000);
+}
+   
+if(noCategoryFound){
+ setTimeout(() => {
+    setCategoryFound(false)
+}, 3000);
+}
 
+if(subNameSpaceError){
     setTimeout(() => {
-       setSubEmailAlreadyExistError(false)
+      setSubNameSpaceError(false)  
     }, 3000);
+}
 
+if(subEmailSPaceError){
     setTimeout(() => {
-       setSubEmailNumberError(false)
+    setSubEmailSPaceError(false)
     }, 3000);
-
-    setTimeout(() => {
-       setSubNameNumberError(false)
-    }, 3000);
-
-    setTimeout(() => {
-       setSomethingWentWrongError(false)
-    }, 3000);
-
-    setTimeout(() => {
-       setSubscribedText(false)
-    }, 3000);
-
-    setTimeout(() => {
-       setSomethingWentWrongCatError(false)
-    }, 3000);
-
-    setTimeout(() => {
-       setCategoryFound(false)
-    }, 3000);
-
+}
 }, [subEmailEmptyError, subNameEmptyError, subNameAlreadyExistError, subEmailAlreadyExistError, subEmailNumberError, subNameNumberError, somethhingWentWrongError, subscribedText, somethingWentWrongCatError,
-noCategoryFound
+noCategoryFound, subNameSpaceError, subEmailSPaceError
 ])
 
 
@@ -232,6 +271,11 @@ noCategoryFound
                                 {subEmailNumberError &&  <p className='color2 text-general-extral-small center-text margin-small'>Subscriber email must not be all numbers</p>}
                                 {subNameNumberError &&  <p className='color2 text-general-extral-small center-text margin-small'>Subscriber name must not be all numbers</p>}
                                 {somethhingWentWrongError &&  <p className='color2 text-general-extral-small center-text margin-small'>Something went wrong, reload</p>}
+
+                                {subNameSpaceError &&  <p className='color2 text-general-extral-small center-text margin-small'>Subscriber name must not conatin space</p>}
+
+                                {subEmailSPaceError &&  <p className='color2 text-general-extral-small center-text margin-small'>Subscriber name must not conatin space</p>}
+                                
                                 
 
 

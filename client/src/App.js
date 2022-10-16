@@ -138,13 +138,13 @@ console.log(!isLoading && reload)
       <Route path="/admin">
            <Admin/> 
         </Route>
-       <Route path="/usersdashboard/page/:pageId">
+       <Route path="/users/page/:pageId">
           {logUser?.role == "admin" && auth?.token  ?  <Usersmanager/> : <Register/> }
         </Route>
-         <Route path="/websitesettings">
+         <Route path="/settings">
           {logUser?.role == "admin" && auth?.token  ?  <WebsiteSettings/> : <Register/> }
         </Route>
-        <Route path="/pagesettings">
+        <Route path="/pages">
           {logUser?.role == "admin" && auth?.token ?  <PageSettings/> : <Register/> }
         </Route>
 

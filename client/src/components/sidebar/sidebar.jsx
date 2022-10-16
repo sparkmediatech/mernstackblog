@@ -26,7 +26,11 @@ export default function Sidebar() {
        }
         getCategory()
     }, [])
-   console.log(authorDetails)
+  
+
+
+
+    
     return (
         <div className='sidebar'>
             <div className='sidebarItem'>

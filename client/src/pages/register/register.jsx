@@ -51,15 +51,23 @@ export default function Register() {
 
 //useEffect to clear off error messages after some seconds
 useEffect(()=>{
-    setTimeout(() => {
+if(emailAlreadyExist){
+          setTimeout(() => {
         setEmailAlreadyExis(false)
     }, 2000);
-
+    }
+  
+if(passwordNotMatchError){
      setTimeout(() => {
         setPasswordNotMatchError(false)
     }, 2000);
+}
+    
 
-}, [emailAlreadyExist, passwordNotMatchError])
+}, [emailAlreadyExist, passwordNotMatchError]);
+
+
+
 
     return (
         <div className='register'>

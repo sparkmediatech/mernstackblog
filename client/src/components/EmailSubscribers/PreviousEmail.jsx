@@ -108,32 +108,44 @@ const handleNext = ()=>{
 
 //notifications
 useEffect(()=>{
-    setTimeout(() => {
-       setEmailDeletedState(false);
-        setIsLoading(false)
-    }, 3000);
 
-    setTimeout(() => {
-      setNoUserFoundError(false)
-    }, 3000);
+if(emailDeletedState){
+setTimeout(() => {
+    setEmailDeletedState(false);
+    setIsLoading(false)
+}, 3000);
+}
 
-    setTimeout(() => {
-        setNotAuthorizedError(false)
-    }, 3000);
-
-    setTimeout(() => {
-        setNoEmailFoundError(false)
-    }, 3000);
-
-    setTimeout(() => {
-        setSomethingWentWrongError(false)
-    }, 3000);
+if(noUserFoundError){
+ setTimeout(() => {
+    setNoUserFoundError(false)
+}, 3000);
+}
+   
+if(notAuthhorizedError){
+setTimeout(() => {
+    setNotAuthorizedError(false)
+}, 3000);
+}
+    
+if(noEmailFoundError){
+setTimeout(() => {
+setNoEmailFoundError(false)
+}, 3000);
+}
+    
+if(somethingWentWrong){
+ setTimeout(() => {
+setSomethingWentWrongError(false)
+}, 3000);
+}
+   
 
 }, [emailDeletedState, noUserFoundError, notAuthhorizedError, noEmailFoundError, somethingWentWrong])
 
 
   return (
-    <div className='flex-2'>
+    <div className='flex-2 custom-prev-email-main-wrapper'>
         {allPreviousEmail.length < 1 && !isLoading &&
         <h5 className='color1 text-general-small center-text'>No email at the moment</h5>
         }
@@ -155,12 +167,12 @@ useEffect(()=>{
             return(
                 <div className='flex-3 custom-prev-email-main-div margin-small-small center-flex-align-display margin-small' key={key}>
                    <div className='flex-2 custom-previous-email-title-div marginLeft-sm'>
-                     <h5 className='text-general-small color2'>{emailTitle}</h5>
+                     <h5 className='text-general-small color2 custom-prev-email-title'>{emailTitle}</h5>
                         <p className='color1 text-general-extral-small margin-extra-small-Top'>Delivery Date: {deliveryDate ? new Date( deliveryDate).toDateString() : new Date(createdAt).toDateString()}</p>
 
                     </div>
 
-                    <AiFillDelete onClick={()=> handleDeletePrevEmail(emailId)} className={!isLoading ? 'red-text marginRight-sm general-cursor-pointer': 'red-text marginRight-sm curson-not-allowed-2'}/>
+                    <AiFillDelete onClick={()=> handleDeletePrevEmail(emailId)} className={!isLoading ? 'red-text marginRight-sm general-cursor-pointer custom-prev-email-icon': 'red-text marginRight-sm curson-not-allowed-2 pointer-events-none custom-prev-email-icon'}/>
                 </div>
             )
         })}

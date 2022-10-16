@@ -68,7 +68,7 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     padding: 10px;
     padding-bottom: 35px;
-    width:40.7%;
+    width:49%;
 }
 .custom-subscribers-list-item-div{
     justify-content: space-between;
@@ -78,7 +78,7 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .custom-email-list-general-div{
-    width: 13%;
+    width: 20%;
 }
 .custom-done-sendEmail-BTN{
     font-family: 'Source Sans Pro', sans-serif;
@@ -163,4 +163,85 @@
     width: 94%;
     height: auto;
     position: absolute;
+}
+
+.custom-email-send-BTN{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+@media (max-width: 1200px){
+.custom-prev-email-main-div{
+        height: 40px;
+    }
+.custom-createEmail-div{
+    height: auto;
+}
+.custom-email-textArea {
+    min-width: 98%;
+    max-width: 98%;
+    min-height: 200px;
+}
+.custom-delivery-mode-BTN{
+    font-size: 12px;
+ 
+}
+.custom-list-email-sendEmail-div {
+    padding-bottom: 7px;
+    width: 63%;
+}
+.custom-email-list-general-div{
+    width: 15%;
+}
+}
+
+
+
+
+@media (max-width: 768px){
+.custom-subscriber-email-div {
+    margin-right: 25%;
+}
+.custom-subscriber-verify-status-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5%;
+    width: 30%;
+}
+}
+
+
+@media (max-width: 576px){
+.custom-prev-email-title{
+    font-size: 15px !important;
+    }
+.custom-prev-email-icon{
+    font-size: 15px;
+}
+.custom-subscriber-email-div{
+    margin-left: 10px;
+    padding: 5px;
+}
+.custom-done-sendEmail-BTN{
+    width: 17%;
+    padding: 7px 0 7px 0;
+
+}
+.custom-write-email-date{
+    height: 40px;
+    margin-bottom: 10px;
+}
+.custom-email-send-BTN{
+  font-size: 15px; 
+    padding: 13px 50px 13px 50px;
+    padding-bottom: 10px;
+}
+.custom-delivery-mode-BTN{
+    padding: 5px;
+}
 }

@@ -32,7 +32,7 @@ export default function AdminLogin() {
             });           
             setAuth(response.data)
            
-                window.location.replace('/websitesettings') 
+                window.location.replace('/settings') 
         }catch(err){
            if(err.response.data === 'You do not have permission'){
                setNotPermittedError(true)
@@ -52,27 +52,40 @@ export default function AdminLogin() {
         }
 
     }
+
+    
 //useEffect to clear off error messages after some seconds
 useEffect(()=>{
-    setTimeout(() => {
+    if(notPermittedError){
+         setTimeout(() => {
         setNotPermittedError(false)
     }, 2000);
-
-     setTimeout(() => {
+    }
+   
+    if(notVerifiedError){
+         setTimeout(() => {
         setNotVerifiedError(false)
     }, 2000);
-
+    }
+    
+if(wrongCredentialError){
      setTimeout(() => {
         setWrongCredetialError(false)
     }, 2000);
-
-    setTimeout(() => {
+}
+    
+if(noUserError){
+     setTimeout(() => {
         setNoUser(false)
     }, 2000);
-
-    setTimeout(() => {
+}
+   
+if(somethingWentWrongError){
+     setTimeout(() => {
         setSomethingwentWrongError(false)
     }, 2000);
+}
+   
 }, [notPermittedError, notVerifiedError, wrongCredentialError, noUserError, somethingWentWrongError])
 
 

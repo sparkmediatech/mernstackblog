@@ -7,14 +7,14 @@ import  BASE_URL from '../../hooks/Base_URL'
 import {MdNavigateNext, MdNavigateBefore} from 'react-icons/md'
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from '../../hooks/CustomMediaQuery';
+import axiosPrivate from '../../hooks/AxiosPrivate';
 
 
 export default function Header() {
-    const {auth, isLoading, dispatch} = useContext(AuthContext);
+    const { headerImage, sliderState, setSliderState} = useContext(AuthContext);
     let   tabletMode = useMediaQuery('(max-width: 768px)');
     let   mobileMode = useMediaQuery('(max-width: 576px)');
     let   biggerScreen1 = useMediaQuery('(max-width: 1200px)'); 
-    const [headerValues, setHeaderValues] = useState([]);
     const [sliderPosts,  setSliderPosts] = useState([])
     
     const [desktopSlideCount, setDesktopSlideCount] = useState(0);
@@ -28,29 +28,23 @@ export default function Header() {
     const [tabletModeMovePosition, setTabletModeMovePosition] = useState(25);
     const [mobileModeMovePosition, setMobileModeMovePosition] = useState(0);
     const [biggerScreenMovePosition, setBiggerScreenMovePosition] = useState(25)
-    
-    const [current, setCurrent] = useState(2)
-    const [transition, setTransition] = useState(false);
-    const [direction, setDirection] = useState(0);
-    const [count, setCount] = useState(3);
     const [selectedId, setSelectedId] = useState('');
     const [randomPostTitle, setRandomPostTitle] = useState('');
+    
+   
+  
+
     
    const percentage = 100
   
 
-  useEffect(() => {
-       dispatch({ type: "ISLOADING_START" });
-      const fetchFrontendValue = async () =>{
-          const res = await axios.get(`${BASE_URL}/headervalue`);
-          setHeaderValues(res.data)
-           dispatch({ type: "ISLOADING_END" });
-      }
-     fetchFrontendValue()
-  }, [])
 
-  
+        
+ 
 
+
+
+   
   //fetch the randomly generated post from api
 
   useEffect(()=>{
@@ -66,10 +60,12 @@ export default function Header() {
         }
     }
     sliderPosts()
+   
   }, []);
 
   
-  
+
+
 
 
 
@@ -261,46 +257,92 @@ useEffect(()=>{
     return (
       
         <>
-        
-        <div className='section-slider-div'  onMouseEnter={handleShowSlideIcons} onMouseLeave={handleHideSlideIcons}  > 
-        <MdNavigateNext  onClick={handleNextSlide} className={showSlideIcons ? 'next-icon slideIcon showSlideIcons': "next-icon slideIcon" }onMouseEnter={handleShowSlideIcons} onMouseLeave={handleHideSlideIcons}/>
-         <MdNavigateBefore onClick={handlePrevSlide} className={showSlideIcons ? 'previous-icon slideIcon showSlideIcons': "previous-icon slideIcon"}onMouseEnter={handleShowSlideIcons} onMouseLeave={handleHideSlideIcons}/>
-         {sliderPosts.map((singleSliderPost, index) =>{
-             
-             const {title, _id, postPhoto, createdAt, categories} = singleSliderPost || {}
-              
-            
-              
 
-                 return(
-                     <> 
-                   {/*<div  className={`${position} ${transition ? 'move header-image-div ': 'header-image-div '}  ` }  key={index}  >*/} 
-                     <div  className='header-image-div move' key={index}  onMouseEnter={()=> {setSelectedId(_id); setRandomPostTitle(title)}} onMouseLeave={()=> {setSelectedId(''); setRandomPostTitle('')}}>
-                     
-                      
-                      <img src={postPhoto} alt="" className='postSlider-img'  />
-                      
-                      <div className='postSlider-detail-div'>
-                        <div className='margin-left-sm1 postSlider-category-div '><p className='white-text text-general-small'>{categories}</p></div>
-                        <div className='postSlider-title-div margin-left-sm1 margin-small flex-2'><Link to={`/post/${_id}`} className='link'><p className={selectedId === _id ? 'postTitle-animated-color postTitle  ': 'postTitle white-text '}>{title}</p></Link></div>
 
-                          
-                          <div className={selectedId == _id ? 'postTitleLine animated-post-title-line': 'postTitleLine'}></div>
+      {
+        sliderState.map((singleSlider, index)=>{
+          console.log(singleSlider.sliderState, 'yes, slider')
+          if(singleSlider.sliderState == 'sliderOFF' && singleSlider.sliderState !== 'headerOFF'){
+            console.log('I ran a slider off')
+
+
+            return(
+               <div className='header-static-image-main-div'>
+
+                  <div className='headerImage-sub-container'>
+                    <img className='header-static-image' src={headerImage} alt="" />
+                  </div>
+
+                </div>
+            )
+          }
+
+      if(singleSlider.sliderState == 'sliderON' && singleSlider.sliderState !== 'headerOFF'){
+        return(
+
+          <div className='section-slider-div'  onMouseEnter={handleShowSlideIcons} onMouseLeave={handleHideSlideIcons}  > 
+                  <MdNavigateNext  onClick={handleNextSlide} className={showSlideIcons ? 'next-icon slideIcon showSlideIcons': "next-icon slideIcon" }onMouseEnter={handleShowSlideIcons} onMouseLeave={handleHideSlideIcons}/>
+                  <MdNavigateBefore onClick={handlePrevSlide} className={showSlideIcons ? 'previous-icon slideIcon showSlideIcons': "previous-icon slideIcon"}onMouseEnter={handleShowSlideIcons} onMouseLeave={handleHideSlideIcons}/>
+                
+                {sliderPosts.map((singleSliderPost, index) =>{
+            
+                  const {title, _id, postPhoto, createdAt, categories} = singleSliderPost || {}
+            
+    
+            
+
+                return(
+                    <> 
+                  {/*<div  className={`${position} ${transition ? 'move header-image-div ': 'header-image-div '}  ` }  key={index}  >*/} 
+                    <div  className='header-image-div move' key={index}  onMouseEnter={()=> {setSelectedId(_id); setRandomPostTitle(title)}} onMouseLeave={()=> {setSelectedId(''); setRandomPostTitle('')}}>
+                    
+                    
+                    <img src={postPhoto} alt="" className='postSlider-img'  />
+                    
+                    <div className='postSlider-detail-div'>
+                      <div className='margin-left-sm1 postSlider-category-div '><p className='white-text text-general-small'>{categories}</p></div>
+                      <div className='postSlider-title-div margin-left-sm1 margin-small flex-2'><Link to={`/post/${_id}`} className='link'><p className={selectedId === _id ? 'postTitle-animated-color postTitle  ': 'postTitle white-text '}>{title}</p></Link></div>
+
+                        
+                        <div className={selectedId == _id ? 'postTitleLine animated-post-title-line': 'postTitleLine'}></div>
+                    
                       
-                        
-                        
-                        <div className='margin-left-sm1 margin-small'><p className='text-general-small white-text'> {new Date(createdAt).toDateString()}</p></div>
-                        </div>
-                    </div>
+                      
+                      <div className='margin-left-sm1 margin-small'><p className='text-general-small white-text'> {new Date(createdAt).toDateString()}</p></div>
+                      </div>
+                  </div>
+          
+          
+    
+                </>   
+                )
+            })}
+
+                    
+    </div>
+        )
             
-            
+          }
+          
+        })
+
+
+
+    
       
-                 </>   
-                 )
-             })}
+}
+    
+        
+      
+    
 
-                     
-      </div>
+   
+
+     
+
+     
+
+   
         </>
     )
 }

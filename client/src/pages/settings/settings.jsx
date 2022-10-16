@@ -91,43 +91,67 @@ const handleUpdate = async (e) =>{
 useEffect(()=>{
     setAboutUser(logUser.aboutUser)
 }, [aboutUserState])
+
+
 //this controls notification to timeout after some seconds
-  useEffect(() => {
-      setTimeout(() => {
+useEffect(() => {
+if(updated){
+         setTimeout(() => {
         setUpdated(false)
     }, 2000);
-
-       setTimeout(() => {
+    }
+     
+if(aboutUserUpdateMaxError){
+    setTimeout(() => {
         setAboutUserUpdateMaxError(false)
     }, 2000);
 
-    setTimeout(() => {
+}
+
+if(usernameEmptyError){
+ setTimeout(() => {
         setUsernameEmptyError(false)
     }, 2000);
-
-     setTimeout(() => {
+}
+   
+if(aboutUserUpdateMinError){
+ setTimeout(() => {
         setAboutUserUpdateMinError(false)
     }, 2000);
 
-    setTimeout(() => {
-        setUnAuthorizedUserError(false)
-    }, 2000);
+}
 
-     setTimeout(() => {
-        setSomethingWentWrongError(false)
-    }, 2000);
+if(unAuthorizedUserError){
+setTimeout(() => {
+    setUnAuthorizedUserError(false)
+}, 2000);
+}
 
-     setTimeout(() => {
-       setAboutUserSectionEmptyError(false)
-    }, 2000);
+if(somethingWentWrongError){
+ setTimeout(() => {
+    setSomethingWentWrongError(false)
+}, 2000);
+}
 
-     setTimeout(() => {
-      setUserNotVerifiedError(false)
-    }, 2000);
+if(aboutUserSectionEmptyError){
+setTimeout(() => {
+    setAboutUserSectionEmptyError(false)
+}, 2000);
+}   
 
-     setTimeout(() => {
+if(userNotVerifiedError){
+ setTimeout(() => {
+    setUserNotVerifiedError(false)
+}, 2000);
+}    
+
+if(noUserFoundError){
+ setTimeout(() => {
       setNoUserFoundError(false)
     }, 2000);
+}    
+
+    
   }, [updated, aboutUserUpdateMaxError, usernameEmptyError, aboutUserUpdateMinError, unAuthorizedUserError,
     somethingWentWrongError, aboutUserSectionEmptyError, userNotVerifiedError, noUserFoundError
     ])
@@ -161,6 +185,10 @@ const handleUserUpdate = () =>{
 const handleUserAboutUpdateState = ()=> {
     setAboutUserState(!aboutUserState)
 }
+
+
+
+
     return (
 
         <>

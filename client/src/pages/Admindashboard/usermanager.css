@@ -5,9 +5,13 @@
     overflow: auto;
     padding: 0 40px;
 }*/
-
+.custom-user-manager-main-div{
+    width: 80%;
+   
+}
 .custom-users-dashboard-div{
     width: 100%;
+    height: 650px
 }
 .users-manager-custom-div{
     background-color: #FBFCFC;
@@ -18,7 +22,6 @@
     width: 90%;
     margin-top: 30px;
     background-color: white;
-   
     padding: 10px;
 }
 
@@ -63,10 +66,8 @@
 /* users name section  */
 .users-custom-name-container{
     margin-top: 5px;
-    width: 35%;
+    width: 37%;
     height: 100%;
-   
-
 }
 
 /* users profile pics section  */
@@ -97,8 +98,7 @@
     margin-top: 5px;
     margin-left: 20px;
     height: 100%;
-    width: 75%;
-    
+    width:70%;
 }
 
 /* user role section */
@@ -130,4 +130,227 @@
 }
 .cursorNotallowed{
     cursor: not-allowed;
+}
+
+.custom-userdashboard-navigation-div {
+  justify-content: center;
+}
+.custom-noUser-found-div{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+@media(max-width: 1200px){
+    .custom-user-manager-main-div{
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100%;
+    }
+    .custom-user-manager-title-text{
+        margin-top: 0px !important;
+    }
+    .displayUser-div-container{
+        width: 95%;
+        padding: 5px;
+    }
+    .users-custom-name-container{
+        margin-top: 5px;
+        width: 35%;       
+}
+.users-detail-container {
+    margin-left: 10px;
+    height: 100%;
+    width: 50%;
+}
+.users-role-custom-div {
+    width: 20%;
+    margin-top: 5px;
+}
+.userImg-div {
+    width: 60px;
+    height: 60px;
+    margin-left: 5px;
+    padding-bottom: 10px;
+}
+.custom-userdashboard-navigation-div{
+    margin: 0 auto !important; 
+    padding-bottom: 15px;
+    margin: auto;
+   
+}
+
+}
+
+
+
+@media(max-width: 768px){
+.custom-users-dashboard-div {
+        width: 96%;
+    }
+
+.displayUser-div-container {
+        width: 100%;
+        padding-right: 10px;
+        margin-top: 20px;
+        padding-bottom: 20px;
+    }
+    .users-custom-name-container{
+        margin-top: 5px;
+        width: 37%;
+        height: 100%;
+}
+
+.userImg-div {
+    width: 55px;
+    height: 55px;
+    margin-left: 5px;
+    padding-bottom: 10px;
+}
+.users-detail-container {
+    margin-left: 5px;
+    height: auto;
+    width: 62%;
+    word-wrap: break-word;
+   
+}
+.custom-email-text{
+    width: 100%;
+    font-size: 14px !important;
+}
+.custom-user-manager-title-text{
+    font-size: 14px !important;
+}
+.custom-userdashboard-title-text{
+    font-size: 14px !important;
+}
+}
+
+
+
+
+@media(max-width: 576px){
+.custom-users-dashboard-div {
+        width: 95%;
+    }
+    .users-custom-name-container{
+       width: 40%;
+    }
+    .users-role-custom-div{
+        margin-left: 5px;
+        width: 17%;
+    }
+  .users-role-custom-div p{
+    font-size: 13px !important;
+  }
+  .custom-userdashboard-title-text {
+      font-size: 13px !important;
+  }
+  .users-verified-custom-div p{
+    font-size: 13px !important;
+  }
+  .users-isBlocked-custom-div p{
+    font-size: 13px !important;
+  }
+  .custom-userdashboard-delete-icon{
+    font-size: 15px;
+  }
+}
+
+
+
+@media(max-width: 476px){
+.custom-usermanger-title-div{
+    margin-top: 10px !important;
+}
+.custom-users-dashboard-div {
+    width: 95%;
+   height: 760px !important;
+    }
+
+.custom-users-dashboard-div2{
+    height: 760px !important;
+}
+.users-title-container{
+    margin-left: 0 !important;
+}
+.name-div {
+    margin-left: 0px !important;
+}
+.role-div{
+margin-left: 0px !important;
+}
+.custom-userdashboard-title-text{
+    font-size: 9px !important;
+}
+.custom-user-manager-title-text{
+    font-size: 10px !important;
+}
+.users-role-custom-div{
+    margin-left: 0 !important;
+}
+.users-role-custom-div p {
+    font-size: 10px !important;
+   
+}
+.users-verified-custom-div{
+    margin-left: 0 !important;
+}
+.users-verified-custom-div p{
+    font-size: 10px !important;
+}
+.users-isBlocked-custom-div p{
+    font-size: 10px !important;
+}
+.custom-userdashboard-delete-icon {
+    font-size: 10px;
+}
+ .users-custom-name-container {
+     width: 40%;
+     display: flex !important;
+     flex-direction: row !important;
+     height: 90px;
+ }
+.userImg-div {
+    width: 40px;
+    height: 40px;
+    margin-left: 1px;
+    padding-bottom: 0px;
+}
+.users-detail-container{
+    width: 100%;
+   
+}
+.custom-paragrap-text{
+    font-size: 11px !important;
+    margin-top: 10px;
+}
+.custom-email-text{
+    font-size: 11px !important;
+}
+.custom-userdashboard-navigation-div{
+    margin-top: 10px !important;
+}
+.custom-next-prev-userdashboard-icon{
+    font-size: 20px;
+}
+.custom-userdashboard-navigation-div p{
+    font-size: 11px !important;
+}
+}
+
+@media(max-width: 420px){
+.custom-users-dashboard-div {
+    width: 93%;
+    }
+}
+
+@media(max-width: 320px) {
+    .custom-users-dashboard-div {
+        width: 90%;
+    }
 }

@@ -6,11 +6,13 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {AuthContext} from '../../context/AuthProvide';
 import axios from 'axios';
 import {FaEdit} from 'react-icons/fa';
-import {AiFillDelete} from 'react-icons/ai'
+import {AiFillDelete} from 'react-icons/ai';
+import { useMediaQuery } from '../../hooks/CustomMediaQuery';
+import {FiMenu} from 'react-icons/fi'
 
 function PageSettings() {
     const axiosPrivate = useAxiosPrivate();
-    const {auth, logUser, dispatch, setAuth,setgeneralFetchError } = useContext(AuthContext);
+    const {auth, logUser, dispatch, setAuth,setgeneralFetchError, openAdminSideBar, setOpenAdminSideBar,} = useContext(AuthContext);
     const [catName, setCategories] = useState([]);
     const categoryRef = useRef('');
     const [mount, setMount] = useState(false);
@@ -29,7 +31,10 @@ function PageSettings() {
     const [categoryDeleted, setCategoryDeleted] = useState(false);
     const [deletCategoryError, setDeleteCategoryError] = useState(false);
     const [noCategoryFoundError, setNoCategoryFoundError] = useState(false);
-    const [somethingWentWrongError, setSomethingWentWrongError] = useState(false)
+    const [somethingWentWrongError, setSomethingWentWrongError] = useState(false);
+    const [emptySpaceCatNameError, setEmptySpaceCatNameError] = useState(false);
+    const [categoryEmptySpaceError, setCategoryEmptySpaceError] = useState(false)
+    let   tabletMode = useMediaQuery('(max-width: 1200px)');
     
     
     //fetch all categories
@@ -112,6 +117,10 @@ function PageSettings() {
                 dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
                 setCategoryMaxLimitError(true)
             }
+
+            if(err.response.data == 'catName must not contain empty space'){
+                return setEmptySpaceCatNameError(true)
+            }
            
         }
       
@@ -156,6 +165,20 @@ function PageSettings() {
         if(err.response.data === 'something went wrong'){
             return setSomethingWentWrongError(true)
         }
+
+        if(err.response.data == 'catName must not contain empty space'){
+            return setCategoryEmptySpaceError(true)
+        }
+
+        if(err.response.data == 'catName should not be a number'){
+            return setCategoryNumberError(true)
+        }
+        if(err.response.data == 'category name should be more than 4 letters'){
+            return setCategoryLessThanMinError(true)
+        }
+        if(err.response.data == 'category name should not be more than 16 letters'){
+            return setCategoryMoreThanMaxError(true)
+        }
         }
 
     };
@@ -199,70 +222,132 @@ function PageSettings() {
 
     }
     //handle responses such as error and success
-    useEffect(() =>{
-        setTimeout(() => {
+useEffect(() =>{
+    if(created){
+         setTimeout(() => {
             setCreated(false)
         }, 2000);
-
+    }    
+       
+    if(alreadyExitError){
         setTimeout(() => {
             setAlreadyExistError(false)
         }, 2000);
-
+    }
+    
+    if(categoryLessThanMinError){
         setTimeout(() => {
             setCategoryLessThanMinError(false)
         }, 2000);
+    }
 
-        setTimeout(() => {
+        
+    if(categoryMoreThanMaxError){
+         setTimeout(() => {
             setCategoryMoreThanMaxError(false)
         }, 2000);
-
-        setTimeout(() => {
+    }
+       
+    if(categoryEmptyError){
+          setTimeout(() => {
             setCategoryEmptyError(false)
         }, 2000);
-
-        setTimeout(() => {
+    }
+     
+    
+    if(noUserFoundError){
+         setTimeout(() => {
             setNoUserFoundError(false)
         }, 2000);
+    }
 
-        setTimeout(() => {
+    if(notAuthourizedError){
+          setTimeout(() => {
             setNotAuthourizedError(false)
         }, 2000);
+    }   
 
-        setTimeout(() => {
+    
+    if(categoryNumberError){
+          setTimeout(() => {
             setCategoryNumberError(false)
         }, 2000);
+    }
 
+     if(categoryMaxLimitError){
         setTimeout(() => {
             setCategoryMaxLimitError(false)
         }, 2000);
+     }
 
-        setTimeout(() => {
+        
+     if(categoryUpdated){
+         setTimeout(() => {
             setCategoryUpdated(false)
         }, 2000);
-
-        setTimeout(() => {
+     }
+       
+     if(categoryDeleted){
+         setTimeout(() => {
            setCategoryDeleted(false)
         }, 2000);
-
+     }
+       
+     if(deletCategoryError){
         setTimeout(() => {
           setDeleteCategoryError(false)
         }, 3000);
-
-     setTimeout(() => {
+     }
+        
+     if(noCategoryFoundError){
+         setTimeout(() => {
           setNoCategoryFoundError(false)
         }, 3000);
-
-    setTimeout(() => {
+     }
+    
+     if(somethingWentWrongError){
+         setTimeout(() => {
           setSomethingWentWrongError(false)
         }, 3000);
+     }
+
+     if(emptySpaceCatNameError){
+         setTimeout(() => {
+          setEmptySpaceCatNameError(false)
+        }, 3000);
+     }
+   
+     if(categoryEmptySpaceError){
+        setTimeout(() => {
+            setCategoryEmptySpaceError(false)
+        }, 3000);
+     }
     }, [created, alreadyExitError, categoryLessThanMinError, categoryMoreThanMaxError, categoryEmptyError, 
         noUserFoundError, notAuthourizedError, categoryNumberError, 
-        categoryMaxLimitError, categoryUpdated, categoryDeleted, deletCategoryError, noCategoryFoundError, somethingWentWrongError]);
+        categoryMaxLimitError, categoryUpdated, categoryDeleted, deletCategoryError, noCategoryFoundError, somethingWentWrongError, emptySpaceCatNameError,
+    categoryEmptySpaceError
+    ]);
 
+
+
+
+//this brings the admin sidebar out in a screen mode that is not desktop screen mode
+const handleOpenSidebarMenu = ()=>{
+  if(openAdminSideBar == 'admin-sidebar-slideOut'){
+      setOpenAdminSideBar('admin-sidebar-slideIn')
+  }
+ 
+    
+}
        
-
+//this useEffect helps to remove the blur effect that was called when the admin side bar is toggle in during the tablet or mobile device screen mode. 
+useEffect(()=>{
+  if(openAdminSideBar == 'admin-sidebar-slideIn'){
+      setOpenAdminSideBar('admin-sidebar-slideOut')
+  }
+}, [tabletMode])
    
-console.log(categoryId)
+console.log(openAdminSideBar)
 
   return (
 
@@ -271,20 +356,22 @@ console.log(categoryId)
        <div className=" admin-dashboard-custom-container flex-3">
 
             < AdminSidebar/>
+    
+     <FiMenu onClick={handleOpenSidebarMenu}  className={openAdminSideBar == 'admin-sidebar-slideOut' ?  'custom-sidebar-menuOpen' :  'custom-sidebar-menuOpen customMenuOpenOff' }/>
 
-                <div className='other-pages custom-other-page topMargin-Extral-Large '>
-                                <h3 className='text-general-Medium margin-small'>Page Setting</h3>
+                <div className={openAdminSideBar === 'admin-sidebar-slideIn' ? 'other-pages custom-other-page bg-blur2 curson-not-allowed-2 pointer-events-none ' : 'other-pages custom-other-page'}>
+                                <h3 className='text-general-Medium margin-small custom-page-setting-title-text'>Page Setting</h3>
                         <div className='category-custom-div-wrapper margin-small'>
                                
                             <div className='flex-3 category-div-wrapper'>
                                 <div className='create-category-div flex-2 topMargin-medium'>
-                                    <p className='text-general-small2 color1 topMargin-medium'>Create category</p>
-                                    <input type="text" className='topMargin-medium input-general custom-category-input'
+                                    <p className='text-general-small2 color1 topMargin-medium custom-create-category-title-text'>Create category</p>
+                                    <input type="text" className='topMargin-medium input-general custom-category-input custom-create-category-input'
                                         ref={categoryRef}
                                         />
-                                    {!editCategory && <button onClick={ createNewCategory} className='button-general'>Create</button>}
-                                    {editCategory && <button onClick={handleEditCategory} className='button-general'>Update</button>}
-                                    {editCategory && <button onClick={handlecancelEdit} className='button-general'>Cancel</button>}
+                                    {!editCategory && <div className='custom-page-setting-BTN-div flex'><button onClick={ createNewCategory} className='button-general flex custom-page-setting-BTN'>Create</button></div>}
+                                    {editCategory && <div className='custom-page-setting-BTN-div flex'><button onClick={handleEditCategory} className='button-general custom-page-setting-BTN'>Update</button></div>}
+                                    {editCategory && <div className='custom-page-setting-BTN-div flex'><button onClick={handlecancelEdit} className='button-general custom-page-setting-BTN custom-page-setting-BTN'>Cancel</button></div>}
                                     { created && <p className='paragraph-text '>Category created</p>}
                                     { alreadyExitError && <p className='paragraph-text red-text'>There is a category with that name already</p>}
                                     { categoryLessThanMinError && <p className='paragraph-text red-text'>Category should be more than 4 letters</p>}
@@ -299,6 +386,13 @@ console.log(categoryId)
                                     { deletCategoryError && <p className='paragraph-text'>You can not delete a category that already has a post, consider changing the name</p>}
                                     {noCategoryFoundError && <p className='paragraph-text'>No category found</p>}
                                     {somethingWentWrongError && <p className='paragraph-text'>Something went wrong </p>}
+                                    
+                                    {emptySpaceCatNameError && <p className='paragraph-text'>Something went wrong </p>}
+
+                                    {categoryEmptySpaceError && <p className='paragraph-text'>Category must not contain any space </p>}
+
+
+                                     
 
                                 </div>
 
@@ -313,7 +407,7 @@ console.log(categoryId)
                                         return(
                                         <>
                                             <div className='category-single-div flex-3 center-flex-align-display' key={index}>
-                                                <p className='text-general-small2 category-custom-text'>{catName}</p>
+                                                <div className='custom-category-name-div'><p className='text-general-small2 category-custom-text'>{catName}</p></div>
                                                 <div className='category-icons-div '>
                                                     <FaEdit  className='category-icon-edit'onClick={() => {editCategoryState(catName);  setCategoryId(categoryId)}} />
                                                     <AiFillDelete onClick={()=>  handleDeletCategory(categoryId)} className='category-icon-edit category-icon-delete'/>

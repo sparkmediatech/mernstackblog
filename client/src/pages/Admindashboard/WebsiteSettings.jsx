@@ -9,25 +9,30 @@ import {FiEdit} from 'react-icons/fi';
 import {MdCancel, MdTrendingUp} from 'react-icons/md';
 import {FiMenu} from 'react-icons/fi'
 import {MdOutlineCancel} from 'react-icons/md';
+import { useMediaQuery } from '../../hooks/CustomMediaQuery';
 
 function WebsiteSettings() {
     const [headerValues, setHeaderValues] = useState([])
     const [file, setFile] = useState("");
-    const [headerImg, setHeaderImg] = useState(null)
+  
     const [websiteName, setWebsiteName] = useState("");
-    const [sitesubName, setSitesubName] = useState("");
+  
     const [headerColor, setHeaderColor] = useState("");
     const [aboutWebsite, setAboutWebsite] = useState(" ")
     const [navColor, setNavColor] = useState("");
     const PF = "http://localhost:5000/images/";
-    const [usersDashboardMode, setUsersDashboardMode] = useState(false);
-    const {logUser, auth, dashboardEditMode, dispatch, setgeneralFetchError, openAdminSideBar, setOpenAdminSideBar, updateImageState, setUpdateImageState} = useContext(AuthContext);
+
+    const {logUser, auth, dashboardEditMode, dispatch, setgeneralFetchError, openAdminSideBar, setOpenAdminSideBar, updateImageState, setUpdateImageState,isLoading,  sliderState, sliderStateLoad, setSliderStateLoad,
+    
+    sliderStateText, setSliderStateText} = useContext(AuthContext);
     const axiosPrivate = useAxiosPrivate();
     const [updating, setUpdating] = useState(false);
     const [textUpdate, setTextUpdate] = useState(false);
     
     const [editAboutWebsiteState, setEditAboutWebsite] = useState(false);
-   
+    let   tabletMode = useMediaQuery('(max-width: 1200px)');
+    //toggle state for slider and static image
+    //const [sliderOn, setSliderOn] = useState('sliderON')
    
    
     
@@ -43,7 +48,14 @@ function WebsiteSettings() {
     const [somethingWentWrongError, setSomethingWentWrongError] = useState(false);
     const [websiteValuesAlreadyExistError, setWebsiteValuesAlreadyExistError] = useState(false);
     const [noValueIdFoundError, setNoValueIdFoundError] = useState(false);
-    const [somethingWentWrongWithUserError, setSomethingWentWrongWithUserError] = useState(false)
+    const [somethingWentWrongWithUserError, setSomethingWentWrongWithUserError] = useState(false);
+    const [invalidSliderStateValue,setInvalidSliderStateValue] = useState(false);
+
+    //slider errors
+    const [userNotFoundSliderError, setUserNotFoundSliderError] = useState(false);
+    const [notAuthorizedSliderError,setNotAuthorizedSliderError] = useState(false);
+    const [noValueIdFoundSliderError,setNoValueIdFoundSliderError] = useState(false);
+    const [somethingWentWrongSliderError,setSomethingWentWrongSliderError] = useState(false)
    
 
 //UseEffct to get the header values
@@ -51,13 +63,16 @@ function WebsiteSettings() {
 
     const fetchFrontendValue = async () =>{
           try{
+                 dispatch({type:"ISLOADING_START"}); 
                 const res = await axiosPrivate.get("/v1/headervalue");
                 const headerValueObject = Object.assign({}, ...res.data)
                 setHeaderValues(headerValueObject);
                 setHeaderColor(headerValueObject.headerColor);
                 setNavColor(headerValueObject.navColor);
                 setAboutWebsite(headerValueObject.aboutWebsite)
+                 dispatch({type:"ISLOADING_END"});
           }catch(err){
+             dispatch({type:"ISLOADING_END"});
             if(err.response.data === 'no value found'){
               return setgeneralFetchError(true)
             }
@@ -70,7 +85,7 @@ function WebsiteSettings() {
   }, [])
 
 
-console.log(aboutWebsite)
+
 //create website values
 const handleHeaderValueCreation = async ()=>{
    dispatch({type:"CURSOR_NOT_ALLOWED_START"});
@@ -206,8 +221,13 @@ e.preventDefault()
    }
     
 
+//get the sliderState Id into an array
+const arraySliderStateId = sliderState.map((singleSlider)=> singleSlider._id);
+//convert array into object
+const stringSliderStateId = arraySliderStateId.toString()
 
-  
+
+  console.log(sliderStateText, 'slider text')
 
 
 //Turns website edit mode on gotten from global state via useContext
@@ -219,58 +239,129 @@ e.preventDefault()
 
   //clear off notifications after some a
   useEffect(()=>{
+
+    if(aboutWebsiteMaxTextError){
       setTimeout(() => {
         setAboutWebsiteMaxTextError(false)
       }, 3000);
-
+    }
+      
+    if(aboutWebsiteMinTextError){
       setTimeout(() => {
         setAboutWebsiteMinTextError(false)
       }, 3000);
+    }
 
+      
+    if(websiteNameEmptyError){
+      
       setTimeout(() => {
         setWebsiteNameEmptyError(false)
       }, 3000);
+    }
+      
 
+    if(websiteNameMaxTextError){
        setTimeout(() => {
         setWebsiteNameMaxTextError(false)
       }, 3000);
-
-      setTimeout(() => {
+    }
+      
+      if(websiteHeaderImageEmptyError){
+        setTimeout(() => {
         setWebsiteHeaderImageEmptyError(false)
       }, 3000);
-
-      setTimeout(() => {
+      }
+      
+      if(userNotFoundError){
+         setTimeout(() => {
         setUserNotFoundError(false)
       }, 3000);
-
-       setTimeout(() => {
+      }
+     
+      if(notAuthorizedError){
+         setTimeout(() => {
         setNotAuthorizedError(false)
       }, 3000);
-
-       setTimeout(() => {
+      }
+      
+      if(somethingWentWrongWithImageError){
+        setTimeout(() => {
         setSomethingWentWrongWithImageError(false)
       }, 3000);
-
-      setTimeout(() => {
+      }
+       
+      if(somethingWentWrongError){
+         setTimeout(() => {
         somethingWentWrongError(false)
       }, 3000);
-
-       setTimeout(() => {
+      }
+     
+      if(websiteValuesAlreadyExistError){
+        setTimeout(() => {
         setWebsiteValuesAlreadyExistError(false)
       }, 3000);
-
-      setTimeout(() => {
+      }
+       
+      if(setNoValueIdFoundError){
+        setTimeout(() => {
         setNoValueIdFoundError(false)
       }, 3000);
-      setTimeout(() => {
-       setSomethingWentWrongWithUserError(false)
+      }
+      
+      if(somethingWentWrongWithUserError){
+         setTimeout(() => {
+          setSomethingWentWrongWithUserError(false)
       }, 3000);
+      }
+     
+      if(invalidSliderStateValue){
+        setTimeout(() => {
+       setInvalidSliderStateValue(false)
+      }, 3000);
+      }
+      
+    
+    if(userNotFoundSliderError){
+       setTimeout(() => {
+       setUserNotFoundSliderError(false)
+      }, 3000);
+    }
+
+   
+
+    if(notAuthorizedSliderError){
+       setTimeout(() => {
+        setNotAuthorizedSliderError(false)
+      }, 3000);
+     
+    }
+    if(noValueIdFoundSliderError){
+      setTimeout(() => {
+       setNoValueIdFoundSliderError(false)
+      }, 3000);
+      
+    }
+
+
+    if(somethingWentWrongSliderError){
+      setTimeout(() => {
+       setSomethingWentWrongSliderError(false)
+      }, 3000);
+      
+    }
+
   }, [aboutWebsiteMaxTextError, aboutWebsiteMinTextError, websiteNameEmptyError,
     websiteNameMaxTextError, websiteHeaderImageEmptyError, userNotFoundError,
     notAuthorizedError, somethingWentWrongWithImageError, somethingWentWrongError,
     websiteValuesAlreadyExistError, noValueIdFoundError, somethingWentWrongWithUserError,
+    invalidSliderStateValue, userNotFoundSliderError, notAuthorizedSliderError, noValueIdFoundSliderError,
+    somethingWentWrongSliderError
   
   ])
+
+
+
 
 
   const handleImageUpdateMode = ()=>{
@@ -283,6 +374,9 @@ e.preventDefault()
     setUpdateImageState(false);
     setFile("")
   }
+
+
+//this brings the admin sidebar out in a screen mode that is not desktop screen mode
 const handleOpenSidebarMenu = ()=>{
   if(openAdminSideBar == 'admin-sidebar-slideOut'){
       setOpenAdminSideBar('admin-sidebar-slideIn')
@@ -291,24 +385,192 @@ const handleOpenSidebarMenu = ()=>{
     
 }
 
+//this useEffect helps to remove the blur effect that was called when the admin side bar is toggle in during the tablet or mobile device screen mode. 
+useEffect(()=>{
+  if(openAdminSideBar == 'admin-sidebar-slideIn'){
+      setOpenAdminSideBar('admin-sidebar-slideOut')
+  }
+}, [tabletMode])
 
-  
+
+//turns slider image off
+const handleSliderOff = async()=>{
+    
+     dispatch({type:"CURSOR_NOT_ALLOWED_START"});
+    
+     const updateSliderState = {
+            sliderState: 'sliderOFF'
+        }
+
+        try{
+          const response = await axiosPrivate.patch(`${BASE_URL}/sliderstate/${stringSliderStateId}`, updateSliderState, { withCredentials: true,
+            headers:{authorization: `Bearer ${auth}`}
+            });
+          setSliderStateLoad(!sliderStateLoad);
+           dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+        }catch(err){
+           dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+           if(err.response.data == 'no user found'){
+              return setUserNotFoundSliderError(true)
+           }
+
+           if(err.response.data == 'not permitted'){
+            return setNotAuthorizedSliderError(true)
+           }
+
+           if(err.response.data == 'no file found'){
+            return setNoValueIdFoundSliderError(true)
+           }
+           if(err.response.data == "You can not choose previous state to update"){
+            return setInvalidSliderStateValue(true)
+           }
+          if(err.response.data == 'something went wrong'){
+            return setSomethingWentWrongSliderError(true)
+          }
+        }
+}
+
+
+
+
+//tunrs slider image on
+const handleSliderOn = async()=>{
+ 
+     dispatch({type:"CURSOR_NOT_ALLOWED_START"});
+    
+     const updateSliderState = {
+            sliderState: 'sliderON'
+        }
+
+        try{
+          const response = await axiosPrivate.patch(`${BASE_URL}/sliderstate/${stringSliderStateId}`, updateSliderState, { withCredentials: true,
+            headers:{authorization: `Bearer ${auth}`}
+            });
+          setSliderStateLoad(!sliderStateLoad);
+           dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+        }catch(err){
+           dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+           if(err.response.data == 'no user found'){
+              return setUserNotFoundSliderError(true)
+           }
+
+           if(err.response.data == 'not permitted'){
+            return setNotAuthorizedSliderError(true)
+           }
+
+           if(err.response.data == 'no file found'){
+            return setNoValueIdFoundSliderError(true)
+           }
+           if(err.response.data == "You can not choose previous state to update"){
+            return setInvalidSliderStateValue(true)
+           }
+          if(err.response.data == 'something went wrong'){
+            return setSomethingWentWrongSliderError(true)
+          }
+        }
+}
+
+
+//This turns off the header
+const handleHeaderOFF = async()=>{
+   dispatch({type:"CURSOR_NOT_ALLOWED_START"});
+    
+     const updateSliderState = {
+            sliderState: 'headerOFF'
+        }
+
+        try{
+          const response = await axiosPrivate.patch(`${BASE_URL}/sliderstate/${stringSliderStateId}`, updateSliderState, { withCredentials: true,
+            headers:{authorization: `Bearer ${auth}`}
+            });
+          setSliderStateLoad(!sliderStateLoad);
+           dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+        }catch(err){
+           dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+           if(err.response.data == 'no user found'){
+              return setUserNotFoundSliderError(true)
+           }
+
+           if(err.response.data == 'not permitted'){
+            return setNotAuthorizedSliderError(true)
+           }
+
+           if(err.response.data == 'no file found'){
+            return setNoValueIdFoundSliderError(true)
+           }
+           if(err.response.data == "You can not choose previous state to update"){
+            return setInvalidSliderStateValue(true)
+           }
+          if(err.response.data == 'something went wrong'){
+            return setSomethingWentWrongSliderError(true)
+          }
+        }
+}
+
+//this turns header on which automatically turns on slider. User can decide to turn off the header or simply turn off slider and use static image
+
+const handleHeaderOn = async ()=>{
+  dispatch({type:"CURSOR_NOT_ALLOWED_START"});
+    
+     const updateSliderState = {
+            sliderState: 'sliderON'
+        }
+
+        try{
+          const response = await axiosPrivate.patch(`${BASE_URL}/sliderstate/${stringSliderStateId}`, updateSliderState, { withCredentials: true,
+            headers:{authorization: `Bearer ${auth}`}
+            });
+          setSliderStateLoad(!sliderStateLoad);
+           dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+        }catch(err){
+           dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+           if(err.response.data == 'no user found'){
+              return setUserNotFoundSliderError(true)
+           }
+
+           if(err.response.data == 'not permitted'){
+            return setNotAuthorizedSliderError(true)
+           }
+
+           if(err.response.data == 'no file found'){
+            return setNoValueIdFoundSliderError(true)
+           }
+           if(err.response.data == "You can not choose previous state to update"){
+            return setInvalidSliderStateValue(true)
+           }
+          if(err.response.data == 'something went wrong'){
+            return setSomethingWentWrongSliderError(true)
+          }
+        }
+}
+
+
+
+
+
   return (
 
      <>
    <article className='dashboard-container'>
-       <div className=" admin-dashboard-custom-container flex-3">
+      {
+
+        isLoading ? 
+
+        <div className='custom-noUser-found-div'>
+            <img className='page-loader' src={require('../../assets/page-loader.gif')} alt="loading..." />
+            <h3 className='text-general-small color1'>Loading</h3>
+            </div>
+
+        :
+
+         <div className=" admin-dashboard-custom-container flex-3">
       
       < AdminSidebar/>
       
   
-  {
-    openAdminSideBar === 'admin-sidebar-slideIn' && <div className='custom-cover-website-setting-div'></div>
-
-  }
   
  <FiMenu onClick={handleOpenSidebarMenu}  className={openAdminSideBar == 'admin-sidebar-slideOut' && !dashboardEditMode ?  'custom-sidebar-menuOpen' :  'custom-sidebar-menuOpen customMenuOpenOff' }/>
-   <div className={openAdminSideBar === 'admin-sidebar-slideIn' ? 'other-pages topMargin-medium custom-website-setting-div bg-blur2': 'other-pages topMargin-medium custom-website-setting-div'}>
+   <div className={openAdminSideBar === 'admin-sidebar-slideIn' ? 'other-pages topMargin-medium custom-website-setting-div bg-blur2 curson-not-allowed-2 pointer-events-none': 'other-pages topMargin-medium custom-website-setting-div'}>
      
       <div className='custom-sub-wensite-setting-div'>
         
@@ -320,7 +582,7 @@ const handleOpenSidebarMenu = ()=>{
              
           <div  className='dashboard-wrapper'>
              <div className="updatedText">{textUpdate && <h3>Updated successfully</h3>}</div>
-            <form onSubmit={(e)=>handleHeaderValueUpdate(headerValues._id, e)} className="dashboard-form">
+            <div className="dashboard-form">
 
             <div className={dashboardEditMode ? "dasboard-input-div custom-dashboard-input-div": 'dasboard-input-div'}>
               <p  className='text-general-small color1'>Website Name</p>
@@ -422,7 +684,7 @@ const handleOpenSidebarMenu = ()=>{
        
             {updateImageState && 
               <div className='flex-2 margin-small'>
-                    <label>Upload Website Header Image</label>
+                    <p className='text-general-small color1'>Upload Website Header Image</p>
                   <input className='upload-input' type="file" 
                     onChange={(e) => setFile(e.target.files[0])}
                   required/>
@@ -444,16 +706,81 @@ const handleOpenSidebarMenu = ()=>{
             
              }
             
+           
+
+            {
+             !dashboardEditMode && 
+             <div className='flex-3 center-flex-align-display margin-left-sm1 '>
+
+                  <>
+                    <div className='custom-web-setting-headerState-div'>
+                      <h3 className='text-general-small color1'>Header</h3>
+                    </div>
+                    
+
+                    <div className='custom-web-setting-BTN-div'>
+                      <button className={sliderStateText === 'sliderOFF' || sliderStateText == 'sliderON'? 'tiggle-BTN-wrapper marginLeft-sm flex-3 center-flex-justify-display center-flex-align-display colorBG'   :
+                        'tiggle-BTN-wrapper marginLeft-sm flex-3 center-flex-justify-display center-flex-align-display colorBG toggle-BTN-wrapper-Off'
+                        }>
+             
+                        {(sliderStateText === 'sliderON' || sliderStateText == 'sliderOFF')  && <div className='flex'><p className='custom-toggle-On-text'>ON</p><button className='toggle-On-BTN' onClick={handleHeaderOFF}> ON</button></div> }
+
+                        {sliderStateText === 'headerOFF' && <div className='flex'><button className='toggle-Off-BTN' onClick={handleHeaderOn} > OFF</button><p className='custom-toggle-OFF-text'>OFF</p></div> }
+            
+                    </button>
+                    </div>
+                  </>
+              
+              </div> 
+            }
+          
+           {!dashboardEditMode && sliderStateText !== 'headerOFF' && <div className='flex-3 center-flex-align-display margin-left-sm1 margin-small-small'>
+            
+            
+             <>
+             
+              <div className='custom-web-setting-headerState-div'>
+                <h3 className='text-general-small color1'>Slider</h3>
+              </div>
+
+              <div className='custom-web-setting-BTN-div'>
+
+                 <button className={sliderStateText === 'sliderOFF'? 'tiggle-BTN-wrapper marginLeft-sm flex-3 center-flex-justify-display center-flex-align-display colorBG toggle-BTN-wrapper-Off' :
+                      'tiggle-BTN-wrapper marginLeft-sm flex-3 center-flex-justify-display center-flex-align-display colorBG' }>
+             
+                        {sliderStateText === 'sliderON' && <div className='flex'><p className='custom-toggle-On-text'>ON</p><button className='toggle-On-BTN' onClick={handleSliderOff}> ON</button></div> }
+
+                        {sliderStateText === 'sliderOFF' && <div className='flex'><button className='toggle-Off-BTN' onClick={handleSliderOn} > OFF</button><p className='custom-toggle-OFF-text'>OFF</p></div> }
+            
+                  </button>
+
+              </div>
+             </>
+            </div>
+            
+            }
+
+            {userNotFoundSliderError && <p className='color2 text-general-small'>No user found</p>}
+            {noValueIdFoundSliderError && <p className='color2 text-general-small'>No such file found</p>}
+            {notAuthorizedSliderError && <p className='color2 text-general-small'>Not permitted</p>}
+            {invalidSliderStateValue && <p className='color2 text-general-small'>You can not choose a previous state</p>}
+            {somethingWentWrongSliderError && <p className='color2 text-general-small'>Something went wrong</p>}
+
+
+
+
+
+
             {!dashboardEditMode && 
               <div className="headerImg-div custom-header-image-2 ">
                 <p className='text-general-small color1'>Header Image</p>
                 <img className='headerValueImg  customHeaderValueImage-2' src={file? URL.createObjectURL(file): headerValues.headerImg} alt="" />
                </div>
             }
-            {dashboardEditMode && <div className='custom-website-setting-update-BTN-div'><button className={updating ? "updateModeBTN-unclick button-general" : "button-general custom-website-setting-update-BTN"} type="submit">Update</button></div>}
+            {dashboardEditMode && <div className='custom-website-setting-update-BTN-div'><button onClick={(e)=>handleHeaderValueUpdate(headerValues._id, e)} className={updating ? "updateModeBTN-unclick button-general" : "button-general custom-website-setting-update-BTN"} type="submit">Update</button></div>}
 
             
-             </form>
+             </div>
           </div>
    
 
@@ -560,6 +887,8 @@ const handleOpenSidebarMenu = ()=>{
 
  </div>    
   </div>
+
+      }
    </article>
  
   

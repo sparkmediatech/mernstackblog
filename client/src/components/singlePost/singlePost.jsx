@@ -322,52 +322,75 @@ const handleLike = async ()=>{
 //handle error states display
     
 useEffect(()=>{
-    let isMounted = true;
-
    
+
+   if(userNotFoundError){
         setTimeout(() => {
         setUserNotFounderError(false)
     }, 2000);
-
-     setTimeout(() => {
-        setUserBannedError(false)
-    }, 2000);
-
-     setTimeout(() => {
-       setNotVerifiedError(false)
-    }, 2000);
-
-     setTimeout(() => {
-       setNoPostFoundError(false)
-    }, 2000);
-
+   }
+       
+if(userbannedError){
     setTimeout(() => {
-       setNotAuthorizedError(false)
+    setUserBannedError(false)
     }, 2000);
-
+}
+    
+if(notVerifiedError){
     setTimeout(() => {
-       setSomeThingWentWrongError(false)
+    setNotVerifiedError(false)
     }, 2000);
-
-    setTimeout(() => {
-       setPostTitleEmptyError(false)
+}
+    
+if(postNotFoundError){
+setTimeout(() => {
+setNoPostFoundError(false)
     }, 2000);
+}
 
-     setTimeout(() => {
-       setPostTitleMaxError(false)
+if(notAuthorizedError){
+ setTimeout(() => {
+    setNotAuthorizedError(false)
     }, 2000);
+}
 
-     setTimeout(() => {
-       setPostTitleMinError(false)
+   
+if(somethingWentWrongError){
+ setTimeout(() => {
+    setSomeThingWentWrongError(false)
     }, 2000);
-
-     setTimeout(() => {
-       setDeletePostErrorState(false)
+}
+   
+if(postTitleEmptyError){
+ setTimeout(() => {
+    setPostTitleEmptyError(false)
     }, 2000);
+}
 
-     setTimeout(() => {
+if(postTitleMaxError){
+ setTimeout(() => {
+    setPostTitleMaxError(false)
+    }, 2000);
+}
+
+if(postTitleMinError){
+ setTimeout(() => {
+    setPostTitleMinError(false)
+}, 2000);
+}    
+if(deletePostErrorState){
+ setTimeout(() => {
+    setDeletePostErrorState(false)
+    }, 2000);
+}   
+
+if(postLikeError){
+ setTimeout(() => {
        setPostLikeError(false)
     }, 2000);
+}   
+
+    
 
 
    
@@ -376,6 +399,12 @@ useEffect(()=>{
  postTitleMaxError, postTitleMinError, postTitleEmptyError, deletePostErrorState, postLikeError, 
 ])
     
+
+
+
+
+
+
     return (
         <>                
        {

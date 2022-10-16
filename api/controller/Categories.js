@@ -44,7 +44,14 @@ const createCategory = async (req, res)=>{
         if(catName.length >= 16){
             return res.status(500).json('category name should not be more than 16 letters')
         };
-             const newCategory = new Category({
+
+        if(/\s/.test(catName)){
+                return res.status(500).json('catName must not contain empty space')
+            }
+
+
+        
+    const newCategory = new Category({
                  _id: req.body._id,
                  catName: catName
              });
@@ -98,6 +105,10 @@ const deleteCategory = async (req, res) =>{
 //update category 
 
 const updateCategory = async (req, res)=>{
+    
+    const getCatNameString = req.body.catName;
+    //convert first letter to capital letter
+    const catName = getCatNameString.charAt(0).toUpperCase() + getCatNameString.slice(1)
     try{
         const findCategory = await Category.findById(req.params.categoryId);
         if(!findCategory){
@@ -110,7 +121,28 @@ const updateCategory = async (req, res)=>{
         if(user.role !== 'admin'){
             return res.status(401).json('You are not authorized to perform this action')
         };
+
+        if(catName == ''){
+            return res.status(500).json('Category name must not be empty')
+        }
+
+        if(catName.length <= 3){
+            return res.status(500).json('category name should be more than 4 letters')
+        };
+
+        if(catName.length >= 16){
+            return res.status(500).json('category name should not be more than 16 letters')
+        };
         
+        if(/\s/.test(catName)){
+                return res.status(500).json('catName must not contain empty space')
+            }
+
+
+
+        if(!isNaN(catName)){
+                return res.status(500).json('catName should not be a number')
+            }
      
             const updatedCategory = await Category.findByIdAndUpdate(req.params.categoryId, {
                  $set: req.body
@@ -122,6 +154,7 @@ const updateCategory = async (req, res)=>{
             return res.status(200).json('Category updated')
       
     }catch(err){
+        console.log(err)
         return res.status(500).json('something went wrong')
     }
 };

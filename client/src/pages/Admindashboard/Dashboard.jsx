@@ -11,8 +11,6 @@ import Usersmanager from './Usersmanager';
 import SingleUser from '../singleUser/SingleUser';
 import WebsiteSettings from './WebsiteSettings';
 import AdminSidebar from './AdminSidebar';
-import {FiMenu} from 'react-icons/fi'
-import {MdOutlineCancel} from 'react-icons/md';
 
 
 
@@ -23,8 +21,8 @@ export default function Dashboard() {
   const PF = "http://localhost:5000/images/";
   const [updating, setUpdating] = useState(false)
   const [textUpdate, setTextUpdate] = useState(false);
-  const [websiteDetailPage, setWebsiteDetailPage] = useState(true);
-  const [file, setFile] = useState(null);
+ 
+
  
   
   const [singleUserState, setSingleUserState] = useState(false);
@@ -39,12 +37,7 @@ export default function Dashboard() {
 
   
 
-//handle turning on singleUserstate mode on
 
-const singleUserMode = () =>{
-  
-  setSingleUserState(true)
-}
 
 
 

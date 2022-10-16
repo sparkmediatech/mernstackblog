@@ -11,11 +11,13 @@ import {MdOutlineCancel, MdNavigateNext, MdNavigateBefore} from 'react-icons/md'
 import WriteEmail from '../../components/EmailSubscribers/WriteEmail';
 import PreviousEmail from '../../components/EmailSubscribers/PreviousEmail';
 import ScheduledEmail from '../../components/EmailSubscribers/ScheduledEmail';
-import {BsCheckLg} from 'react-icons/bs'
+import {BsCheckLg} from 'react-icons/bs';
+import { useMediaQuery } from '../../hooks/CustomMediaQuery';
+import {FiMenu} from 'react-icons/fi'
 
 function Subscribers() {
     const {auth, dispatch,  allSubscribersState, setAllsubscribersState, allSubscribers, setAllSubscribers, pageNumber, setPageNumber, fetchPreviousEmail, setFetchPreviousEmail,
-    setFetchAllScheduledEmail, fetchAllScheduledEmail, editModeState, setEditModeState, emailUpdateMode, setEmailUpdateMode, setgeneralFetchError} = useContext(AuthContext);
+    setFetchAllScheduledEmail, fetchAllScheduledEmail, editModeState, setEditModeState, emailUpdateMode, setEmailUpdateMode, setgeneralFetchError, openAdminSideBar, setOpenAdminSideBar,} = useContext(AuthContext);
     const [displaySubscribersMode, setDisplaySubscribersMode] = useState(false)
     const [cursorNotAllowedState, setCursorNotAllowedState] = useState(false);
     
@@ -26,7 +28,10 @@ function Subscribers() {
     const [scheduledEmailState, setScheduledEmailState] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [subDeletedState, setSubDeletedState] = useState(false);
-    const [resendVerification, setResendVerification] = useState(false)
+    const [resendVerification, setResendVerification] = useState(false);
+    let   tabletMode = useMediaQuery('(max-width: 1200px)');
+   
+
 
     //error states
     const [noUserFoundError, setNoUserFoundError] = useState(false);
@@ -230,32 +235,58 @@ const handleVeryReminder = async(id)=>{
 
 //displays notification
 useEffect(()=>{
-    setTimeout(() => {
+    if(resendVerification){
+        setTimeout(() => {
         setSubDeletedState(false);
         setIsLoading(false);
         setResendVerification(false)
     }, 3000);
-
-    setTimeout(() => {
+    }
+    
+    if(noUserFoundError){
+         setTimeout(() => {
         setNoUserFoundError(false)
     }, 3000);
-
-    setTimeout(() => {
+    }
+   
+    if(notAuthorizedError){
+        setTimeout(() => {
         setNotAuthorizedError(false)
     }, 3000);
-
-    setTimeout(() => {
-      setNoSubscriberFoundError(false)
-    }, 3000);
-
-    setTimeout(() => {
-      setSomethingWentWrongError(false)
-    }, 3000);
+    }
     
-
-
+    if(noSubscriberFoundError){
+        setTimeout(() => {
+        setNoSubscriberFoundError(false)
+    }, 3000);
+    }
+    
+    if(somethingWentWrongError){
+         setTimeout(() => {
+        setSomethingWentWrongError(false)
+    }, 3000);
+    }
+   
 }, [noUserFoundError, isLoading, notAuthorizedError, noSubscriberFoundError, somethingWentWrongError, userIdEmptyError, resendVerification])
 
+
+
+//this brings the admin sidebar out in a screen mode that is not desktop screen mode
+const handleOpenSidebarMenu = ()=>{
+  if(openAdminSideBar == 'admin-sidebar-slideOut'){
+      setOpenAdminSideBar('admin-sidebar-slideIn')
+  }
+ 
+    
+}
+
+
+//this useEffect helps to remove the blur effect that was called when the admin side bar is toggle in during the tablet or mobile device screen mode. 
+useEffect(()=>{
+  if(openAdminSideBar == 'admin-sidebar-slideIn'){
+      setOpenAdminSideBar('admin-sidebar-slideOut')
+  }
+}, [tabletMode])
 
 
 
@@ -265,7 +296,8 @@ useEffect(()=>{
         <div className='admin-dashboard-custom-container flex-3'>
             <AdminSidebar/>
 
-            <div className={activeDisplayMode ? 'other-pages custom-other-page-subscribers margin-small  ' : 'other-pages custom-other-page-subscribers margin-small'}>
+            <FiMenu onClick={handleOpenSidebarMenu}  className={openAdminSideBar == 'admin-sidebar-slideOut' && !activeDisplayMode  ?  'custom-sidebar-menuOpen' :  'custom-sidebar-menuOpen customMenuOpenOff' }/>
+            <div className={activeDisplayMode  ? 'other-pages custom-other-page-subscribers margin-small  ' : 'other-pages custom-other-page-subscribers margin-small'}>
 
                 {
                     /* when this state is true, turn on the cursor not allowed div to disable clicks for divs under  */
@@ -277,7 +309,7 @@ useEffect(()=>{
                 }
                 
                  <h3 className='text-general-Medium margin-small margin-left-sm1'>Email Demon</h3>
-                 <div className='flex-2 marginLeft-sm topMargin'>
+                 <div className={ openAdminSideBar == 'admin-sidebar-slideIn' ? 'flex-2 marginLeft-sm topMargin custom-subcribers-main-wrapper bg-blur pointer-events-none' : 'flex-2 marginLeft-sm topMargin custom-subcribers-main-wrapper'}>
 
                 {/* this handles the display of the subscribers list menu when set to true */} 
                    {

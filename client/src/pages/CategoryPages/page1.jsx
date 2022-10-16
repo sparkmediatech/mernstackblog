@@ -31,7 +31,7 @@ useEffect(()=>{
           setPageTitle(response.data.pageTitle)
           setPage1(response.data.posts);
       }catch(err){
-        console.log(err)
+        
       }
         
     }

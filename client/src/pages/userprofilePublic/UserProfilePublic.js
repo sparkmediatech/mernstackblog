@@ -3,6 +3,9 @@ import './userProfilePublic.css';
 import { useLocation } from 'react-router';
 import axios from 'axios';
 import  BASE_URL from '../../hooks/Base_URL';
+import {MdReportGmailerrorred} from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import {AuthContext} from '../../context/AuthProvide';
 
 
 function UserProfilePublic() {
@@ -10,19 +13,33 @@ function UserProfilePublic() {
      const location = useLocation()
      const path = location.pathname.split("/")[2];
     const [user,  setUser] = useState({});
-    const [isFetch, setIsFetch] = useState(false)
+    const [isFetch, setIsFetch] = useState(false);
+     const {setgeneralFetchError} = useContext(AuthContext);
+
+
+    //error states
+    const [userNotFoundError, setUserNotFoundError] = useState(false);
 
 //fetch user
 useEffect(()=>{
  const ourRequest = axios.CancelToken.source() 
   
   const fetchSingleUser = async () =>{
-        const response = await axios.get(`/users/singleUser/${path}`, {cancelToken: ourRequest.token})
+       try{
+           const response = await axios.get(`/users/singleUser/${path}`, {cancelToken: ourRequest.token})
           
       
-        setUser(response.data);
-       
+            setUser(response.data);
+       }catch(err){
+        if(err.response.data == 'user not found with this ID'){
+          setUserNotFoundError(true)
+        }
+      if(err.response.data == 'something went wrong with finding user'){
+        return setgeneralFetchError(true)
+       }
     
+       }
+      
    
     }
 
@@ -36,11 +53,28 @@ useEffect(()=>{
     
 }, [])
 
-console.log(user)
+
+
+
+
+
+
+
 
   return (
     <div className='userProfile-custom-div '>
-        <div className='mainContainer custom-main-userProfile-div flex-3'>
+        {userNotFoundError && <div className='custom-no-user-found-div flex-2 center-flex-justify-display center-flex-align-display'>
+          <MdReportGmailerrorred className='custom-no-user-found-icon'/>
+          
+          <p className='paragraph-text red-text center-text'>No user found</p>
+          <button className='button-general-2'><Link to={'/'} className='link'></Link> Home</button>
+          
+          </div>
+          }
+        
+        {!userNotFoundError &&
+          <div className='mainContainer custom-main-userProfile-div flex-3'>
+        
            
             <div className='user-profile-pics-div topMargin-Extral-Large'>
                 <img className='custom-user-profile-pics' src={user.profilePicture} alt="" />
@@ -64,6 +98,7 @@ console.log(user)
                 </div>
 
         </div>
+        }
     
     </div>
   )

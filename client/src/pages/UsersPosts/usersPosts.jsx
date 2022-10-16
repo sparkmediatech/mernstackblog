@@ -232,34 +232,48 @@ const handleClearSelected = () =>{
 
   //handle turning off notifications
   useEffect(()=>{
-    setTimeout(() => {
+    if(notAuthorizedError){
+         setTimeout(() => {
         setNotAuthorizedError(false)
     }, 3000);
 
-
-    setTimeout(() => {
+    }
+   
+if(userNotFoundError){
+     setTimeout(() => {
         setUserNotFoundError(false)
     }, 3000);
-
-     setTimeout(() => {
+}
+ 
+if(noPostFoundError){
+    setTimeout(() => {
         setNoPostFoundError(false)
     }, 3000);
+}
 
+ if(somethingWentWrongError){
      setTimeout(() => {
         setSomeThingWentWrongError(false)
     }, 3000);
+ }    
 
-     setTimeout(() => {
+ if(userBlockedError){
+ setTimeout(() => {
         setUserBlockedError(false)
     }, 3000);
-    setTimeout(() => {
+ }   
+
+ if(verifiedUserError){
+     setTimeout(() => {
        setVerifiedUserError(false)
     }, 3000);
+ }   
+   
   }, [notAuthorizedError, userNotFoundError, noPostFoundError, somethingWentWrongError, userBlockedError,
     verifiedUserError,
     ])
 
-console.log(usersPosts.length)
+
 
 
 

@@ -65,6 +65,7 @@ function ChanagePassword() {
     } 
 
 useEffect(() =>{
+  
   if(notMatchError){
      setTimeout(() => {
     setNotMatchError(false)

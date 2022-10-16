@@ -474,7 +474,7 @@ const getPostSearchResults = async (req, res)=>{
         console.log(err)
     }
 }
-//get post based on category model indexes. I need to create 8 routes for this as the category model has 
+//get post based on category model indexes.  
 const getPostCategory_1 = async (req, res)=>{
         try{
             //get all categories
@@ -485,7 +485,7 @@ const getPostCategory_1 = async (req, res)=>{
             }
 
             const indexNumber = Number(req.body.categoryIndex) 
-               //get firt index
+            //get category name based on index number coming from the frontend
             const getCategoryIndex = category[indexNumber].catName;
             //find all post based on category index
             const posts = await Post.find({categories: getCategoryIndex}).populate('username', 'username').sort({createdAt:-1});
@@ -517,20 +517,26 @@ const getRandomPostS = async (req, res)=>{
     };
     //get the length of the posts found
     const postTotalLenght = posts.length;
+    
    //create a new array that is empty
     const newArrayPost = []
-    //using for loop method, I need just 5 posts from the post model for the frontend, I simply asked the loop to stop at 5 starting from 1
-    for (let i = 1; i !== 8; i++){
+    if(postTotalLenght > 9){
+        //using while loop method, I need just 5 posts from the post model for the frontend, I simply asked the loop to stop at 5 starting from 1
+    while(newArrayPost.length < 7){
     //using the math.floor(math.random()) methods, I multiplied this with the total post length to generate random numbers. This would run 5 times
          const newPosts = Math.floor(Math.random() * postTotalLenght);
     //each time a number is randomly generated, push that number into the newArrayPost array variable
-          newArrayPost.push(newPosts)
-       
+        if(!newArrayPost.includes(newPosts)){
+            newArrayPost.push(newPosts)
+        }   
     }
+     
     //the newArrayPost vairable now contains randomly generated numbers
     //using the map method, the newArrayPost method was used to fetch posts based on their index that match the randomly generated numbers found in the newArrayPost
     const currentPost = newArrayPost.map(singlePost => posts[singlePost])
     return res.status(200).json(currentPost)
+    }
+   
     }catch(err){
         return res.status(500).json('something went wrong with post')
     }

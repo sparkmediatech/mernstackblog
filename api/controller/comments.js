@@ -15,12 +15,16 @@ const createNewComment = async (req, res) =>{
          return res.status(401).json('Sorry, are banned from making comment at this time');
     };
     if(user.isVerified === false){
-        return res.status(401).json('Sorr, are banned from making comment at this time');
+        return res.status(401).json('your account is not verified yet');
     };
-    
+    if(!req.body.commentdescription){
+        return res.status(500).json('comment must not be empty')
+    }
+    if(!isNaN(req.body.commentdescription)){
+        return res.status(500).json('comment should not be a number')
+    }
     const newComment = new Comment(req.body);
         
-    try{
             const currentPost = await Post.findById(req.params.id)
             const currentUser = await User.findById(req.body.author);
 
@@ -28,8 +32,8 @@ const createNewComment = async (req, res) =>{
                 return res.status(500).json('No post or user found');
             }
 
-            currentPost.comments.push(newComment);//we need to push the comment into the post
-            currentUser.usercomments.push(newComment);
+            currentPost.comments.unshift(newComment);//we need to push the comment into the post
+            currentUser.usercomments.unshift(newComment);
 
             const saveNewComment = await newComment.save();
             await currentPost.save()
@@ -37,12 +41,10 @@ const createNewComment = async (req, res) =>{
             
        return res.status(200).json(saveNewComment);
     }catch(err){
-        console.log(err)
+
         return res.status(500).json("Something went wrong");
     };
- }catch(err){
-    return res.status(500).json("something went wrong");
- }
+
 }
 
 //get comment
@@ -55,10 +57,11 @@ const getSingleComment = async (req, res) =>{
          select: 'profilePicture username'
          
       }
-   });//we need to try and catch the new category and save it
-        res.status(200).json(comments)
+   });
+        return res.status(200).json(comments)
     }catch(err){
-        res.status(500).json(err)
+       
+        res.status(500).json('something went wrong')
     }
 }
 
@@ -77,34 +80,34 @@ const updateComment = async (req, res) =>{
     if(user.isVerified === false){
          return res.status(401).json('Sorry, only verified users can update their comment');
     }
-    try{
+    
          const comment = await Comment.findById(req.params.commentId);
          
          if(!comment){
-             return res.status(401).json(`No comment with the id ${comment} found`)
+             return res.status(401).json(`No comment with the id found`)
          }
-         console.log(comment.author === req.body.author)
+
+        if(!req.body.commentdescription){
+            return res.status(500).json('comment must not be empty')
+            }
+        if(!isNaN(req.body.commentdescription)){
+            return res.status(500).json('comment should not be a number')
+            }
         if(comment.author.toString() == req.body.author){
-            try{
+          
                  const updatedComment = await Comment.findByIdAndUpdate(req.params.commentId, {//inbuilt method used to find by id and update
                         
                         $set: req.body
                         
                     }, {new: true})//this makes it possible to see the updated comment
                     return res.status(200).json(updatedComment)
-            }catch(err){
-                console.log(err)
-            }
+          
             
         }
         else{
                 return res.status(401).json("you can only update your comment")
             }
 
-    }catch(err){
-       return res.status(500).json("Something went wrong")
-        console.log(err)
-    }
 }catch(err){
  return res.status(500).json("Something went wrong")
 }
@@ -124,15 +127,12 @@ const deleteComment = async (req, res) =>{
 
         };
         if(comment.author == req.body.author || adminUser.role === 'admin'){
-            try{
+           
                 await User.findByIdAndUpdate(userId, { $pull: {usercomments: comment._id } });
                 await Post.findByIdAndUpdate(id, { $pull: { comments: comment._id } });
                 await Comment.findByIdAndDelete(comment._id);
                 return res.status(200).json("Comment has been deleted");
-            }catch(err){
-                console.log(err);
-                return res.status(401).json("Unauthorized request");
-            }
+            
         }
         else{
             return res.status(401).json("you can only delete your posts");

@@ -9,7 +9,9 @@ import AdminSidebar from './AdminSidebar';
 import { useLocation } from 'react-router';
 import { useHistory, useParams } from 'react-router-dom';
 import {MdNavigateNext, MdNavigateBefore} from 'react-icons/md';
-import {AiFillDelete} from 'react-icons/ai'
+import {AiFillDelete} from 'react-icons/ai';
+import {FiMenu} from 'react-icons/fi';
+import { useMediaQuery } from '../../hooks/CustomMediaQuery';
 
 function Usersmanager(props,) {
     const axiosPrivate = useAxiosPrivate();
@@ -32,8 +34,10 @@ function Usersmanager(props,) {
     const [somethingWentWrongError, setSomethingWentWrongError] = useState(false);
     const [noUserSelectedError, setNoUserSelectedError] = useState(false)
   
-    const {logUser, auth, dispatch} = useContext(AuthContext);
+    const {logUser, auth, dispatch, openAdminSideBar, setOpenAdminSideBar, isLoading} = useContext(AuthContext);
     const PF = "http://localhost:5000/images/";
+     let   tabletMode = useMediaQuery('(max-width: 1200px)');
+     
 
 
 
@@ -42,11 +46,18 @@ function Usersmanager(props,) {
  const fetchAllUsers = async () =>{
   
       try{
+           dispatch({type:"CURSOR_NOT_ALLOWED_START"});
+           dispatch({type:"ISLOADING_START"}); 
           const response = await axiosPrivate.post(`/v1/users/allusers?page=${path}`, { withCredentials: true,
             headers:{authorization: `Bearer ${auth.token}`}});
+            
             setAllUsers(response.data);
+             dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+             dispatch({type:"ISLOADING_END"}); 
          
       }catch(err){
+        dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+        dispatch({type:"ISLOADING_END"}); 
         if(err.response.data === 'No user found'){
             return setNoUserFoundError(true)
         }
@@ -70,11 +81,11 @@ useEffect(()=>{
 }, [allUsers])
 
 
-console.log(checkedState)
+console.log(path, 'I am path')
 //handle prev
 const handlePrev = () =>{
     if(path > 1){
-         history.push(`/usersdashboard/page/${path - 1}`);
+         history.push(`/users/page/${path - 1}`);
     }
  
   //setPage(page - 1)
@@ -83,7 +94,7 @@ const handlePrev = () =>{
 //handle next
 const handleNext = ()=>{
   if(path < allUsers.length && path !== allUsers.length){
-    history.push(`/usersdashboard/page/${path + 1}`);
+    history.push(`/users/page/${path + 1}`);
     //setPage(page + 1)
   }
   
@@ -195,52 +206,100 @@ const handleDeleteAllUsers = async ()=>{
          }
     }
 }
-console.log(selectedUsers)
+
 //handles notification timeOut
 useEffect(() =>{
-   setTimeout(() => {
-       setNoUserFoundError(false)    
+    if(noUserFoundError){
+        setTimeout(() => {
+        setNoUserFoundError(false)    
     }, 3000);
-
-    setTimeout(() => {
-       setNotAuthorizedError(false)    
+    }
+   
+    if(notAuthorizedError){
+         setTimeout(() => {
+            setNotAuthorizedError(false)    
     }, 3000);
-
-    setTimeout(() => {
+    }
+   
+    if(usersNotFoundError){
+        setTimeout(() => {
        setUsersNotFoundError(false)    
     }, 3000);
-
-    setTimeout(() => {
-       setSomethingWentWrongError(false)    
+    }
+    
+    if(somethingWentWrongError){
+         setTimeout(() => {
+        setSomethingWentWrongError(false)    
     }, 3000);
-
-    setTimeout(() => {
-       setNoUserSelectedError(false)    
+    }
+   
+    if(noUserSelectedError){
+        setTimeout(() => {
+        setNoUserSelectedError(false)    
     }, 3000);
+    }
+    
 }, [noUserFoundError, notAuthorizedError, usersNotFoundError, somethingWentWrongError, noUserSelectedError])
+
+
+const handleOpenSidebarMenu = ()=>{
+  if(openAdminSideBar == 'admin-sidebar-slideOut'){
+      setOpenAdminSideBar('admin-sidebar-slideIn')
+  }
+ 
+    
+}
+
+//this useEffect helps to remove the blur effect that was called when the admin side bar is toggle in during the tablet or mobile device screen mode. 
+useEffect(()=>{
+  if(openAdminSideBar == 'admin-sidebar-slideIn'){
+      setOpenAdminSideBar('admin-sidebar-slideOut')
+  }
+}, [tabletMode])
+
+
+
 
 
  return (
      <>
+    
+    
         <article className='users-manager-custom-div '>
+            {
+        
+            isLoading && 
+            <div className='custom-noUser-found-div'>
+            <img className='page-loader' src={require('../../assets/page-loader.gif')} alt="loading..." />
+            <h3 className='text-general-small color1'>Loading...</h3>
+            </div>
+        }
+           
 
-            <div className=" admin-dashboard-custom-container flex-3">
+
+{
+
+            !isLoading &&
+
+             <div className=" admin-dashboard-custom-container flex-3">
 
                 < AdminSidebar/>
-
-    <div className='other-pages custom-user-manager-main-div'>
-        
+   
+            <FiMenu onClick={handleOpenSidebarMenu}  className={openAdminSideBar == 'admin-sidebar-slideOut' ?  'custom-sidebar-menuOpen' :  'custom-sidebar-menuOpen customMenuOpenOff' }/>
+    <div className={openAdminSideBar == 'admin-sidebar-slideIn' ?  'other-pages custom-user-manager-main-div bg-blur2 curson-not-allowed-2 pointer-events-none' : "other-pages custom-user-manager-main-div"}>
+     
+   
     <div className='flex-3 custom-usermanger-title-div'>
-        <h2 className='text-general-Medium topMargin-medium'>Users</h2>
+        <h2 className='text-general-Medium topMargin-medium custom-user-manager-title-text'>Users</h2>
        
        
-             <p onClick={handleDeleteAllUsers} className={selectedUsers.length == 1 || selectedUsers.length > 1 ? 'topMargin-medium red-text text-general-extral-small curson-not-allowed-2': 'topMargin-medium red-text text-general-extral-small general-cursor-pointer'}>DELETE ALL USERS</p>
-              <p onClick={handleDeleteSelectedUsers} className={selectedUsers.length > 1 ? 'margin-small red-text text-general-extral-small general-cursor-pointer': 'margin-small red-text text-general-extral-small curson-not-allowed-2'}>DELETE selected USERS</p>
+             <p onClick={handleDeleteAllUsers} className={selectedUsers.length == 1 || selectedUsers.length > 1 ? 'topMargin-medium red-text text-general-extral-small curson-not-allowed-2 custom-user-manager-title-text': 'topMargin-medium red-text text-general-extral-small general-cursor-pointer custom-user-manager-title-text'}>Delete All</p>
+              <p onClick={handleDeleteSelectedUsers} className={selectedUsers.length > 1 ? 'topMargin-medium red-text text-general-extral-small general-cursor-pointer custom-user-manager-title-text': 'topMargin-medium red-text text-general-extral-small curson-not-allowed-2 custom-user-manager-title-text'}>Delete Selected</p>
            
             
       
     </div>
-
+    
     
         {
             allUsersState && allUsers.length !== 0 &&
@@ -249,17 +308,19 @@ useEffect(() =>{
             
                
                 <div className='flex-3 users-title-container '>
-                 <div className='name-div'><h4 className='text-general-small color1'>NAME</h4></div>
-                <div className='role-div'><h4 className='text-general-small color1'>ROLE</h4></div>
-                <div className='verified-div'><h4 className='text-general-small color1'>VERIFIED</h4></div>
-                <div className='blocked-div'><h4 className='text-general-small color1'>BLOCKED</h4></div>
+                 <div className='name-div'><h4 className='text-general-small color1 custom-userdashboard-title-text'>NAME</h4></div>
+                <div className='role-div'><h4 className='text-general-small color1 custom-userdashboard-title-text'>ROLE</h4></div>
+                <div className='verified-div'><h4 className='text-general-small color1 custom-userdashboard-title-text'>VERIFIED</h4></div>
+                <div className='blocked-div'><h4 className='text-general-small color1 custom-userdashboard-title-text'>BLOCKED</h4></div>
             </div>
                
 
             
             { allUsers.map((singleUser, index)=>{
                 const {username, profilePicture, isBlocked, isVerified, email, role, _id: userId} = singleUser
-                console.log(singleUser)
+               
+
+
                 return(
                     <>
                        <div className='displayUser-div-container flex-3' key={index}>
@@ -269,13 +330,17 @@ useEffect(() =>{
                                    <img className='users-img' src={profilePicture} alt="" />
 
                                </div>
-                                    <div className='users-detail-container '>
+                                    <div className='users-detail-container flex-2'>
+
+                                        <p className='text-general-small color1 custom-paragrap-text '>
+                                             <Link className='link'  to={`/users/${userId}`}>
+                                                 {username}
+                                            </Link>
+                                        </p>
                                         
-                                        <Link className='text-general-small color1 custom-paragrap-text link' to={`/users/${userId}`}>
-                                             {username}
-                                        </Link>
+                                       
                                            
-                                            <p className='text-general-small color1'>{email}</p>
+                                            <p className='text-general-small color1 custom-email-text'>{email}</p>
                                         
                                             
                                     </div>
@@ -284,7 +349,7 @@ useEffect(() =>{
                             </div>
 
                             <div className='users-role-custom-div center-flex-align-display'>
-                                <p  className='text-general-small color1'>{role}</p>
+                                <p  className='text-general-small color1'>{role?.toUpperCase()}</p>
                             </div>
 
                           <div className='users-verified-custom-div center-flex-align-display'>
@@ -293,7 +358,7 @@ useEffect(() =>{
 
                             <div className='users-isBlocked-custom-div center-flex-align-display flex-3'>
                                 {isBlocked == false ? <p className='text-general-small color1'>NO</p>: <p className='text-general-small color1'>YES</p>}
-                                  <AiFillDelete onClick={()=> handleDeleteSingleUser(userId)} className='general-cursor-pointer color2'/>
+                                  <AiFillDelete onClick={()=> handleDeleteSingleUser(userId)} className='general-cursor-pointer color2 custom-userdashboard-delete-icon'/>
                                   <input type="checkbox" checked={checkedState[index]}  onChange={()=>{arrayOfSelectedUserId(userId, index); handleChangeState(userId)}}/>
                             </div>
 
@@ -312,8 +377,14 @@ useEffect(() =>{
         
         
         
-         <div className='custom-userdashboard-navigation-div flex-3 margin-small center-flex-align-display'>
-            <div>
+        
+        </div>
+      }
+   
+      {
+        allUsers.length != 0 && openAdminSideBar !== 'admin-sidebar-slideIn' &&
+        <div className='custom-userdashboard-navigation-div flex-3 margin-small center-flex-align-display'>
+            <div className='custom-userDashboard-Pre-div'>
                 <MdNavigateBefore  onClick={handlePrev} className={path > 1  ? 'custom-next-prev-userdashboard-icon marginRight-extraSmall flex-2' :'custom-next-prev-userdashboard-icon marginRight-extraSmall flex-2 curson-not-allowed-2' }/>
               <p className='margin-extra-small-Top color1 text-general-extral-small general-cursor-pointer'>PREV</p>
             </div>
@@ -326,16 +397,15 @@ useEffect(() =>{
             </div>
 
          </div>
-        </div>
       }
-   
-     
 
                  </div>    
            </div>
          
           
     
+
+           }
      
      </article>
      </>

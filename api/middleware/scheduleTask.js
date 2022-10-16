@@ -52,7 +52,7 @@ const autoUpdateEmailSubscribers = async (req, res) =>{
             
              let dataEmail = await Promise.all(emails.map(async(singleEmail)=>{
                 const getUTCModelDate = dayJsUTC(singleEmail.deliveryDate).format();
-                if(utcDate > getUTCModelDate && singleEmail.deliveryStatus == 'pending'){
+                if(utcDate > getUTCModelDate && singleEmail.deliveryStatus == 'pending' && deliveryDate !== null){
                      return await sendEmailSubscriber(singleEmail.emailReciever, res, singleEmail.emailTitle, singleEmail.emailBody, singleEmail._id);
                 }
                

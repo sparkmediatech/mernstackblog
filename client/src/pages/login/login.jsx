@@ -57,6 +57,7 @@ export default function Login() {
     }
  
 useEffect(() =>{
+
   if(wrongCredentialError){
       setTimeout(() => {
           setWrongCredentialError(false)
@@ -67,16 +68,24 @@ useEffect(() =>{
           setUnauthorizedError(false)
       }, 3000);
   }
-
+if(unverifiedError){
     setTimeout(() => {
          setUnverifiedError(false)
       }, 3000);
-
-   setTimeout(() => {
+}
+    
+if(somethingWentWrongError){
+    setTimeout(() => {
         setSomethingWentWrongError(false)
       }, 3000);
   
+}
+   
 }, [wrongCredentialError, unauthorizedError, somethingWentWrongError, unverifiedError])
+
+
+
+
     return (
         <>
 

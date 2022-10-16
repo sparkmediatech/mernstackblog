@@ -19,7 +19,7 @@ import Footer from '../../components/Footer/Footer';
 
 
 export default function Home() { 
-    const {auth, isLoading, dispatch} = useContext(AuthContext);
+    const {auth, isLoading, dispatch, sliderStateText} = useContext(AuthContext);
   
    
 
@@ -28,7 +28,7 @@ export default function Home() {
        
             <Header/>
             
-                <div className='home'>
+                <div className={sliderStateText === 'headerOFF'? 'home custom-homePage-latest-text' : 'home'}>
                 <h4 className='latest-text margin-small custom-homePage-component '>Latest</h4>
                 <div className='flex-3 page-div'>
                      <hr className='page-line1 '/>

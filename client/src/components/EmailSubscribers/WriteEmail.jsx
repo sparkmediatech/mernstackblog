@@ -5,23 +5,23 @@ import  BASE_URL from '../../hooks/Base_URL';
 import axiosPrivate from '../../hooks/AxiosPrivate';
 import {MdOutlineCancel, MdNavigateNext, MdNavigateBefore} from 'react-icons/md';
 import {BsCheckLg} from 'react-icons/bs'
+import { useMediaQuery } from '../../hooks/CustomMediaQuery';
 
 function WriteEmail(emailProp) {
-  console.log(emailProp)
+  
   const {auth, dispatch,  allSubscribersState, setAllsubscribersState, allSubscribers, pageNumber, setPageNumber,  emailUpdateMode, setEmailUpdateMode, } = useContext(AuthContext);
   const [deliveryModeText, setDeliveryModeText] = useState(emailProp.deliveryMode || 'instant');
   const deliveryModeArray = ['instant', 'later'];
   const [deliveryModeState, setDeliveryModeState] = useState(false);
   const [callSubscribersState, setCallSubscribersState] = useState(false);
   const [selectedSubscriberId, setSelectedSubscriberId] = useState(emailProp.emailReciever || []);
-  const [checkedState, setCheckedState] = useState();
   const [ checkMode, setCheckMode] = useState(false);
-  const [localStorageItem, setLocalStorageItem] = useState()
   const emailSubject = useRef();
   const emailBody = useRef();
   const [dataDate, setDataDate] = useState(emailProp.deliveryDate || null)
   const [emailDeliveryUpdate, setEmailDeliverUpdate] = useState(false);
   const [emailLoading, setEmailLoading] = useState(false);
+  let   mobileScreenMode = useMediaQuery('(max-width: 576px)');
 
   //error states
   const [noUserFoundError, setNoUserFoundError] = useState(false);
@@ -369,15 +369,15 @@ console.log(emailUpdateMode)
         callSubscribersState && 
 
         <div className='flex-2 custom-list-email-sendEmail-div'>
-    <button onClick={handleCancelDisplaySubscribers} className='custom-done-sendEmail-BTN'>Done</button>
+    <button onClick={handleCancelDisplaySubscribers} className='custom-done-sendEmail-BTN flex'>Done</button>
     {allSubscribers.map((singleSub, index)=>{
       const {_id: subscriberId, isVerified, subscriberName, subscriberEmail} = singleSub
       return(
         <>
           <div className='flex-3 custom-subscribers-list-item-div margin-small-small center-flex-align-display' key={index}>
-              <div className='flex-3 custom-email-list-general-div margin-left-sm1'><p className='color1 text-general-small'>{subscriberName}</p> </div>
-              <div  className='flex-3 custom-email-list-general-div'><p className='color1 text-general-small'>{subscriberEmail}</p></div>
-              <div  className='flex-3 custom-email-list-general-div'>{isVerified == false ? <p className='color1 text-general-small'>Verifed : No</p> : <p className='color1 text-general-small'> Verified: Yes</p>}</div>
+             {!mobileScreenMode && <div className='flex-3 custom-email-list-general-div margin-left-sm1 custom-email-list-name-div'><p className='color1 text-general-small'>{subscriberName}</p> </div>}
+              <div  className='flex-3 custom-email-list-general-div custom-subscriber-email-div'><p className='color1 text-general-small'>{subscriberEmail}</p></div>
+              { !mobileScreenMode && <div  className='flex-3 custom-email-list-general-div custom-subscriber-verify-status-div'>{isVerified == false ? <p className='color1 text-general-small'>Verifed : No</p> : <p className='color1 text-general-small'> Verified: Yes</p>}</div>}
               <input className='marginRight-extraSmall' type="checkbox"  id={index} checked={isChecked(subscriberEmail)} onChange={()=> handleCheckedClick(subscriberEmail)}/>
           </div>
         </>
@@ -396,14 +396,8 @@ console.log(emailUpdateMode)
     </div>
    </div>
       }
-    {
-      callSubscribersState && 
-
-       <div className='custom-email-no-cursor-div'>
-
-      </div>
-    }
-    <div className='custom-createEmail-div flex-2'>
+    
+    <div className={callSubscribersState ? 'custom-createEmail-div flex-2 curson-not-allowed-2 pointer-events-none bg-blur' : 'custom-createEmail-div flex-2'}>
       <div className='flex'><h4 className='center-text text-general-small color1'>Compose Email</h4></div>
     <p className='color1 text-general-extral-small margin-extra-small-Top'>Email Subject</p>
         <input className='margin-extra-small-Top custom-email-subject-input color1' placeholder='Email Subject...' type="text" defaultValue={emailProp.emailTitle} ref={emailSubject}/>
@@ -485,7 +479,7 @@ console.log(emailUpdateMode)
          
          {
           deliveryModeText == 'later' && 
-           <input className='marginLeft-extraSmall' type="date" defaultValue={dataDate}  onChange={e=>setDataDate(e.target.value)}/>
+           <input className='marginLeft-extraSmall custom-write-email-date' type="date" defaultValue={dataDate}  onChange={e=>setDataDate(e.target.value)}/>
          }
         </div>
         {!emailUpdateMode ? <div className='flex'>

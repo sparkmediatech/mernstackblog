@@ -158,8 +158,11 @@ const handleShowCategory = () =>{
         if(err.response.data === "post title should not be less than 10 characters"){
             setPostTitleMinError(true)
         } 
+         if(err.response.data == 'User not found'){
+          return setUserNotFounderError(true)
         }
-        
+        }
+       
        }else{
          dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
          setImageUploadText(true)
@@ -170,45 +173,68 @@ const handleShowCategory = () =>{
 //useEffect to clear error messages after some seconds
 
 useEffect(()=>{
+  if(userNotFoundError){
     setTimeout(() => {
         setUserNotFounderError(false)
     }, 2000);
 
-    setTimeout(() => {
-        setBlockedUserError(false)
-    }, 2000);
-
+  }
+  
+  if(blockedUserError){
      setTimeout(() => {
         setBlockedUserError(false)
     }, 2000);
+  }
+   
+if(blockedUserError){
+   setTimeout(() => {
+        setBlockedUserError(false)
+    }, 2000);
 
-    setTimeout(() => {
+}
+if(verifiedUserError){
+ setTimeout(() => {
         setVerifiedUserError(false)
     }, 2000);
-
-    setTimeout(() => {
+}   
+  
+if(imgeUploadText){
+   setTimeout(() => {
         setImageUploadText(false)
     }, 2000);
+}
 
-     setTimeout(() => {
+   
+if(categorySetError){
+  setTimeout(() => {
         setCategorySetError(false)
     }, 2000);
-
-     setTimeout(() => {
+}
+     
+if(duplicatePostTitleError){
+   setTimeout(() => {
         setDubplicateTitleError(false)
     }, 2000);
-
-    setTimeout(() => {
-        setPostTitleMaxError(false)
+}
+    
+if(postTitleMaxError){
+ setTimeout(() => {
+      setPostTitleMaxError(false)
     }, 2000);
-
-    setTimeout(() => {
+}
+   
+if(postTitleEmptyError){
+  setTimeout(() => {
         setPostTitleEmptyError(false)
     }, 2000);
-
-    setTimeout(() => {
+}
+    
+if(postTitleMinError){
+ setTimeout(() => {
         setPostTitleMinError(false)
     }, 2000);
+}
+   
 
 }, [userNotFoundError, blockedUserError, verifiedUserError, 
     imgeUploadText, categorySetError, duplicatePostTitleError,

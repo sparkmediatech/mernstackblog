@@ -52,13 +52,21 @@ export const AuthProvider = ({children})=>{
     const [fetchAllScheduledEmail, setFetchAllScheduledEmail] = useState(false);
     const [emailUpdateMode, setEmailUpdateMode] = useState(false);
     const [editModeState, setEditModeState] = useState(false);
+    
+    //for header value
+    const [headerValues, setHeaderValues] = useState([]); 
+    //for sliderState Id
+    const [sliderStateLoad, setSliderStateLoad] = useState(false)
 
     //admin side bar animation control
      const [openAdminSideBar, setOpenAdminSideBar] = useState('admin-sidebar-slideOut');
      //this state is used to adjust the height of the admin sidebar
      const [updateImageState, setUpdateImageState] = useState(false);
-    
-
+    //global state to manage the header image
+    const [headerImage, setHeaderImage] = useState();
+    //global state to manage sliderState contents
+    const [sliderState, setSliderState] = useState([]);
+    const [sliderStateText, setSliderStateText] = useState()
 
     
 
@@ -173,12 +181,46 @@ const fetchPathName = async ()=>{
 fetchPathName()
 }, [pathNameMount, pathLocation])
 
-console.log(tokenError, 'token error')
- console.log(state.temp) 
-console.log(logUser)
-console.log(auth)
-console.log(regUser)
-console.log(aboutWebsite)
+
+
+//fetch slider state. Slider state is needed in two seperate pages. I made it a global state
+    
+useEffect(()=>{
+const fetchSliderState = async () =>{
+    try{
+        const res = await axios.get(`${BASE_URL}/sliderstate/`,);
+            return  setSliderState(res.data)            
+    }catch(err){
+                
+    }            
+}
+
+fetchSliderState() 
+}, [sliderStateLoad])
+
+
+
+//this function helps to extract the text of the sliderstate coming from database. Because this value is needed for the header slider to determine the state, I decided to bring it here. 
+//it maybe needed in the future else where. 
+useEffect(()=>{
+let mounted = true
+if(mounted){
+     if(sliderState.length > 0){
+        //get the sliderState Id into an array
+            const arraySliderState = sliderState.map((singleSlider)=> singleSlider.sliderState);
+            //convert array into object
+            const stringSliderState = arraySliderState.toString()
+           setSliderStateText(stringSliderState)
+
+    }
+}
+return function cleanup() {
+            mounted = false
+        }
+}, [sliderState]);
+
+
+
 
 
     return(
@@ -212,7 +254,12 @@ console.log(aboutWebsite)
             emailUpdateMode, setEmailUpdateMode,
             editModeState, setEditModeState,
             openAdminSideBar, setOpenAdminSideBar,
-            updateImageState, setUpdateImageState
+            updateImageState, setUpdateImageState,
+            headerValues, setHeaderValues,
+            sliderStateLoad, setSliderStateLoad,
+            headerImage, setHeaderImage,
+           sliderState, setSliderState,
+           sliderStateText, setSliderStateText
 
            
 

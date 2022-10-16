@@ -25,10 +25,10 @@ const verifyEmailRoute = require('./routes/EmailVerifyRoute');
 const searchRout = require('./routes/searchroute');
 const PopularPosts = require('./routes/popularPost');
 const Categories = require('./routes/Categories');
-const NavigationMenu = require('./routes/NavigationMenu');
 const ClientComponent = require('./routes/ClientComponent');
 const ClientPathName = require('./routes/ClientPathName');
-const EmailSubscribers = require('./routes/Email')
+const EmailSubscribers = require('./routes/Email');
+const SliderState = require('./routes/SliderState')
 
 
 
@@ -70,10 +70,10 @@ app.use("/api/v1/", refreshToken);
 app.use("/api/v1/", verifyEmailRoute);
 app.use("/api/v1/", searchRout);
 app.use("/api/v1/category", Categories);
-app.use("/api/v1/menu", NavigationMenu);
 app.use("/api/v1/component", ClientComponent);
 app.use("/api/v1/pathname", ClientPathName );
-app.use("/api/v1/emailsub", EmailSubscribers)
+app.use("/api/v1/emailsub", EmailSubscribers);
+app.use("/api/v1/sliderstate", SliderState);
 
 
 

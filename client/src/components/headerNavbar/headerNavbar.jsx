@@ -22,11 +22,8 @@ function HeaderNavbar() {
     const path = location.pathname.split("/")[1];
     const axiosPrivate = useAxiosPrivate();
     const PF = "http://localhost:5000/images/" 
-    const [topMenuBar, setTopMenuBar] = useState(false);
-    const [headerValues, setHeaderValues] = useState([]);  
-    const [pathAliasName, setPathAliasName] = useState('')
     const {auth, setAuth, logUser, setWebsiteName, setAboutWebsite, setQuery,  searchState, setSearchState,  blogPageName, pathName,  writePageName,
-    pathLocation, setPathLocation, blogPageAliasName, writePageAliasName, setgeneralFetchError
+    pathLocation, setPathLocation, blogPageAliasName, writePageAliasName, setgeneralFetchError,dispatch, headerValues, setHeaderValues, headerImage, setHeaderImage
     } = useContext(AuthContext);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     let   tabletMode = useMediaQuery('(max-width: 1200px)');
@@ -41,6 +38,7 @@ useEffect(() => {
          try{
                 const res = await axios.get(`${ BASE_URL}/headervalue`);
                 setHeaderValues(res.data)
+               
          }catch(err){
             if(err.response.data === 'no value found'){
                 return setgeneralFetchError(true)
@@ -55,7 +53,7 @@ useEffect(() => {
   }, [])
   
 
-  
+   
 
 //handle logout
 const handleLogout = async (e) =>{
@@ -63,10 +61,11 @@ const handleLogout = async (e) =>{
         userId: logUser.userId
     }
     try{
+        dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
         await axiosPrivate.post(`/v1/auth/logout`,  logId, { withCredentials: true,
         headers:{authorization: `Bearer ${auth.token}`}})
         setAuth(null);
-        
+         dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
         
         window.location('/login')
         }catch(err){
@@ -92,8 +91,11 @@ const customHeaderColor = {
 //setWebsiteName and aboutWebsite for global state management
 useEffect(()=>{
      setWebsiteName(arrayHeaderValues.websiteName)
-     setAboutWebsite(arrayHeaderValues.aboutWebsite)
+     setAboutWebsite(arrayHeaderValues.aboutWebsite);
+     setHeaderImage(arrayHeaderValues.headerImg)
+     
 }, [headerValues])
+
 
 
 //handle search query to avoid the API calls from running on each time the user types a word. I want the search api to be called only when the user clicks the search icon
@@ -129,6 +131,12 @@ useEffect(()=>{
 }, [tabletMode])
 
 
+
+
+console.log(headerValues, 'header now')
+
+
+
   return (
       <>
       {/* Top navbar section*/}
@@ -148,7 +156,7 @@ useEffect(()=>{
             <div className='topRight'>
                <ul className='topList'>               
                     {logUser.role == 'admin' && auth?.token && <li className='topListItem'>
-                        <Link className='link white-text text-general-small custom-mobil-font' to='/websitesettings'>DASHBOARD</Link>
+                        <Link className='link white-text text-general-small custom-mobil-font' to='/settings'>DASHBOARD</Link>
                     </li>} 
                     
                      {auth?.token && <li className='topListItem'>

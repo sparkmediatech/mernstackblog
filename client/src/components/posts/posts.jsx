@@ -12,7 +12,7 @@ import createImagePlugin from '@draft-js-plugins/image';
 
 
 export default function Posts() {//we picked the posts props and declared it
-    const {auth, isLoading, dispatch, posts, setPosts} = useContext(AuthContext); 
+    const {auth, isLoading, dispatch, posts, setPosts, } = useContext(AuthContext); 
     let   tabletMode = useMediaQuery('(max-width: 768px)');
     let   mobileMode = useMediaQuery('(max-width: 576px)')         
     const [loading, setLoading] = useState(false);
@@ -41,7 +41,10 @@ export default function Posts() {//we picked the posts props and declared it
         fetchPosts()
          
     }, [])
-console.log(tabletMode, 'tablet mode')
+
+
+
+
 //this controls the line animation under each post title
 useEffect(()=>{
 
@@ -69,6 +72,10 @@ useEffect(()=>{
     }
 }, [ tabletMode, screenMode, mobileMode])
   
+
+
+
+
 
     return (
         <div className='posts margin-small '>

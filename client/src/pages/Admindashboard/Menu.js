@@ -9,9 +9,11 @@ import {FaEdit} from 'react-icons/fa';
 import {AiFillDelete} from 'react-icons/ai'
 import {MdOutlineAdd} from 'react-icons/md';
 import {ImCancelCircle} from 'react-icons/im';
+import { useMediaQuery } from '../../hooks/CustomMediaQuery';
+import {FiMenu} from 'react-icons/fi'
 
 function Menu() {
-        const {auth, dispatch, componentName, pathName, setPathName, pathNameMount, setPathNameMount, pathLocation,} = useContext(AuthContext);
+        const {auth, dispatch, componentName, pathName, setPathName, pathNameMount, setPathNameMount, pathLocation, openAdminSideBar, setOpenAdminSideBar,} = useContext(AuthContext);
         const axiosPrivate = useAxiosPrivate();
         const [showEditPathNameInput, setShowEditPathNameInput] = useState(false)
         const [pathNameSelectedId, setPathNameSelectedId] = useState('');
@@ -22,7 +24,8 @@ function Menu() {
         const [selectedPathName, setSelectedPathName] = useState('');
         const [selectedMenuName, setSelectedMenuName] = useState('')
         const pathNameRef = useRef('');
-        const pathNameMenuNameRef = useRef('')
+        const pathNameMenuNameRef = useRef('');
+        let   tabletMode = useMediaQuery('(max-width: 1200px)');
         //error states start from here
         const [pathMenuEmptyError, setPathNameEmptyError] = useState(false);
         const [userNotAuthorizedError, setUserNotAuthorizedError] = useState(false);
@@ -257,89 +260,142 @@ useEffect(()=>{
 //useEffect for all kinds of notifications to time out
 
 useEffect(()=>{
+  if(pathMenuEmptyError)
     setTimeout(() => {
         setPathNameEmptyError(false)    
     }, 3000);
-
+  
+  if(userNotAuthorizedError){
     setTimeout(() => {
        setUserNotAuthorizedError(false)    
     }, 3000);
 
+  }
+  
+  if(menuNameError){
      setTimeout(() => {
        setMenuNameError(false)    
     }, 3000);
-
-     setTimeout(() => {
+  }
+    
+  if(aliasNameProvidedError){
+    setTimeout(() => {
        setAliasNameProvidedError(false)    
     }, 3000);
+  }
+     
 
+  if(aliasNameEmptyError){
     setTimeout(() => {
        setAliasNameEmptyError(false)    
     }, 3000);
-
-     setTimeout(() => {
+  }
+    
+  if(pathNameProvidedError){
+    setTimeout(() => {
        setPathNameProvidedError(false)    
     }, 3000);
-
-
-    setTimeout(() => {
-       setPathNameEmptyError(false)    
-    }, 3000);
-
-    setTimeout(() => {
+  }
+  
+  if(pathNameSpaceError){
+     setTimeout(() => {
        setPathNameSpaceError(false)    
-    }, 4000);
-
-    setTimeout(() => {
+    }, 3000);
+  }
+   
+  if(pathNameCapsError){
+     setTimeout(() => {
        setPathNameCapsError(false)    
     }, 3000);
-
-  setTimeout(() => {
+  }
+   
+if(pathNameNumberError){
+   setTimeout(() => {
        setPathNameNumberError(false)    
     }, 3000);
+}
 
-  setTimeout(() => {
+if(pathNameExistError){
+   setTimeout(() => {
        setPathNameExistError(false)    
     }, 3000);
 
-  setTimeout(() => {
+}
+if(pathMenuNameExistError){
+   setTimeout(() => {
        setPathMenuNameExistError(false)    
     }, 3000);
+}
+ 
 
-  setTimeout(() => {
+if(somethingWentWrong){
+   setTimeout(() => {
        setSomethingWentWrongError(false)    
     }, 3000);
+} 
 
-  setTimeout(() => {
+if(menuNameNumberError){
+   setTimeout(() => {
        setMenuNameNumberError(false)    
     }, 3000);
-
+}
+ 
+if(noUserFoundError){
    setTimeout(() => {
        setNoUserFoundError(false)    
     }, 3000);
+}
 
-  setTimeout(() => {
+if(clientPathNameNotFoundError){
+   setTimeout(() => {
        setClientPathNameNotFoundError(false)    
     }, 3000);
+} 
+
+ 
 }, [pathMenuEmptyError, userNotAuthorizedError, menuNameError, aliasNameProvidedError, aliasNameEmptyError, pathNameProvidedError,
 pathNameIsEmptyError, pathNameSpaceError, pathNameCapsError, pathNameNumberError, pathNameExistError, pathMenuNameExistError,
 somethingWentWrong, menuNameNumberError, noUserFoundError, clientPathNameNotFoundError
 ])
 
+
+
+//this brings the admin sidebar out in a screen mode that is not desktop screen mode
+const handleOpenSidebarMenu = ()=>{
+  if(openAdminSideBar == 'admin-sidebar-slideOut'){
+      setOpenAdminSideBar('admin-sidebar-slideIn')
+  }
+ 
+    
+}
+
+
+
+//this useEffect helps to remove the blur effect that was called when the admin side bar is toggle in during the tablet or mobile device screen mode. 
+useEffect(()=>{
+  if(openAdminSideBar == 'admin-sidebar-slideIn'){
+      setOpenAdminSideBar('admin-sidebar-slideOut')
+  }
+}, [tabletMode])
+
+
+
+
     return (
    <>
    
     <article className='dashboard-container'>
-       <div className=" admin-dashboard-custom-container flex-3">
+       <div className=" admin-dashboard-custom-container custom-instruction-main-wrapper flex-3">
 
             < AdminSidebar/>
 
-                <div className='other-pages custom-other-page topMargin-Extral-Large '>
+<FiMenu onClick={handleOpenSidebarMenu}  className={openAdminSideBar == 'admin-sidebar-slideOut' ?  'custom-sidebar-menuOpen' :  'custom-sidebar-menuOpen customMenuOpenOff' }/>
+                <div className={openAdminSideBar === 'admin-sidebar-slideIn' ? 'other-pages custom-other-page custom-instruction-main-div bg-blur2 curson-not-allowed-2 pointer-events-none' : 'other-pages custom-other-page custom-instruction-main-div'}>
                         <h3 className='text-general-Medium margin-small'>Menu Page</h3>
                     <div className='flex-3 custom-menu-wrapper'>
 
                         <div className=' margin-small custom-component-div'>
-                            <h4 className='color1 text-general-small2'>Components</h4>
+                            <h4 className='color1 text-general-small2 custom-component-name-main-title-text'>Components</h4>
                             <div className='topMargin-medium custom-menu-properties-div'>
                                 { componentName.map((singleComponent, key) =>{
 
@@ -348,7 +404,7 @@ somethingWentWrong, menuNameNumberError, noUserFoundError, clientPathNameNotFoun
                                 return(
                                     <>
                                         <div key={key} className='custom-single-componentName-div margin-small center-flex-align-display'>
-                                            <p className='text-general-small color1'>{componentName}</p>
+                                            <p className='text-general-small color1 custom-component-name-text'>{componentName}</p>
                                             { compArrayToCreate.includes(componentName) && <MdOutlineAdd className='marginLeft-extraSmall custom-addPathNameIcon color2 mousePointer-click-general' onClick={()=> handleToggleCreateInput(componentName)}/>}
                                         </div>
                                     </>
@@ -361,7 +417,7 @@ somethingWentWrong, menuNameNumberError, noUserFoundError, clientPathNameNotFoun
                     
                     
                             <div className=' margin-small custom-component-div  marginLeft-extraSmall'>
-                                  <div className='flex-3 center-flex-align-display custom-pathName-title-div'><h4 className='color1 text-general-small2'>PathName</h4> </div>  
+                                  <div className='flex-3 center-flex-align-display custom-pathName-title-div'><h4 className='color1 text-general-small2 custom-pathName-main-title-text'>PathName</h4> </div>  
                                 <div className='topMargin-medium custom-menu-properties-div'>
                                     {pathName?.length < 1 && !addPathNameField && <div className='empty-pathName-text-div'><h4 className='color1 text-general-extral-small'>Your component pathnames are empty. Create pathnames for your components</h4></div>}
                                     {pathName?.map((singlePathName, key) =>{
@@ -377,58 +433,62 @@ somethingWentWrong, menuNameNumberError, noUserFoundError, clientPathNameNotFoun
                                                     {
                                                         pathNameSelectedId == pathNameId && showEditPathNameInput ?
                                                         
-                                                        <div>
+                                                        <div className='custom-menu-input-main-div'>
                                                             <input type="text" className='custom-addNewPathName-input custom-edit-input' 
                                                                 ref={pathNameMenuNameRef} 
-                                                            placeholder={`Edit menu name ${selectedMenuName}`}/>
+                                                            placeholder={`Edit ${selectedMenuName}`}/>
 
-                                                            <input type="text" className='custom-addNewPathName-input marginLeft-extraSmall' 
+                                                            <input type="text" className='custom-addNewPathName-input marginLeft-extraSmall custom-edit-input' 
                                                                 ref={pathNameRef} 
-                                                            placeholder={`Edit path name ${selectedPathName}`}/>
+                                                            placeholder={`Edit ${selectedPathName}`}/>
+                                                            
+                                                          
+                                                            <div className='flex-3 custom-edit-delete-div center-flex-align-display '>
+                                                              <MdOutlineAdd className='custom-addPathNameIcon  marginRight-extraSmall mousePointer-click-general color2' onClick={()=>  handleClientNameUpdate(pathNameId)}/>
+                                                              <ImCancelCircle className='red-text general-cursor-pointer marginRight-extraSmall custom-cancel-path-menu-Name-icon' onClick={handleCanlePathNameEditMode}/>                                            
+                                                            </div>
                                                         </div>
-
+                                                          
                                                         :
 
                                                          <div className='menuName-pathName-custom-div flex-3'>
-                                                            <div className='custom-menuName-div '><h5 className='color3 text-general-extral-small'>Menu Name</h5><p className='text-general-small color1 custom-pathName-text '>{menuName}</p></div>
-                                                            <div className='custom-pathName-div flex-3'><h5 className='color3 text-general-extral-small marginLeft-extraSmall'>Menu Path</h5><p className='text-general-small color1 custom-pathName-text '>/{pathName}</p></div>
+                                                            <div className='custom-menuName-div '><h5 className='color3 text-general-extral-small custom-menuName-text-title'>Menu Name</h5><p className='text-general-small color1 custom-pathName-text '>{menuName}</p></div>
+                                                            <div className='custom-pathName-div flex-3'><h5 className='color3 text-general-extral-small custom-menuName-text-title '>Menu Path</h5><p className='text-general-small color1 custom-pathName-text '>/{pathName}</p></div>
+                                                           
+                                                           <div className='custom-edit-delete-menu-main-div'>
+                                                             <FaEdit className='general-cursor-pointer color2 marginRight-extraSmall custom-edit-menu-icon' onClick={() => handleEditPathName(pathNameId, pathName, menuName)}/>
+                                                            <AiFillDelete className='general-cursor-pointer color2 custom-edit-menu-icon' onClick={()=> handleDeletePath(pathNameId)}/>
+                                                           </div>
                                                          </div>
                                                      }
                                                 </div>
-                                            <div className='flex-3 custom-edit-delete-div center-flex-align-display '>
-                                                {showEditPathNameInput &&  <MdOutlineAdd className='custom-addPathNameIcon  marginRight-extraSmall mousePointer-click-general color2' onClick={()=>  handleClientNameUpdate(pathNameId)}/>}
-                                                {showEditPathNameInput &&  <ImCancelCircle className='red-text general-cursor-pointer marginRight-extraSmall' onClick={handleCanlePathNameEditMode}/>}
-                                                    
-                                                {!showEditPathNameInput &&  <FaEdit className='general-cursor-pointer color2 marginRight-extraSmall' onClick={() => handleEditPathName(pathNameId, pathName, menuName)}/>}
-                                                {!showEditPathNameInput && <AiFillDelete className='general-cursor-pointer color2' onClick={()=> handleDeletePath(pathNameId)}/>}
-                                                
-                                            
-                                            </div>
+                                           
                                            
                                         </div>
                                     </>
                                     )
                                     })}
                                 </div>
-                               {addPathNameField && selectedComponentName && <div className='custom-addNewPathName-div flex-2 center-flex-justify-display'><input type="text" className='custom-addNewPathName-input' 
+                               {addPathNameField && selectedComponentName && <div className='custom-addNewPathName-div flex-2 center-flex-justify-display'>
+                                <input type="text" className='custom-addNewPathName-input' 
                                  ref={pathNameMenuNameRef} 
-                               placeholder='create new Menu name'/>
+                               placeholder='create Menu'/>
 
                               
 
                                <input type="text" className='custom-addNewPathName-input marginLeft-extraSmall' 
                                  ref={pathNameRef} 
-                               placeholder='create new pathName'/>
+                               placeholder='pathName'/>
 
                                
                                     <div className='custom-create-cancel-pathName-div flex-3 center-flex-align-display' >
                                         <MdOutlineAdd className='marginRight-extraSmall custom-addPathNameIcon color2 mousePointer-click-general' onClick={handleAddNewPathName}/>
-                                        <ImCancelCircle className='red-text general-cursor-pointer marginRight-extraSmall' onClick={()=> {setAddPathNameField(false); setSelectedComponentName('')}}/>
+                                        <ImCancelCircle className='red-text general-cursor-pointer marginRight-extraSmall custom-cancel-path-menu-Name-icon' onClick={()=> {setAddPathNameField(false); setSelectedComponentName('')}}/>
                                     </div>
                                </div>
                                
                                }
-                             {pathMenuEmptyError && <p className='paragraph-text red-text'>Menu name must not be present</p>}
+                             {pathMenuEmptyError && <p className='paragraph-text red-text'>Menu name must be present</p>}
 
                             {userNotAuthorizedError && <p className='paragraph-text red-text'>Sorry, you are not authorized to perform this action</p>}
 
@@ -462,11 +522,12 @@ somethingWentWrong, menuNameNumberError, noUserFoundError, clientPathNameNotFoun
                            
                             
                             
-                            <div className=' margin-small custom-instruction-div  flex-2 '>
+                            { openAdminSideBar !== 'admin-sidebar-slideIn'&&
+                              <div className=' margin-small custom-instruction-div  flex-2 '>
                                 
-                                    <h4 className='color1 text-general-small2 marginLeft-extraSmall'>Instructions</h4>
+                                    <h4 className='color1 text-general-small2 marginLeft-extraSmall custom-instruction-main-title-text'>Instructions</h4>
                                 <div className='topMargin-medium custom-instruction-property-div flex-2'>
-                                   <p className='color1 text-general-small marginLeft-extraSmall '>The component section contains the name of all the components in this app. The PathName section contains your Menu name and your menu path name. Your top menu can 
+                                   <p className='color1 text-general-small marginLeft-extraSmall custom-menu-intruction-text '>The component section contains the name of all the components in this app. The PathName section contains your Menu name and your menu path name. Your top menu can 
 
                                     take up to 5 names depending how long the names are. The names of the components should tell you what those components are for. For instance, Home component is for your homepage
                                     Contact component is for your contact page. About component is for About your service, etc. This means you should tailor your menu name to this direction. Though you are free to 
@@ -480,6 +541,7 @@ somethingWentWrong, menuNameNumberError, noUserFoundError, clientPathNameNotFoun
                             
                             </div>
 
+                            }
 
                     </div>
 

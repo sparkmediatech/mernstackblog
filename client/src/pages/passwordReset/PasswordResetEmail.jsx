@@ -44,10 +44,15 @@ function PasswordResetEmail() {
 
 //useeffect to clear off error message after some seconds
 useEffect(()=>{
-    setTimeout(() => {
+    if(userNotFoundError){
+         setTimeout(() => {
         setUserNotFoundEror(false)
     }, 2000);
-}, [userNotFoundError])
+    }
+   
+}, [userNotFoundError]);
+
+
 
   return (
       <article className='mainWrapper'>

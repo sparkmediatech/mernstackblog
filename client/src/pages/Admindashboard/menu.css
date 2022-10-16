@@ -1,10 +1,15 @@
+
+.custom-instruction-main-div{
+    width: 83%;
+}
 .custom-menu-wrapper{
-    width: 99%;
+    width: 100%;
+   
+   
 }
 .custom-component-div{
     width:49%;
-    padding-bottom: 20px;
-    
+    padding-bottom: 20px;    
 }
 .custom-instruction-div{
     width:99%;
@@ -31,16 +36,20 @@
 }
 
 .custom-edit-delete-div{
-    width: 30%;
-    justify-content: right;    
+    width: 20%;
+    justify-content: right;   
 }
 .custom-pathName-text-div{
-    width: 70%;
+    width: 100%;
     height: 100%;
 }
-
+.custom-menu-input-main-div{
+   width: 100%;
+   display: flex;
+}
 .menuName-pathName-custom-div{
     width: 100%;
+   
 }
 .custom-menuName-div{
     width: 45%;
@@ -63,7 +72,6 @@
 }
 .custom-addNewPathName-input{
     outline: none;
-    
     border: none;
     border-bottom: 2px solid #D0D3D4;
     padding-top: 8px;
@@ -71,6 +79,7 @@
 }
 .custom-edit-input{
     padding-right: 20px;
+    width: 50%;
 }
 .custom-create-cancel-pathName-div{
     justify-content: right;
@@ -81,4 +90,163 @@
     justify-content: center;
     align-items: center;
     height: 300px;
+}
+
+
+
+
+
+@media(max-width:1200px){
+.custom-pathName-text-div{
+    width: 100%;
+    height: 100%;
+}
+.custom-create-cancel-pathName-div{
+    width: 20%;
+}
+.custom-edit-delete-div {
+    width: 15%;
+    justify-content: right;
+}
+.custom-edit-input{
+    width: 40%;
+}
+}
+
+
+
+
+@media(max-width:992px){
+.custom-menu-intruction-text{
+        font-size: 15px !important;
+    }
+
+.custom-instruction-main-title-text{
+        margin-top: 10px;
+    }
+.custom-instruction-property-div{
+    margin-top: 5px !important;
+}
+.custom-menuName-div {
+    width: 35%;
+}
+.custom-pathName-div{
+    width: 35%;
+}
+.custom-edit-delete-menu-main-div {
+    width: 25%;
+    display: flex;
+    justify-content: right;
+}
+.custom-addNewPathName-input {
+    width: 30%;
+}
+.custom-edit-delete-div {
+    display: flex;
+    flex-direction: row;
+    width: 25%;
+    justify-content: right;
+}
+}
+
+
+
+
+
+
+@media(max-width: 768px){
+.custom-addNewPathName-input{
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #D0D3D4;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+.custom-menuName-div {
+    width: 35%;
+}
+
+.custom-pathName-div {
+    width: 35%;
+}
+.custom-edit-delete-menu-main-div{
+    width: 25%;
+    display: flex;
+    justify-content: right;
+}
+.custom-pathName-text{
+    font-size: 12px !important;
+}
+.custom-pathName-text{
+    font-size: 12px !important;
+}
+.custom-menuName-text-title{
+    font-size: 12px !important;
+}
+.custom-edit-menu-icon{
+    font-size: 13px;
+}
+.custom-component-name-text{
+font-size: 12px !important;
+}
+.custom-menu-intruction-text{
+    font-size: 13px !important;
+}
+.custom-pathName-main-title-text{
+    font-size: 15px !important;
+}
+.custom-component-name-main-title-text{
+    font-size: 15px !important;
+}
+.custom-instruction-main-title-text{
+    font-size: 15px !important;
+    margin-top: 10px !important;
+}
+.custom-instruction-property-div{
+    margin-top: 5px !important;
+}
+.custom-instruction-div {
+    padding-bottom: 1px;
+    height: auto;
+    padding-right: 5px;
+}
+
+.custom-edit-input {
+    width: 30%;
+}
+.custom-edit-delete-div {
+    width: 30%;
+    justify-content: right;
+}
+.custom-addPathNameIcon{
+    font-size: 20px !important;
+}
+.custom-cancel-path-menu-Name-icon{
+font-size: 13px !important;
+}
+.custom-addNewPathName-input{
+    width: 30%;
+}
+.custom-create-cancel-pathName-div {
+    width: 25%;
+}
+.custom-single-componentName-div{
+    width: 96%;
+}
+.custom-addNewPathName-div{
+    width: 96%;
+}
+}
+
+
+@media(max-width: 576px){
+.custom-component-div{
+    width:100%; 
+}
+.custom-instruction-div{
+    width: 96%;
+}
+.custom-instruction-main-title-text{
+    text-align: justify;
+}
 }

@@ -1,22 +1,37 @@
+.custom-singleUser-otherPage{
+    width: 83%;
+    height: auto;
+}
 .display-single-user-custom-div{
    height: auto;
+  
 }
 .single-user-custom-div{
     background-color: hsl(180, 14%, 97%);
     width: 95%;
-    height: 95%;
+    height: auto;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    
 }
 .user-details-custom-div{
     width: 90%;
     height: 20%;
-   
-
+    margin-top: 5px;
+}
+.single-user-no-post-div{
+    height: 100%;
+    margin-top: 40px;
+    padding-bottom: 20px;
 }
 /*user's profile pics section */
 .custom-user-profile-pics-div-wrapper{
     width: 90%;
     height: 300px;
+}
+
+.custom-user-profile-pics-div-wrapper-date-setting{
+    height: 200px;
+    width: 50%;
 }
 
 .custom-user-main-profile-pics{
@@ -62,10 +77,11 @@
 }
 /*activities section  */
 .user-activity-div{
-    height: 30%;
+    height: auto;
 }
 .post-custom-div{
     width: 100%;
+    height: auto;
 }
 .paragraph-custom-div{
     width: 100%;
@@ -101,4 +117,191 @@
 }
 .custom-block-BTN-div{
     width: 100%;
+}
+
+.custom-recent-activities-text{
+    margin-top: 5px;
+}
+
+
+
+
+
+@media(max-width: 1200px){
+.admin-dashboard-custom-container{
+    height: auto;
+}
+.custom-recent-activities-text{
+    font-size: 25px !important;
+}
+.user-details-custom-div {
+        height: 0%;
+        margin-top: 5px !important;
+    }
+.custom-singleUser-otherPage {
+        width: 100%;
+    }
+.block-user-custom-btn{
+    padding: 13px 50px 10px 50px !important;
+   
+}
+.blockDate-custom-setting-div {
+    width: 30%;
+}
+.custom-block-user-BTN{
+    width: 45%;
+}
+.single-user-custom-div{
+    height: auto !important;
+}
+.custom-BTN-div{
+    padding-bottom: 5px;
+    margin-top: 10px !important;
+}
+}
+
+
+
+
+@media(max-width: 992px){
+.blockDate-custom-setting-div {
+    width: 40%;
+}
+.custom-block-user-BTN {
+    width: 50%;
+}
+}
+
+
+
+
+
+@media(max-width: 768px){
+.custom-user-main-profile-pics {
+        width: 65%;
+       
+    }
+.blockDate-custom-setting-div {
+    width: 50%;
+}
+}
+
+
+
+
+
+
+@media(max-width: 576px) {
+.custom-user-main-profile-pics {
+        width:80%;
+        border: 5px solid #FF661F;  
+    }
+.blockDate-custom-setting-div {
+    width: 70%;
+}
+.custom-single-user-name-text{
+  margin-top: 10px !important;
+}
+.paragraph-custom-div{
+    flex-direction: column !important;
+    align-items: center;
+}
+
+.custom-post-title{
+    font-size: 13px !important;
+}
+.block-user-custom-btn {
+    padding: 13px 30px 10px 30px !important;
+    font-size: 14px !important;
+    width: 35% !important;
+}
+.custom-block-user-BTN{
+    padding: 13px 30px 10px 30px !important;
+    font-size: 14px !important;
+}
+.custom-singleUser-otherPage{
+    margin-top: 0px !important;
+}
+.blockDate-custom-setting-div p{
+    font-size: 13px !important;
+}
+.custom-BTN-div{
+    padding-bottom: 20px;
+}
+.custom-BTN-div p{ 
+font-size: 13px !important;
+}
+.custom-date-time-inner-div {
+    width: 100%;
+    flex-direction: column !important;
+
+}
+.custom-single-user-date-input {
+    width: 95%;
+}
+}
+
+
+
+@media(max-width: 475px){
+.custom-block-BTN-div{
+    justify-self: center !important;
+    align-items: center !important;
+}
+  .custom-user-profile-pics-div-wrapper{
+    height: 200px;
+  }
+
+  .custom-single-user-name-text{
+    font-size: 20px !important;
+  }
+  .custom-recent-activities-text{
+    font-size: 17px !important;
+    margin-top: 5px !important;
+  }
+  .follow-btn{
+    font-size: 14px !important;
+    padding: 13px 70px 13px 70px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .message-btn{
+    font-size: 14px !important;
+    padding: 13px 70px 13px 70px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .user-custom-btn-div{
+    flex-direction: column !important;
+    align-items: center;
+    width: 100%;
+  }
+  .block-user-custom-btn{
+    padding: 13px 50px 10px 50px !important;
+    font-size: 12px !important;
+    width: 35% !important;
+    margin-left: 0px;
+  }
+  .custom-block-user-expiry-date{
+    margin-top: 0px !important;
+    font-size: 13px !important;
+  }
+  
+  
+  .custom-block-user-BTN {
+      padding: 13px 50px 10px 50px !important;
+      font-size: 14px !important;
+  }
+  .paragraph-custom-div p {
+      font-size: 13px !important;
+  }
+  .custom-single-user-time-div {
+    margin-top: 3px;
+  }
+.custom-singleUser-otherPage{
+    margin-top: 30px !important;
+}
+
 }

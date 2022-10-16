@@ -1,11 +1,15 @@
 .userProfile-custom-div{
     background-color:#FDFEFE;
 }
+.custom-no-user-found-div{
+    height: 100vh;
+}
 .custom-main-userProfile-div{
     height: auto;
-    max-width: 1500px;
-    
-    
+    max-width: 1500px;  
+}
+.custom-no-user-found-icon{
+    font-size: 40px;
 }
 .user-profile-pics-div{
     width: 35%;

@@ -6,7 +6,8 @@ import {AuthContext} from '../../context/AuthProvide';
 import AdminSidebar from '../Admindashboard/AdminSidebar';
 import { useLocation } from 'react-router';
 import { FiTrendingUp } from 'react-icons/fi';
-
+import { useMediaQuery } from '../../hooks/CustomMediaQuery';
+import {FiMenu} from 'react-icons/fi'
 
 
 function SingleUser(props ) {
@@ -15,13 +16,15 @@ function SingleUser(props ) {
     const [singleUser, setSingleUser] = useState();
     const PF = "http://localhost:5000/images/";
     const axiosPrivate = useAxiosPrivate();
-    const {logUser, auth, dispatch} = useContext(AuthContext);
+    const {logUser, auth, dispatch,  openAdminSideBar, setOpenAdminSideBar,} = useContext(AuthContext);
     const [userBlocked, setuserBlocked] = useState(false);
     const [unblockUser, setUnblockUser] = useState(false);
     const [blockDateSetting, setBlockDateSetting] = useState(false);
     const expDateRef = useRef();
     const expTime = useRef();
-    const dateTime = expDateRef?.current?.value + '-' + expTime?.current?.value
+    const dateTime = expDateRef?.current?.value + '-' + expTime?.current?.value;
+    let   tabletMode = useMediaQuery('(max-width: 1200px)');
+    let   mobileMode = useMediaQuery('(max-width: 500px)');
     //error states
     const [userNotFoundError, setUserNotFoundError] = useState(false);
     const [somethingWentWrongError, setSomethingWentWrongError] = useState(false);
@@ -149,13 +152,18 @@ const handleUnblockUser = async() =>{
 //handle clearing of block state alert
 
 useEffect(()=>{
+if(userBlocked){
     setTimeout(() => {
         setuserBlocked(false)
     }, 2000);
-
-    setTimeout(() => {
+}
+    
+if(unblockUser){
+ setTimeout(() => {
         setUnblockUser(false)
     }, 2000);
+}
+   
 
     
 }, [userBlocked, unblockUser])
@@ -164,38 +172,69 @@ useEffect(()=>{
 
 //handle notification
 useEffect(() =>{
-    setTimeout(() => {
+if(userNotFoundError){
+     setTimeout(() => {
         setUserNotFoundError(false)
     }, 2000);
-    setTimeout(() => {
-        setSomethingWentWrongError(false)
+}
+if(somethingWentWrongError){
+ setTimeout(() => {
+    setSomethingWentWrongError(false)
     }, 2000);
+}   
+if(dateExpError){
+ setTimeout(() => {
+    setDateExpError(false)
+    }, 2000);
+}  
 
-    setTimeout(() => {
-        setDateExpError(false)
+if(notAuthorizedError){
+ setTimeout(() => {
+    setNotAuthorizedError(false)
     }, 2000);
+}
 
-     setTimeout(() => {
-        setNotAuthorizedError(false)
+if(actionNotCompletedError){
+ setTimeout(() => {
+    setActionNotCompletedError(false)
     }, 2000);
+}
+if(userAlreadyUnblockedError){
+ setTimeout(() => {
+    setUserAlreadyUblockedError(false)
+    }, 2000);
+}    
 
-     setTimeout(() => {
-        setActionNotCompletedError(false)
-    }, 2000);
 
-     setTimeout(() => {
-        setUserAlreadyUblockedError(false)
+if(invalidDateError){
+setTimeout(() => {
+setInvalidDateError(false)
     }, 2000);
+}
 
-    setTimeout(() => {
-        setInvalidDateError(false)
-    }, 2000);
+    
 }, [userNotFoundError, somethingWentWrongError, dateExpError, notAuthorizedError, userAlreadyBlockedError, actionNotCompletedError, userAlreadyUnblockedError, invalidDateError])
 
+//this brings the admin sidebar out in a screen mode that is not desktop screen mode
+const handleOpenSidebarMenu = ()=>{
+  if(openAdminSideBar == 'admin-sidebar-slideOut'){
+      setOpenAdminSideBar('admin-sidebar-slideIn')
+  }
+ 
+    
+}
+
+//this useEffect helps to remove the blur effect that was called when the admin side bar is toggle in during the tablet or mobile device screen mode. 
+useEffect(()=>{
+  if(openAdminSideBar == 'admin-sidebar-slideIn'){
+      setOpenAdminSideBar('admin-sidebar-slideOut')
+  }
+}, [tabletMode]);
 
 
 
-console.log(dateTime)
+
+
    
   return (
 
@@ -204,23 +243,23 @@ console.log(dateTime)
         <div className=" admin-dashboard-custom-container flex-3">
      
             < AdminSidebar/>
-
-                <div className='other-pages topMargin-medium'>
+        <FiMenu onClick={handleOpenSidebarMenu}  className={openAdminSideBar == 'admin-sidebar-slideOut' && ! blockDateSetting  ?  'custom-sidebar-menuOpen' :  'custom-sidebar-menuOpen customMenuOpenOff' }/>
+                <div className={openAdminSideBar == 'admin-sidebar-slideIn' ? 'other-pages topMargin-medium custom-singleUser-otherPage bg-blur2 curson-not-allowed-2 pointer-events-none' : 'other-pages topMargin-medium custom-singleUser-otherPage'}>
                     {
 
                     }
                     <div className=' flex-2 center-flex-align-display display-single-user-custom-div '>
                         <div className='flex-2 center-flex-align-display single-user-custom-div'>
            
-                            <div className='custom-user-profile-pics-div-wrapper flex-2 center-flex-align-display topMargin-medium '>
+                            <div className={blockDateSetting ? 'custom-user-profile-pics-div-wrapper flex-2 center-flex-align-display topMargin-medium custom-user-profile-pics-div-wrapper-date-setting' :'custom-user-profile-pics-div-wrapper flex-2 center-flex-align-display topMargin-medium '}>
                                  <img className='custom-user-main-profile-pics' src={singleUser && `${singleUser.profilePicture}`} alt="" />
                  
                             </div>
 
                             <div className='user-details-custom-div flex-2 center-flex-align-display'>
-                                <p className='topMargin-medium text-general-Medium '>{singleUser && singleUser.username}</p>
+                                <p className='topMargin-medium text-general-Medium custom-single-user-name-text '>{singleUser && singleUser?.username}</p>
 
-                                <p className='margin-small paragraph-text '>ROLE: {singleUser && singleUser.role}</p>
+                                <p className='margin-small paragraph-text custom-single-user-role-text'>Role: {singleUser && singleUser?.role}</p>
                                         <div className='user-custom-btn-div flex-3 center-flex-justify-display'>
                                             <button className='button-general-2 follow-btn'>Follow</button>
                                             <button className='button-general-2 message-btn'>Message</button>
@@ -230,19 +269,19 @@ console.log(dateTime)
              
                         {
                             blockDateSetting && 
-                            singleUser && singleUser.isBlocked !== true &&
+                            singleUser && singleUser?.isBlocked !== true &&
                                 < div className='blockDate-custom-setting-div flex-2 topMargin-medium'>
-                                    <p className='paragraph-text'>Choose Expiry Date</p>
+                                    <p className='paragraph-text custom-block-user-expiry-date'>Choose Expiry Date</p>
                                         <div className='block-custom-selection-div flex-3  margin-small '>
 
-                                           <div className='flex-2 custom-date-time-inner-div '>
+                                           <div className='flex-2 custom-date-time-inner-div flex-3 center-flex-justify-display'>
                                              <p className='color1 text-general-small center-text'>Date</p>
-                                            <input className='input-general date-time-custom-input margin-small-small' type="date" 
+                                            <input className='input-general date-time-custom-input margin-small-small custom-single-user-date-input' type="date" 
                                                  ref={expDateRef}
                                             />  
                                            </div>
                                            
-                                           <div className='flex-2 custom-date-time-inner-div marginRight-sm'>
+                                           <div className='flex-2 custom-date-time-inner-div marginRight-sm flex-3 center-flex-justify-display custom-single-user-time-div'>
                                              <p className='color1 text-general-small center-text'>Time</p>          
                                             <input className='input-general date-time-custom-input margin-small-small' type="time" 
                                                  ref={expTime}
@@ -265,8 +304,10 @@ console.log(dateTime)
                                
 
                            {!blockDateSetting &&  
-                           <div className=' flex-2 user-activity-div topMargin user-details-custom-div center-flex-align-display'>
-                                <p className='text-general-Medium'>Recent Activities</p>
+                           <div className=' flex-2 user-activity-div  user-details-custom-div center-flex-align-display'>
+                           
+                                <p className='text-general-Medium custom-recent-activities-text'>Recent Activities</p>
+                                 {singleUser?.userPosts?.length < 1 && <div className='single-user-no-post-div'><p className='color1 text-general-small2'>No activity</p></div>}
                                 <div className='post-custom-div flex-2 center-flex-align-display'>
                                         {singleUser && singleUser.userPosts.slice(0,3).map((singlePost) =>{
                                             const {_id, title} = singlePost
@@ -275,7 +316,7 @@ console.log(dateTime)
                                                 <>
                                                     <div className='flex-3 margin-small paragraph-custom-div center-flex-justify-display'>
                                                         <p className='text-general-small color2 '>{singleUser.username} posted</p> 
-                                                        <Link className='link' to={`/post/${_id}`}><p className='text-general-small color1 marginLeft-sm custom-post-title'>{title}</p></Link> 
+                                                        <p className='text-general-small color1 marginLeft-sm custom-post-title'><Link className='link' to={`/post/${_id}`}>{title}</Link> </p>
                                                     </div>
                             
                                                 </>
@@ -285,11 +326,11 @@ console.log(dateTime)
                                          
                              </div>
                             }
-                                   <div className='custom-BTN-div topMargin flex-2 center-flex-align-display'>
+                                   <div className='custom-BTN-div  flex-2 center-flex-align-display'>
                                     
                                        
-                                        {singleUser && !blockDateSetting && singleUser.isBlocked === false &&  <button onClick={turOnBlockingDateSetting}  className='button-general-2 block-user-custom-btn '>Block User</button> }
-                                        {singleUser && singleUser.isBlocked === true && <button onClick={handleUnblockUser} className='button-general-2 block-user-custom-btn '>Unblock User</button>}
+                                        {(singleUser && !blockDateSetting && singleUser?.isBlocked === false && openAdminSideBar ==  'admin-sidebar-slideOut' || mobileMode && !blockDateSetting )  && <button onClick={turOnBlockingDateSetting}  className='button-general-2 block-user-custom-btn flex '>Block User</button> }
+                                        {singleUser && singleUser?.isBlocked === true && <button onClick={handleUnblockUser} className='button-general-2 block-user-custom-btn '>Unblock User</button>}
                                          {userBlocked && <p className='paragraph-text'>User has been blocked</p>}
                                         {unblockUser && <p className='paragraph-text'>User has been unblocked</p>}
                                         {singleUser && console.log(singleUser.isBlocked)}

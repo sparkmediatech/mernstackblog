@@ -1,15 +1,19 @@
 .custom-other-page-subscribers{
     position: relative;
     width: 83%;
-    height: 89vh;
+    height: auto;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
    
+}
+.custom-subcribers-main-wrapper{
+    margin-top: 15px !important;
 }
 .custom-subscriber-sub-div{
     width: 98%;
     padding-top: 15px;
-    padding-bottom: 15px;
+    padding-bottom: 5px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    
 }
 .custom-subscriber-icon-div{
     background-color:#FF661F;
@@ -26,7 +30,7 @@
     width: 50%;
 }
 .custom-subscribers-BTN-div{
-    width: 35%;
+    width: 30%;
     justify-content: right;
 }
 .custom-subscribers-BTN{
@@ -44,7 +48,7 @@
     background-color: #F4F6F7;
     position: absolute;
     z-index: 999;
-    width: 50%;
+    width: 60%;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -101,3 +105,201 @@
     height: auto;
     position: absolute;
 }
+
+
+
+@media (max-width: 1200px){
+.custom-other-page-subscribers{
+        width: 97%;
+    }
+.custom-subscriber-sub-div{
+    width: 100%;
+}
+.custom-subscribers-sub-text-div {
+        width:55%;
+    }
+.custom-subscribers-BTN-div{
+    width: 25%;
+    justify-content: right !important;
+}
+
+.custom-subscriber-icon-div {
+    width: 130px;
+    height: 130px;
+}
+.custom-subscribers-icon{
+    font-size: 70px;
+}
+
+.custom-display-allSubscribers-div {
+    width: 67%;
+    padding: 15px;
+    padding-bottom: 5px;
+}
+
+.custom-subscribers-listing-div {
+    height: 30px;
+}
+
+}
+
+
+@media (max-width: 992px){
+.custom-subscriber-sub-div{
+    width: 98%;
+}
+.custom-subscribers-sub-text-div{
+        width: 57%;
+    }
+.custom-subscribers-BTN-div{
+    width: 20%;
+}
+}
+
+
+
+
+@media (max-width: 768px){
+.custom-subscriber-icon-div{
+    width: 130px;
+    height: 130px;
+}
+.custom-subscribers-icon{
+    font-size: 60px;
+}
+.custom-subscribers-sub-text-div{
+    width:55%;
+}
+.custom-subscribers-BTN-div{
+    width: 20%;
+    margin-left: 2px!important;
+}
+.custom-subscribers-BTN-div h5{
+    font-size: 25px !important;
+}
+.custom-other-page-subscribers{
+    padding-bottom: 15px;
+}
+
+}
+
+
+
+@media (max-width: 672px){
+.custom-subscribers-BTN-div {
+    width: 19%;
+    margin-left: 0px !important;
+}
+}
+
+
+
+
+@media (max-width: 627px) {
+.custom-subscribers-sub-text-div{
+    width:53%;
+}
+.custom-subscribers-BTN-div {
+    width: 19%;
+    margin-left: 0px !important;
+}
+}
+
+
+@media (max-width: 620px) {
+    .custom-subscribers-sub-text-div {
+        width: 50%;
+    }
+
+    .custom-subscribers-BTN-div {
+        width: 22%;
+        margin-left: 0px !important;
+    }
+.custom-subscribers-BTN {
+    padding: 15px 20px 15px 20px;
+}
+}
+
+
+@media (max-width: 584px) {
+    .custom-subscribers-sub-text-div {
+        width: 50%;
+    }
+
+    .custom-subscribers-BTN-div {
+        width: 20%;
+        margin-left: 0px !important;
+    }
+
+    .custom-subscribers-BTN {
+        padding: 15px 17px 15px 17px;
+    }
+.custom-subscribers-sub-text-div p{
+    font-size: 13px !important;
+}
+}
+
+
+
+
+@media (max-width: 576px){
+.custom-display-allSubscribers-div{
+    width: 80%;
+    }
+  .custom-subscriber-icon-div{
+    width: 110px;
+    height: 110px;
+  }
+  .custom-subscribers-icon{
+    font-size: 50px;
+  }
+  .custom-subscribers-sub-text-div h5{
+    font-size: 18px !important;
+  }
+  .custom-subscribers-sub-text-div p{
+    font-size: 15px !important;
+  }
+  .custom-subscribers-BTN{
+    padding: 8px;
+    font-size: 13px;
+  }
+}
+
+
+@media (max-width: 500px) {
+
+    .custom-subscriber-icon-div {
+        width: 90px;
+        height: 90px;
+    }
+
+    .custom-subscribers-sub-text-div h5 {
+        font-size: 18px !important;
+    }
+
+    .custom-subscribers-sub-text-div p {
+        font-size: 14px !important;
+    }
+
+}
+
+
+
+@media (max-width: 440px) {
+
+    .custom-subscriber-icon-div {
+        width: 75px;
+        height: 75px;
+    }
+
+    .custom-subscribers-sub-text-div h5 {
+        font-size: 15px !important;
+    }
+
+    .custom-subscribers-sub-text-div p {
+        font-size: 12.4px !important;
+    }
+
+}
+
+
