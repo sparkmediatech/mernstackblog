@@ -144,7 +144,7 @@ export default function SinglePost() {
     const handleDelete = async () =>{
          dispatch({type:"CURSOR_NOT_ALLOWED_START"});
         try{
-                await axiosPrivate.delete(`/v1/posts/${path}`, {data: {username: logUser.userId, role: logUser.role}}, { withCredentials: true,
+                await axiosPrivate.delete(`${BASE_URL}/posts/${path}`, {data: {username: logUser.userId, role: logUser.role}}, { withCredentials: true,
                     headers:{authorization: `Bearer ${auth}`}
                     });
                   window.location.replace("/")
@@ -194,7 +194,7 @@ const handleUpdate = async () =>{
         
 
         try{
-                await axiosPrivate.patch(`/v1/posts/${path}`, data, { withCredentials: true,headers:{authorization: `Bearer ${auth}`}
+                await axiosPrivate.patch(`${BASE_URL}/posts/${path}`, data, { withCredentials: true,headers:{authorization: `Bearer ${auth}`}
                     });
                 
                     dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
@@ -242,7 +242,7 @@ const handleUpdate = async () =>{
         data.append('description', description);
 
         try{
-                await axiosPrivate.patch(`/v1/posts/${path}`, data, { withCredentials: true,headers:{authorization: `Bearer ${auth}`}
+                await axiosPrivate.patch(`${BASE_URL}/posts/${path}`, data, { withCredentials: true,headers:{authorization: `Bearer ${auth}`}
                     });
                 
                     dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
@@ -289,7 +289,7 @@ const handleUpdate = async () =>{
 //handle like and unlike
 const handleLike = async ()=>{
     try{
-        const response = await axiosPrivate.patch(`/v1/posts/${path}/like`, 
+        const response = await axiosPrivate.patch(`${BASE_URL}/posts/${path}/like`, 
             { withCredentials: true,headers:{authorization: `Bearer ${auth}`}}
         )
         

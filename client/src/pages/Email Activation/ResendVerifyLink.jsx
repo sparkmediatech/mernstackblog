@@ -61,12 +61,12 @@ useEffect(()=>{
         <div className='mainContainer custom-email-verification-container center-flex-justify-display topMargin-Extral-Large '>
         {
             !verified &&
-             <div className={somethingWentWrongError ?'resend-Email-div resend-Email-div2': 'resend-Email-div' }>
-                <h2 className='text-general-BIG resetTitle'>Rend Email Verification Link</h2>
+             <div className='resend-Email-div resend-Email-div2'>
+                <h2 className='text-general-BIG resetTitle custom-resend-email-title-text'>Rend Email Verification Link</h2>
                  <label className='label-general reset-lebel '>Email</label>
                  <input className='input-general' type="text"  ref={emailRef} />
                 {somethingWentWrongError && <h4 className='paragraph-text red-text'>Something went wrong. Enure you are using correct email address</h4>}
-                 <button onClick={handleResendVerifyLink} className='button-general'>Send</button>
+                <div className='flex custom-resend-email-BTN-div'> <button onClick={handleResendVerifyLink} className='button-general custom-resend-email-BTN flex'>Send</button></div>
                     <p className='support-team-text center-text topMargin-medium'>Nodejs and Reactjs Blog application team</p>
 
             </div>
@@ -75,12 +75,12 @@ useEffect(()=>{
        
         {
           alreadyVerifiedError && 
-            <div className='mainContainer box-div flex-2 center-flex-align-display already-verified-custom-div'>
-            <MdMarkEmailRead className='Icon '/>
-            <h2 className='text-general-small color1 center-text'>Dear {regUser.username}, Your email address has been verified already</h2> 
+            <div className='mainContainer box-div flex-2 center-flex-align-display custom-resend-verified-email-div'>
+            <MdMarkEmailRead className='Icon custom-confirm-icon'/>
+            <h2 className='text-general-small color1 center-text custom-confirm-email-text'>Dear {regUser.username}, Your email address has been verified already</h2> 
             <p className='text-general-small color1'>Thank you. You can click the login button to login into the web application</p>
             <Link to={'/login'}>
-                <button className="button-general-2">Login</button>
+                <button className="button-general-2 custom-confirm-btn">Login</button>
             </Link>
             
         </div>   

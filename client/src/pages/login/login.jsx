@@ -22,7 +22,7 @@ export default function Login() {
         e.preventDefault();
 
         try{
-            const response = await axios.post(`/auth/login`, {
+            const response = await axios.post(`${BASE_URL}/auth/login`, {
                 username: userRef.current.value,
                 password: passwordRef.current.value
             }, {

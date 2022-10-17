@@ -19,6 +19,10 @@
     
     
 }
+
+.topLeft{
+    padding: 5px 0 5px 0;
+}
 .navBar-header-wrapper{
     overflow: hidden;
     background-color: #F6F6F6;

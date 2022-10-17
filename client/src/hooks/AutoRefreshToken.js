@@ -13,7 +13,7 @@ const AutoRefreshToken =() => {
 
         try{
                 
-                const response = await axios.post(`/refresh`, {
+                const response = await axios.post(`${BASE_URL}/refresh`, {
                  withCredentials: true
              });
                 setAuth(response.data);

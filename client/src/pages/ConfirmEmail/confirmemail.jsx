@@ -78,36 +78,36 @@ useEffect(() => {
 return(
     <>
     <article className='mainWrapper'>
-     <div className='mainContainer flex'>
-    {loading && <div className='loading-div'> <h2 className='loading-title'>Loading...</h2> </div>}
+     <div className='mainContainer flex custom-main-confim-email-wrapper'>
+    {loading && <div className='loading-div'> <h2 className='loading-title custom-confirm-email-text'>Loading...</h2> </div>}
    
    {resDate.data === 'Account has been verified' && !loading && !verifyError &&
   
         <div className='mainContainer box-div flex-2 center-flex-align-display already-verified-custom-div'>
             <MdMarkEmailRead className='Icon'/>
-            <h2 className='text-general-small2 color1 center-text' >Dear {regUser.username}, Your email address has been verified</h2> 
+            <h2 className='text-general-small2 color1 center-text custom-confirm-email-text' >Dear {regUser.username}, Your email address has been verified</h2> 
             <p className='paragraph-text'>Thank you. You can click the login button to login into the web application</p>
             <Link to={'/login'}>
-                <button className="button-general-2">Login</button>
+                <button className="button-general-2 custom-confirm-btn">Login</button>
             </Link>
             
         </div>   
 }
 {noToken && !loading &&
-<div className='mainContainer box-div flex-2 center-flex-align-display already-verified-custom-div'>
-    <FaSadCry className='Icon'/>
-   <h2 className='text-general-small2 color1 center-text'>Required access not found. You may try to resend the verification link</h2>
+<div className='mainContainer box-div flex-2 center-flex-align-display already-verified-custom-div custom-confirm-email-box-div'>
+    <FaSadCry className='Icon custom-confirm-icon'/>
+   <h2 className='text-general-small2 color1 center-text custom-confirm-email-text'>Required access not found. You may try to resend the verification link</h2>
   <Link to={'/resendemaillink'}>
-            <button className='button-general-2'>Resend Link</button>
+            <button className='button-general-2 custom-confirm-btn'>Resend Link</button>
         </Link>
 </div> 
 }
 {expiredError && !loading &&
-    <div  className='mainContainer box-div flex-2 center-flex-align-display already-verified-custom-div'>
-         <FaSadCry className='Icon'/>
-        <h2 className='text-general-small2 color1 center-text'> Dear {regUser.username}, activation link has expired, kindly resend your activation link</h2>
+    <div  className='mainContainer box-div custom-confirm-email-box-div flex-2 center-flex-align-display already-verified-custom-div'>
+         <FaSadCry className='Icon custom-confirm-icon' />
+        <h2 className='text-general-small2 color1 center-text custom-confirm-email-text'> Dear {regUser.username}, activation link has expired, kindly resend your activation link</h2>
            <Link to={'/resendemaillink'}>
-            <button className='button-general-2'>Resend Link</button>
+            <button className='button-general-2 custom-confirm-btn'>Resend Link</button>
         </Link>
     </div> 
 
@@ -115,22 +115,22 @@ return(
 
 {parameterError && !loading &&
     <div className='mainContainer box-div flex-2 center-flex-align-display already-verified-custom-div'>
-        <FcBrokenLink className='Icon'/>
-        <h2  className=' text-general-small2 color1 center-text' >One or more needed paramter is missing, please resend the verification link</h2>
+        <FcBrokenLink className='Icon custom-confirm-icon'/>
+        <h2  className=' text-general-small2 color1 center-text custom-confirm-email-text' >One or more needed paramter is missing, please resend the verification link</h2>
         <Link to={'/resendemaillink'}>
-            <button className='button-general-2'>Resend Link</button>
+            <button className='button-general-2 custom-confirm-btn'>Resend Link</button>
         </Link>
         
     </div>
 }
 {
     alreadyVerified && !loading && !brokenLinkError &&
-    <div className='mainContainer box-div flex-2 center-flex-align-display already-verified-custom-div'>
-            <MdMarkEmailRead className='Icon '/>
-            <p className='text-general-Medium'>Dear {regUser.username}, Your email address has been verified already</p> 
-            <p className='paragraph-text'>Thank you. You can click the login button to login into the web application</p>
+    <div className='mainContainer box-div  flex-2 center-flex-align-display already-verified-custom-div '>
+            <MdMarkEmailRead className='Icon custom-confirm-icon'/>
+            <p className='text-general-Medium custom-email-already-verified-text'>Dear {regUser.username}, Your email address has been verified already</p> 
+            <p className='paragraph-text custom-confirm-email-text'>Thank you. You can click the login button to login into the web application</p>
             <Link to={'/login'}>
-                <button className="button-general-2">Login</button>
+                <button className="button-general-2 custom-confirm-btn">Login</button>
             </Link>
             
         </div>   
@@ -138,11 +138,11 @@ return(
 {
     verifyError && !loading && !brokenLinkError &&
     <div className='mainContainer box-div flex-2 center-flex-align-display already-verified-custom-div'>
-            <MdMarkEmailRead className='Icon'/>
-            <h2 className='text-general-small2 color1 center-text'>Dear {regUser.username}, Your email address has been verified already</h2> 
-            <p className='paragraph-text'>Thank you. You can click the login button to login into the web application</p>
+            <MdMarkEmailRead className='Icon custom-confirm-icon'/>
+            <p className='text-general-Medium color1 center-text custom-email-already-verified-text'>Dear {regUser.username}, Your email address has been verified already</p> 
+            <p className='paragraph-text custom-confirm-email-text'>Thank you. You can click the login button to login into the web application</p>
             <Link to={'/login'}>
-                <button className="button-general-2">Login</button>
+                <button className="button-general-2 custom-confirm-btn">Login</button>
             </Link>
             
         </div>   

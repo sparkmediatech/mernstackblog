@@ -41,19 +41,126 @@ background-color: #5D6D7E;
 
 /* ResendVerifyLink section */
 .custom-email-verification-container {
-  height: 73vh;
+  height: 100vh;
   overflow: hidden;
 }
 .resend-Email-div {
   border-radius: 10px;
   display: flex;
-  height: 40%;
+  height: 30%;
   padding: 10px 15px 20px 15px;
   flex-direction: column;
   background-color: #FFFFFF;
   width: 400px;
   box-shadow: 8px 8px 8px -6px black;
 }
-.resend-Email-div2{
-  height: 50%;
+
+.custom-resend-email-BTN{
+  width: 70%;
+}
+
+.custom-resend-email-BTN-div{
+  width: 100%;
+}
+
+.custom-resend-verified-email-div{
+  height: 35vh !important;
+  width: 40% !important;
+  padding-bottom: 20px !important;
+}
+
+
+
+
+
+
+@media(max-width: 1200px) {
+  .custom-email-verification-container{
+    align-items: center !important;
+  }
+  .custom-resend-verified-email-div{
+    height: 40vh !important; 
+   
+}
+
+}
+
+
+
+
+@media(max-width: 992px){
+  .custom-resend-verified-email-div {
+      width: 55% !important;
+      height: 35vh !important;
+  }
+}
+
+
+
+
+
+@media(max-width: 768px){
+  .custom-email-veri-div{
+    width: 90% !important;
+  }
+
+  .custom-resend-verified-email-div {
+      height: 40vh !important;
+      padding: 0 10px !important;
+      width: 70% !important;
+  }
+}
+
+
+
+
+@media(max-width: 576px) {
+  .custom-mainContainer-email-verify-div{
+    max-width: 1700px !important;
+    padding: 0 10px !important;
+  
+  }
+  
+  .custom-email-veri-text {
+      font-size: 12px !important;
+    }
+
+  .custom-email-icon {
+      font-size: 110px !important;
+    }
+
+  .custom-resend-verified-email-div {
+      width: 95% !important;
+    }
+  
+}
+
+
+
+@media(max-width: 399px) {
+  .custom-email-verification-container{
+    padding: 0 10px; 
+  }
+
+.custom-resend-email-title-text{
+  font-size: 15px !important;
+}
+
+.custom-resend-email-BTN{
+  width: 30%;
+ 
+}
+
+.custom-email-veri-div {
+      width: 100% !important;
+    }
+  .custom-veri-email-title-text{
+    font-size: 15px !important;
+  }
+  .custom-email-veri-text{
+    font-size: 11px !important;
+  }
+.custom-email-icon{
+  font-size: 100px !important;
+}
 }

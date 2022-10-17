@@ -26,7 +26,7 @@ export default function AdminLogin() {
     const handleSubmit = async (e) =>{
         e.preventDefault();
         try{
-            const response = await axios.post("/auth/admin", {
+            const response = await axios.post(BASE_URL +"/auth/admin", {
                  username: adminUser,
                  password: adminPassword
             });           
