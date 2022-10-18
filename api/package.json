@@ -23,9 +23,13 @@
     "redis": "^4.0.2"
   },
   "scripts": {
+    "test": "jest",
     "watch": "nodemon server.js",
     "start": "node server.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.2.0"
+  }
 }

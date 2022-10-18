@@ -4,7 +4,15 @@ const { promisify } = require("util");
 //connect to redis
 
 
-const redis_client = redis.createClient();
+//const redis_client = redis.createClient();
+
+let redis_client = redis.createClient({
+    legacyMode: true,
+    socket: {
+        port: REDIS_PORT,
+        host: 'redis'
+    }
+})
 
 redis_client.connect()
 

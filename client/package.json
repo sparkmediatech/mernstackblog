@@ -79,10 +79,10 @@
   "start": "react-scripts start",
   
     
-  "build-deploy": "set BUILD_PATH=../api/build && react-scripts build",
+  "build": "set BUILD_PATH=../api/public && react-scripts build",
   
     
-  "build": "react-scripts build",
+  "build-deploy": "react-scripts build",
   
     
   "test": "react-scripts test",
@@ -156,7 +156,7 @@
   
   },
   
-  "proxy": "http://localhost:5000/api/v1",
+ 
   
   "devDependencies": {
   

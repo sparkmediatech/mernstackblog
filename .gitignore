@@ -11,6 +11,9 @@
 # production
 /build
 
+.DockerFile
+.dockerignore
+
 /sum
 # misc
 .DS_Store
