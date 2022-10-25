@@ -186,6 +186,15 @@ noCategoryFound, subNameSpaceError, subEmailSPaceError
 ])
 
 
+//simply download the file
+const handleFIleDownload = ()=>{
+const link = document.createElement('a')
+link.href = 'https://drive.google.com/uc?id=1dNYTpS4s42T4FNACq2d61OepxUrGRS4a&export=download'
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+}
+
 
 
   return (
@@ -204,7 +213,11 @@ noCategoryFound, subNameSpaceError, subEmailSPaceError
                                 <FaYoutube className='social-media-footer-icon margin-left-sm1'/>
                                 <AiOutlineInstagram className='social-media-footer-icon margin-left-sm1'/>
                             </div>
-
+                            
+                            <p className='white-text margin-small-small text-general-small custom-download-app-text' onClick={handleFIleDownload}>Download App Zip file</p>
+                            
+                            <a className='custom-a-link' href="https://github.com/sparkmediatech/mernstackblog" target="_blank"><p className='white-text margin-small-small text-general-small custom-download-app-text'>Git Repo</p> </a>
+                          
                         </div>
 
                         <div className='footer-section1 custom-footer-recent-post-section topMargin-medium'>

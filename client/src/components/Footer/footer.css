@@ -109,11 +109,18 @@
     width: 100%;
 }
 
+.custom-download-app-text{
+    color: #FF661F !important;
+    cursor: pointer;
+}
 
+.custom-download-app-text:hover{
+    color: #F4F6F7 !important;
+}
 
-
-
-
+.custom-a-link{
+    text-decoration: none;
+}
 
 
 /*tablet mode */
