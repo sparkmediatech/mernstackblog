@@ -11,6 +11,9 @@
 # production
 /build
 .env
+Dockerfile
+docker-compose.yml
+render.yaml
 # misc
 .DS_Store
 .env.local
