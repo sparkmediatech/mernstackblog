@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: fullstackCMS
-    env: docker
-    rootDir: app
-    envVars:
-      
