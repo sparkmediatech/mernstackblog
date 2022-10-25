@@ -109,7 +109,7 @@ useEffect(() =>{
       {cursorState  && <CursorNotallowed/>}
       {!reload  && <PageLoader/>}
 
-      {console.log(!isLoading && reload, 'I am trying page')}
+      
       {!isLoading && reload && <HeaderNavbar/>}
 
       {generalFetchError && <FetchingError/>}

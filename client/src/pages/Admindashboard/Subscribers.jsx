@@ -365,8 +365,8 @@ useEffect(()=>{
                             
                         }
 
-                        {allSubscribers.map((singleSubscribers)=>{
-                            const {_id: subscriberId, isVerified, subscriberEmail, subscriberName} = singleSubscribers
+                        {allSubscribers?.map((singleSubscribers)=>{
+                            const {_id: subscriberId, isVerified, subscriberEmail, subscriberName} = singleSubscribers || {}
                             return(
                                 <div className='flex-3 custom-subscribers-listing-div margin-small center-flex-align-display margin-small '>
                                     <div className='custom-subscriber-list-header-div'><h5 className='color1 text-general-extral-small'>{subscriberName}</h5> </div>

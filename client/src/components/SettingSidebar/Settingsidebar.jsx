@@ -4,6 +4,7 @@ import './settingsidebar.css';
 import { Link } from 'react-router-dom';
 import {AuthContext} from '../../context/AuthProvide';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import BASE_URL from '../../hooks/Base_URL';
 
 
 
@@ -24,7 +25,7 @@ function Settingsidebar() {
 
            
                  try{
-               const res = await axiosPrivate.get(`/v1/users/userOwner/${userId}`,{ withCredentials: true,
+               const res = await axiosPrivate.get(`${BASE_URL}/users/userOwner/${userId}`,{ withCredentials: true,
                 headers:{authorization: `Bearer ${auth.token}`}})
                 setSingleUser(res.data);
                 
@@ -41,7 +42,7 @@ function Settingsidebar() {
 }, [logUser?.userId])
 
  
-console.log(singleUser)
+
 
   return (
     

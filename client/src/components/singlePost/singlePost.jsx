@@ -75,9 +75,10 @@ export default function SinglePost() {
 
          
              try{
+                dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
               setIsLoading(true)
             const response = await axios.get(`${BASE_URL}/posts/${path}`,{cancelToken: ourRequest.token})
-           
+            dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
                  setUsername(response.data.username)
                 setPost([response.data]);
                 setTitle(response.data.title);
@@ -92,7 +93,7 @@ export default function SinglePost() {
            
             
            }catch(err){
-            console.log(err, 'err name')
+            dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
                 if(err.response){
                     return console.log('request canceled')
                 }
@@ -407,8 +408,7 @@ if(postLikeError){
 
     return (
         <>                
-       {
-           isLoading ? <div className='loading-div'><h1 className='loading-title'>Loading...</h1></div>:
+      
             
            <div className='main-container'>
         {post.map((singleItem, index)=>{
@@ -568,12 +568,12 @@ if(postLikeError){
        
             
         
-       {!updateMode && <Comments/>}
+       {!updateMode && post.length > 0 && <Comments/>}
         
      
      </div>
        
-       }
+       
       
         </>
 

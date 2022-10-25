@@ -102,7 +102,7 @@ const handleComment = async ()=>{
     };
          dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
     try{
-        await axiosPrivate.post("/v1/comments/posts/"+ path + "/comment", newComment, { withCredentials: true,
+        await axiosPrivate.post(`${BASE_URL}/comments/posts/${path}/comment`, newComment, { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}
             });
             dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
@@ -150,7 +150,7 @@ const handleCommentUpdate = async (id) =>{
     
     try{
           dispatch({type:"CURSOR_NOT_ALLOWED_START"});  
-            await axiosPrivate.patch("/v1/comments/posts/"+ path + "/comment/" + id, {
+            await axiosPrivate.patch(`${BASE_URL}/comments/posts/${path}/comment/` + id, {
              author: logUser.userId,
              role: logUser.role, 
              commentdescription:  commentdescription2,
@@ -200,7 +200,7 @@ const  handleCommentDelete = async (id) =>{
     try{
          dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
         
-        await axiosPrivate.delete(`/v1/comments/posts/${path}/comment/${id}`, {data: {author: logUser.userId, role: logUser.role}}, { withCredentials: true,
+        await axiosPrivate.delete(`${BASE_URL}/comments/posts/${path}/comment/${id}`, {data: {author: logUser.userId, role: logUser.role}}, { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}
            })
            dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
@@ -230,7 +230,7 @@ const handleReply = async (id) =>{
 
     try{
         dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
-       await axiosPrivate.post(`/v1/reply/posts/${path}/comments/${id}/reply`, newReply, { withCredentials: true,
+       await axiosPrivate.post(`${BASE_URL}/reply/posts/${path}/comments/${id}/reply`, newReply, { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}});
             dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
             setCommentState(!commentState)
@@ -269,7 +269,7 @@ const handleReply = async (id) =>{
 const handleReplyUpdate = async (id) =>{
     try{
          dispatch({type:"CURSOR_NOT_ALLOWED_START"});
-        await axiosPrivate.patch(`/v1/reply/${id}`, {
+        await axiosPrivate.patch(`${BASE_URL}/reply/${id}`, {
              author: logUser.userId,
              role: logUser.role, 
              replycomment: currentReply,},
@@ -322,7 +322,7 @@ const handleReplyUpdate = async (id) =>{
 const handleDeleteComment = async (id, replyId)=>{
      try{
             dispatch({type:"CURSOR_NOT_ALLOWED_START"});
-                await axiosPrivate.delete(`/v1/reply/posts/${path}/comments/${id}/reply/${replyId}`, {data: {author: logUser.userId, role: logUser.role}},
+                await axiosPrivate.delete(`${BASE_URL}/reply/posts/${path}/comments/${id}/reply/${replyId}`, {data: {author: logUser.userId, role: logUser.role}},
                 { withCredentials: true,
                 headers:{authorization: `Bearer ${auth}`}}
                 );

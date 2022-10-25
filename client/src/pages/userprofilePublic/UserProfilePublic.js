@@ -26,7 +26,7 @@ useEffect(()=>{
   
   const fetchSingleUser = async () =>{
        try{
-           const response = await axios.get(`/users/singleUser/${path}`, {cancelToken: ourRequest.token})
+           const response = await axios.get(`${BASE_URL}/users/singleUser/${path}`, {cancelToken: ourRequest.token})
           
       
             setUser(response.data);

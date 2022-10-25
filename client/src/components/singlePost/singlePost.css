@@ -167,7 +167,7 @@
   background-color: #f2f4f4;
   margin-top: 20px;
   display: flex;
-  width: 60%;
+  width: 70%;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   margin-left: 15px;
   padding-bottom: 15px;
@@ -239,13 +239,13 @@
   border: none;
   border: 1.5px solid gray;
   outline: none;
-  width: 60%;
+  width: 70%;
 }
 .comment-wrapper:focus {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .comment-btn {
-  width: 15%;
+  width: 25%;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   transition: 0.6s ease-in-out;
 }
