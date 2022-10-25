@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { subscribeEmail, handleSendEmailSubscribers, getAllSubscribers,  handleGetSingleSubscriber, handleDeleteSingleSubscriber, getDeliveredEmails, deleteSingleDeliveredEmail,
-getAllPendingEmails, updatePendingEmail, deleteSceduledEmail, resendSubcriberEmailVerification} = require('../controller/Emails');
+getAllPendingEmails, updatePendingEmail, deleteSceduledEmail, resendSubcriberEmailVerification, contactAdminEmail} = require('../controller/Emails');
 const {verify} = require('../middleware/tokenVerify')
 
 
@@ -17,7 +17,8 @@ router.delete('/deleteDelivered/:emailId', verify, deleteSingleDeliveredEmail);
 router.get('/pendingEmails', verify, getAllPendingEmails);
 router.patch('/updateEmail/:emailId', verify, updatePendingEmail);
 router.delete('/deleteScheduleEmail/:emailId', verify, deleteSceduledEmail);
-router.post('/resendSubVerifcation', verify, resendSubcriberEmailVerification)
+router.post('/resendSubVerifcation', verify, resendSubcriberEmailVerification);
+router.post('/contactus', contactAdminEmail)
 
 
 

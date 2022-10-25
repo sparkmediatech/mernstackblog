@@ -194,7 +194,7 @@ noCategoryFound, subNameSpaceError, subEmailSPaceError
                 <div className='homePage-post-div custom-footer-main-wrapper '>
                         <div className='footer-section1 topMargin-medium flex-2'>
                             <h4 className='text-general-small2 color1 custom-footer-title-text'>{websiteName}</h4>
-                            <p className='text-general-small white-text margin-small site-about-text'>
+                            <p className='text-general-small white-text margin-small site-about-text custom-about-site-text'>
                                 {aboutWebsite}
                             </p>
                             <div className='socialMedia-footer-icon-div margin-small'>
@@ -293,7 +293,7 @@ noCategoryFound, subNameSpaceError, subEmailSPaceError
                 </div>
                 <div className='flex-2 center-flex-align-display credit-section-div'>
                     <hr className='footer-line'/>
-                        <div className='flex-3'><p className='text-general-small white-text margin-small site-about-text'>Copyright © 2022 | {websiteName}. All Rights Reserved by </p><p className='text-general-small color2 margin-small site-about-text margin-left-sm1'>SparkMediaTech</p></div>
+                        <div className='flex-3 custom-copy-right-footer-div'><p className='text-general-small white-text margin-small site-about-text'>Copyright © 2022 | {websiteName}. All Rights Reserved by </p><p className='text-general-small color2 margin-small site-about-text margin-left-sm1'>SparkMediaTech</p></div>
                 </div>
             </div>
       </>

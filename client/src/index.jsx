@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { LogContextProvider} from './context/LogContext';
+
 import {AuthProvider} from './context/AuthProvide';
 
 

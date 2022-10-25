@@ -13,7 +13,13 @@
 .site-about-text{
     line-height: 1.5em;
 }
-
+.custom-about-site-text{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 10;
+    -webkit-box-orient: vertical;
+}
 
 /* social media Icon for footer */
 
@@ -167,5 +173,9 @@
     }
     .custom-footer-title-text{
         margin-top: 15px !important;
+    }
+
+    .custom-copy-right-footer-div{
+        flex-direction: column !important;
     }
 }

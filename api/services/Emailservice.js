@@ -1,8 +1,9 @@
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid');
 const jwt = require('jsonwebtoken');
-const emailBody = require('../models/EmailBody');
 const EmailBody = require('../models/EmailBody');
+const ejs = require("ejs");
+const fs = require("fs");
 
 
 
@@ -63,7 +64,7 @@ return emailToken
 
 //to send email to subscribers
 const sendEmailSubscriber = async (subscriberemail, res, emailSubject, emailBody, sentEmailId) => {
-   console.log(subscriberemail, 'emails')
+  
     const sendEmail = transport.sendMail({
     from: 'kingzanimation19@gmail.com',
     to: [subscriberemail],
@@ -108,9 +109,40 @@ return passwordToken;
 };
 
 
+//send email to admin by users
+
+
+
+const contactus = async (username, emailSubject, emailBody, userEmail, res)=>{
+    ejs.renderFile(__dirname + "/CustomHTML.ejs", {username: username, emailSubject: emailSubject, emailBody: emailBody, userEmail: userEmail}, function (err, data){
+        if(err){
+            return err
+        }
+
+        const contactAdmin = transport.sendMail({
+            from: 'kingzanimation19@gmail.com',
+            to: 'kingzanimation19@gmail.com',
+            subject: `${emailSubject}`,
+            html: data
+
+}).then(async() =>{
+   
+    return res.status(200).json('email sent')
+}).catch((err)=>{
+    
+    return res.status(500).json(("Email was not sent, please try and resend by clicking the resend button"))
+})
+
+return contactAdmin
+    }
+    )
+    
+}
+
 module.exports = {
      sendConfirmationEmail,
      resetPasswordLink,
      subscribeEmailConfirmation,
      sendEmailSubscriber,
+     contactus
 }

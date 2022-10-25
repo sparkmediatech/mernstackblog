@@ -62,7 +62,7 @@ useEffect(()=>{
   return (
       <>
         <div className='margin-small homePage-post-div'>
-           {popularPosts.slice(0, screenMode).map((singlePopularPost) =>{
+           {popularPosts?.slice(0, screenMode).map((singlePopularPost) =>{
              return(
                <div className='popular-posts' onMouseEnter={()=> {setSelectedId(singlePopularPost._id); setSelectedPostTitle(singlePopularPost.title)}} onMouseLeave={()=> {setSelectedId(''); setSelectedPostTitle('')}}>
                  {singlePopularPost.postPhoto &&(

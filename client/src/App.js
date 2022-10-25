@@ -30,6 +30,8 @@ import FetchingError from './pages/GeneralErrorPages/FetchingError';
 import UserProfilePublic from './pages/userprofilePublic/UserProfilePublic';
 import Subscribers from './pages/Admindashboard/Subscribers';
 import SubscriberConfirmation from './pages/ConfirmEmail/SubscriberConfirmation';
+import AboutUs from './pages/AboutUs/AboutUs';
+import Contactus from './pages/ContactUs/Contactus';
 
 
 
@@ -49,12 +51,13 @@ function App() {
   
   const {logUser,temp, isLoading, auth, cursorState,   componentName, setComponentName, pathName, setPathName,
   blogPageName, setBlogPageName, contactPageName,  setContPageName, writePageName, setWritePageName, pathNameMount, pathLocation,
-  blogPageAliasName, setBlogPageAliasName, writePageAliasName, setWritePageAliasName, generalFetchError, setgeneralFetchError, 
+  blogPageAliasName, setBlogPageAliasName, writePageAliasName, setWritePageAliasName, generalFetchError, setgeneralFetchError, setContactPageAliasName,
+  setAboutPageName, setAboutPageAliasName, aboutPageName
   } = useContext(AuthContext);
   
   
   const [reload, setReload] = useState(false);
-  const [menuControler, setMenuControler] = useState(false);
+
   //const [menuNameArray,  setMenuNameArray] = useState([])
 
   useEffect(()=>{
@@ -67,7 +70,7 @@ function App() {
 
 
 
-console.log(pathLocation)
+//This handles the auto generation of pathname and menu names created by the admin
 useEffect(() =>{
   console.log('testing pathnams')
   pathName?.map((singlePath) =>{
@@ -79,10 +82,16 @@ useEffect(() =>{
       }
       if(singlePath?.aliasName == 'CONTACT'&& singlePath?.aliasName == singleComponent.componentName){
         setContPageName(singlePath.pathName)
+        setContactPageAliasName(singlePath?.aliasName)
       }
        if(singlePath?.aliasName === 'WRITE' && singlePath.aliasName == singleComponent.componentName){
       setWritePageName(singlePath?.pathName);
       setWritePageAliasName(singlePath?.aliasName)
+    }
+
+    if(singlePath?.aliasName === 'ABOUT' && singlePath.aliasName == singleComponent.componentName){
+      setAboutPageName(singlePath?.pathName);
+      setAboutPageAliasName(singlePath?.aliasName)
     }
     })
     
@@ -92,7 +101,9 @@ useEffect(() =>{
 }, [pathLocation, pathNameMount, pathName])
 
  
-console.log(!isLoading && reload)
+
+
+
   return (
     <Router>
       {cursorState  && <CursorNotallowed/>}
@@ -109,6 +120,13 @@ console.log(!isLoading && reload)
           <Home />
         </Route>
 
+        <Route exact path={`/${aboutPageName?.toLowerCase()}`}>
+          <AboutUs />
+        </Route>
+
+        <Route exact path={`/${contactPageName?.toLowerCase()}`}>
+          <Contactus/>
+        </Route>
          
         <Route path="/register">
           <Register />

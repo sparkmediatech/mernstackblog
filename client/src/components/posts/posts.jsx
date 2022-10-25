@@ -15,7 +15,6 @@ export default function Posts() {//we picked the posts props and declared it
     const {auth, isLoading, dispatch, posts, setPosts, } = useContext(AuthContext); 
     let   tabletMode = useMediaQuery('(max-width: 768px)');
     let   mobileMode = useMediaQuery('(max-width: 576px)')         
-    const [loading, setLoading] = useState(false);
     const location = useLocation();// called the useLocation here under a variable called location
     const search = location.search;
     const [selectedId, setSelectedId] = useState('');
@@ -23,24 +22,7 @@ export default function Posts() {//we picked the posts props and declared it
     const imagePlugin = createImagePlugin();
     const [screenMode, setScreenMode] = useState()
 
-     useEffect( () => {
-        
-        setLoading(true)
-        dispatch({ type: "ISLOADING_START" });
-        const fetchPosts = async ()=>{
-
-            try{
-                const res = await axios.get(`${BASE_URL}/posts/`)
-                setPosts(res.data)
-                setLoading(false)
-                dispatch({ type: "ISLOADING_END" });
-            }catch(err){
-                
-            }            
-                }
-        fetchPosts()
-         
-    }, [])
+    
 
 
 

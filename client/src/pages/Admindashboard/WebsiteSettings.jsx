@@ -31,6 +31,7 @@ function WebsiteSettings() {
     
     const [editAboutWebsiteState, setEditAboutWebsite] = useState(false);
     let   tabletMode = useMediaQuery('(max-width: 1200px)');
+    let   smallScreenMode = useMediaQuery('(max-width: 320px)');
     //toggle state for slider and static image
     //const [sliderOn, setSliderOn] = useState('sliderON')
    
@@ -64,7 +65,7 @@ function WebsiteSettings() {
     const fetchFrontendValue = async () =>{
           try{
                  dispatch({type:"ISLOADING_START"}); 
-                const res = await axiosPrivate.get("/v1/headervalue");
+                const res = await axiosPrivate.get(`${BASE_URL}/headervalue`);
                 const headerValueObject = Object.assign({}, ...res.data)
                 setHeaderValues(headerValueObject);
                 setHeaderColor(headerValueObject.headerColor);
@@ -105,7 +106,7 @@ const handleHeaderValueCreation = async ()=>{
             data.append("aboutWebsite", aboutWebsite);
 
             try{
-                  const response = await axiosPrivate.post('/v1/headervalue',  data,{ withCredentials: true,
+                  const response = await axiosPrivate.post(`${BASE_URL}/headervalue`,  data,{ withCredentials: true,
                   headers:{authorization: `Bearer ${auth.token}`}},)
                   window.location.reload()
                   //dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
@@ -709,7 +710,7 @@ const handleHeaderOn = async ()=>{
            
 
             {
-             !dashboardEditMode && 
+             !dashboardEditMode && smallScreenMode && openAdminSideBar == 'admin-sidebar-slideOut' || (!smallScreenMode) &&
              <div className='flex-3 center-flex-align-display margin-left-sm1 '>
 
                   <>
@@ -734,7 +735,8 @@ const handleHeaderOn = async ()=>{
               </div> 
             }
           
-           {!dashboardEditMode && sliderStateText !== 'headerOFF' && <div className='flex-3 center-flex-align-display margin-left-sm1 margin-small-small'>
+           {!dashboardEditMode && sliderStateText !== 'headerOFF' &&  smallScreenMode && openAdminSideBar == 'admin-sidebar-slideOut' || (!smallScreenMode) &&
+           <div className='flex-3 center-flex-align-display margin-left-sm1 margin-small-small'>
             
             
              <>
@@ -771,7 +773,7 @@ const handleHeaderOn = async ()=>{
 
 
 
-            {!dashboardEditMode && 
+            {!dashboardEditMode &&  openAdminSideBar == 'admin-sidebar-slideOut' &&
               <div className="headerImg-div custom-header-image-2 ">
                 <p className='text-general-small color1'>Header Image</p>
                 <img className='headerValueImg  customHeaderValueImage-2' src={file? URL.createObjectURL(file): headerValues.headerImg} alt="" />

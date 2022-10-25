@@ -12,6 +12,7 @@ import {MdNavigateNext, MdNavigateBefore} from 'react-icons/md';
 import {AiFillDelete} from 'react-icons/ai';
 import {FiMenu} from 'react-icons/fi';
 import { useMediaQuery } from '../../hooks/CustomMediaQuery';
+import BASE_URL from '../../hooks/Base_URL';
 
 function Usersmanager(props,) {
     const axiosPrivate = useAxiosPrivate();
@@ -48,7 +49,7 @@ function Usersmanager(props,) {
       try{
            dispatch({type:"CURSOR_NOT_ALLOWED_START"});
            dispatch({type:"ISLOADING_START"}); 
-          const response = await axiosPrivate.post(`/v1/users/allusers?page=${path}`, { withCredentials: true,
+          const response = await axiosPrivate.post(`${BASE_URL}/users/allusers?page=${path}`, { withCredentials: true,
             headers:{authorization: `Bearer ${auth.token}`}});
             
             setAllUsers(response.data);
@@ -128,7 +129,7 @@ console.log(selectedUsers)
    const handleDeleteSingleUser = async (selectedId)=>{
          try{
               dispatch({type:"CURSOR_NOT_ALLOWED_START"});
-        const response = await axiosPrivate.delete(`/v1/users/deleteUser/${selectedId}`, { withCredentials: true,
+        const response = await axiosPrivate.delete(`${BASE_URL}/users/deleteUser/${selectedId}`, { withCredentials: true,
             headers:{authorization: `Bearer ${auth.token}`}})
               dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
             setDeleteUserState(!deleteUserState)
@@ -157,7 +158,7 @@ const handleDeleteSelectedUsers = async ()=>{
         }
     try{
          dispatch({type:"CURSOR_NOT_ALLOWED_START"});
-        const response = await axiosPrivate.post(`/v1/users/deleteSelected`, selectedIds, { withCredentials: true,
+        const response = await axiosPrivate.post(`${BASE_URL}/users/deleteSelected`, selectedIds, { withCredentials: true,
             headers:{authorization: `Bearer ${auth.token}`}})
             dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
             setDeleteUserState(!deleteUserState)
@@ -186,7 +187,7 @@ const handleDeleteSelectedUsers = async ()=>{
 const handleDeleteAllUsers = async ()=>{
     try{
           dispatch({type:"CURSOR_NOT_ALLOWED_START"});
-        const response = await axiosPrivate.post(`/v1/users/deletallusers`, { withCredentials: true,
+        const response = await axiosPrivate.post(`${BASE_URL}/users/deletallusers`, { withCredentials: true,
             headers:{authorization: `Bearer ${auth.token}`}})
             dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
              setDeleteUserState(!deleteUserState)

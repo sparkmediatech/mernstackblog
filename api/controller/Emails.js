@@ -2,7 +2,7 @@ const User = require("../models/User"); //the user model imported to be used
 const Subscribers = require("../models/Subscribers");
 const Headervalues = require("../models/headervalues");
 const EmailBody = require("../models/EmailBody")
-const {subscribeEmailConfirmation, sendEmailSubscriber} = require('../services/Emailservice');
+const {subscribeEmailConfirmation, sendEmailSubscriber, contactus} = require('../services/Emailservice');
 const { getSubscribersPagination} = require('../services/query');
 const { findById } = require("../models/User");
 const dayjs = require("dayjs");
@@ -322,7 +322,7 @@ const getAllPendingEmails = async(req, res)=>{
 
         return res.status(200).json(pendingEmail)
     }catch(err){
-        console.log(err)
+       
          return res.status(500).json('something went wrong') 
     }
 }
@@ -347,8 +347,8 @@ const updatePendingEmail = async(req, res)=>{
         
      
         if(deliveryDate){
-            console.log(deliveryDate)
-            console.log(dayjs(deliveryDate).isValid())
+            
+            
             if(!dayJsDate(deliveryDate, "YYYY-MM-DD", true).isValid()){
                 return res.status(500).json('invalid date')
             }
@@ -472,6 +472,39 @@ const resendSubcriberEmailVerification = async(req, res)=>{
          return res.status(500).json('something went wrong')
     }
 }
+
+
+
+//contact admin
+const contactAdminEmail = async(req, res) =>{
+    try {
+         const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        const emailBody = req.body.emailBody;
+        const emailSubject = req.body.emailSubject;
+        const userName = req.body.userName
+        const userEmail = req.body.userEmail;
+        console.log(emailBody, emailSubject, userName, userEmail)
+
+        if(!emailBody || !emailSubject || !userName || !userEmail){
+            return res.status(500).json('one of the required parameter missing')
+        }
+
+        if(!isNaN(emailSubject) || !isNaN(userName) || !isNaN( userEmail) || !isNaN( emailBody)){
+            return res.status(500).json('None of the required parameter should be all numbers')
+        }
+
+        if(!userEmail.match(validRegex)){
+            return res.status(500).json('your email is not valid')
+        }
+
+        return await contactus(userName, emailSubject, emailBody, userEmail, res)
+    } catch (error) {
+        return res.status(500).json('something went wrong')
+        
+    }
+}
+
+
 module.exports ={
     subscribeEmail,
     handleSendEmailSubscribers,
@@ -483,5 +516,6 @@ module.exports ={
     getAllPendingEmails,
     updatePendingEmail,
     deleteSceduledEmail,
-    resendSubcriberEmailVerification
+    resendSubcriberEmailVerification,
+    contactAdminEmail,
 }

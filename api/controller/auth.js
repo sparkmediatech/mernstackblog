@@ -77,6 +77,9 @@ const login = async (req, res) =>{
 
               await client.set(user._id.toString(), (refreshToken));
 
+              const key = await client.get(user._id.toString())
+              console.log(key, user._id, 'checking redis key')
+
                 res.cookie('refreshJWT', refreshToken, {
                 httpOnly: true,
                 maxAge: 604800000,
@@ -127,6 +130,7 @@ try{const user = await User.findOne({username: req.body.username})
        
    }
 }catch(err){
+    console.log(err)
    return res.status(500).json('something went wrong');
     
 }

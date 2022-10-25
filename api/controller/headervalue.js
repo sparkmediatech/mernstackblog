@@ -46,7 +46,8 @@ try{
     //check the user about string count
      const string =  aboutWebsite.split('');
      const aboutWebsiteWordCount = string.filter(word => word !== '').length;
-     if(aboutWebsiteWordCount  >= 400){
+    
+     if(aboutWebsiteWordCount  >=  1200){
          if(req.file){
                  fs.unlinkSync(req.file.path);
            }
@@ -195,7 +196,7 @@ try{
      const string =  aboutWebsite.split('');
      const aboutWebsiteWordCount = string.filter(word => word !== '').length;
      console.log(aboutWebsiteWordCount)
-     if(aboutWebsiteWordCount  >= 400){
+     if(aboutWebsiteWordCount  >= 1200){
          if(req.file){
                  fs.unlinkSync(req.file.path);
            }

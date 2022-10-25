@@ -23,7 +23,8 @@ function HeaderNavbar() {
     const axiosPrivate = useAxiosPrivate();
     const PF = "http://localhost:5000/images/" 
     const {auth, setAuth, logUser, setWebsiteName, setAboutWebsite, setQuery,  searchState, setSearchState,  blogPageName, pathName,  writePageName,
-    pathLocation, setPathLocation, blogPageAliasName, writePageAliasName, setgeneralFetchError,dispatch, headerValues, setHeaderValues, headerImage, setHeaderImage
+    pathLocation, setPathLocation, blogPageAliasName, writePageAliasName, setgeneralFetchError,dispatch, headerValues, setHeaderValues, headerImage, setHeaderImage,
+    contactPageName, contactPageAliasName, aboutPageName, aboutPageAliasName
     } = useContext(AuthContext);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     let   tabletMode = useMediaQuery('(max-width: 1200px)');
@@ -62,7 +63,7 @@ const handleLogout = async (e) =>{
     }
     try{
         dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
-        await axiosPrivate.post(`/v1/auth/logout`,  logId, { withCredentials: true,
+        await axiosPrivate.post(`${BASE_URL}/auth/logout`,  logId, { withCredentials: true,
         headers:{authorization: `Bearer ${auth.token}`}})
         setAuth(null);
          dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
@@ -133,7 +134,7 @@ useEffect(()=>{
 
 
 
-console.log(headerValues, 'header now')
+console.log(aboutPageAliasName, aboutPageName, 'header now')
 
 
 
@@ -232,12 +233,12 @@ console.log(headerValues, 'header now')
                     {pathName.map((singlePathName, key) =>{
                          const {pathName, aliasName, _id, menuName} = singlePathName || {}
                         if(aliasName !== 'HOME'){
-                            console.log(writePageAliasName)
+                            console.log(singlePathName?.aliasName == aboutPageAliasName)
                         return(
                             <>
-                                <div key={key} className={path == singlePathName.pathName ? 'flex customItemDiv colorBG marginLeft-extraSmall':   'flex customItemDiv marginLeft-extraSmall '}>
-                                    <Link className='link ' to={singlePathName.aliasName == blogPageAliasName ? `/${blogPageName.toLowerCase()}/page/${Number(1)}`: singlePathName.aliasName == 'CONTACT'? `#`: 
-                                        singlePathName.aliasName === writePageAliasName ? `/${writePageName?.toLowerCase() }`: `/`
+                                <div key={key} className={path == singlePathName?.pathName ? 'flex customItemDiv colorBG marginLeft-extraSmall':   'flex customItemDiv marginLeft-extraSmall '}>
+                                    <Link className='link ' to={singlePathName?.aliasName == blogPageAliasName ? `/${blogPageName?.toLowerCase()}/page/${Number(1)}`: singlePathName?.aliasName == contactPageAliasName? `/${contactPageName?.toLowerCase()}`: 
+                                        singlePathName?.aliasName === writePageAliasName ? `/${writePageName?.toLowerCase() }` : singlePathName?.aliasName === aboutPageAliasName ? `/${aboutPageName?.toLowerCase()}` : '/'
                             
                                 
                                         }>
@@ -279,8 +280,8 @@ console.log(headerValues, 'header now')
                         return(
                             <>
                                 <div key={key} className={path == singlePathName.pathName ? ' customItemDiv colorBG  margin-extra-small-Top':   ' customItemDiv '}>
-                                    <Link onClick={()=> setMobileMenuOpen(false)} className='link ' to={singlePathName.aliasName == blogPageAliasName ? `/${blogPageName.toLowerCase()}/page/${Number(1)}`: singlePathName.aliasName == 'CONTACT'? `#`: 
-                                        singlePathName.aliasName === writePageAliasName ? `/${writePageName?.toLowerCase() }`: `/`
+                                    <Link onClick={()=> setMobileMenuOpen(false)} className='link ' to={singlePathName.aliasName == blogPageAliasName ? `/${blogPageName.toLowerCase()}/page/${Number(1)}`: singlePathName?.aliasName == contactPageAliasName? `/${contactPageName?.toLowerCase()}`: 
+                                        singlePathName.aliasName === writePageAliasName ? `/${writePageName?.toLowerCase() }`: singlePathName?.aliasName === aboutPageAliasName ? `/${aboutPageName?.toLowerCase()}` : '/'
                             
                                 
                                         }>

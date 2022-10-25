@@ -8,6 +8,8 @@ import {GrPrevious} from 'react-icons/gr';
 import {AuthContext} from '../../context/AuthProvide';
 import { useHistory, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import BASE_URL from '../../hooks/Base_URL';
+import axiosPrivate from '../../hooks/AxiosPrivate';
 
 function Blog() {
   const [allPosts, setAllPosts] = useState([]);
@@ -34,7 +36,7 @@ console.log(query)
            if(query && !categoryName){
               try{
           dispatch({type:"CURSOR_NOT_ALLOWED_START"});
-          const response = await axios.post(`/posts/searches?page=${path}`, search)
+          const response = await axiosPrivate.post(`${BASE_URL}/posts/searches?page=${path}`, search)
           dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
           setAllPosts(response.data)
         }catch(err){
@@ -60,7 +62,7 @@ console.log(query)
       
          try{
           dispatch({type:"CURSOR_NOT_ALLOWED_START"});
-          const response = await axios.post(`/posts/searches?page=${path}`, catName)
+          const response = await axiosPrivate.post(`${BASE_URL}/posts/searches?page=${path}`, catName)
           dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
           setAllPosts(response.data)
         }catch(err){
@@ -99,11 +101,11 @@ const handleCategorySearch = (categories)=>{
   setQuery('')
 }
 
-console.log(typeof(path))
+
 
   return (
     <div className='custom-all-posts-wrapper flex-2 center-flex-align-display'>
-      <div className='topMargin-Extral-Large blog-page-custom-div'><h4 className='text-general-BIG '>Blog</h4></div>
+      <div className=' blog-page-custom-div'><h4 className='text-general-BIG custom-blog-text'>Blog</h4></div>
        
       
       <div className='custom-allPosts-main-div margin-small mainContainer center-flex-justify-display '>
@@ -116,7 +118,7 @@ console.log(typeof(path))
             <>
               <div key={key} className='single-post-custom-div marginLeft-sm  margin-small flex-2'>
                   <div className='custom-allPosts-img-div'><img src={postPhoto} alt="" /></div>
-                  <div className='custom-general-allposts-div'><Link to={`/post/${_id}`} className='link'><p className='text-general-small2 color3'>{title}</p></Link></div>
+                  <div className='custom-general-allposts-div '><Link to={`/post/${_id}`} className='link'><p className='text-general-small2 color3 custom-blog-post-title-text'>{title}</p></Link></div>
                   <div className='custom-general-allposts-div'><p className='text-general-small color1'>{username?.username}</p></div>
                    <div className='custom-general-allposts-div custom-category-allPost-div colorBG'><p onClick={() => handleCategorySearch(categories)} className='text-general-small white-text general-cursor-pointer'>{categories}</p></div>
                   <div className='custom-general-allposts-div'><p className='text-general-small color1'>{new Date(createdAt).toDateString()}</p></div>

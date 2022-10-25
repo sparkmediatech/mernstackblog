@@ -36,12 +36,20 @@ export const AuthProvider = ({children})=>{
     const [componentName, setComponentName] = useState([])
     const [pathName, setPathName] = useState([])
     const [blogPageName, setBlogPageName] = useState();
-    const [contactPageName,  setContPageName] = useState();
+    
     const [writePageName, setWritePageName] = useState();
     const [pathNameMount, setPathNameMount] = useState(false)
     const [pathLocation, setPathLocation] = useState();
     const [blogPageAliasName, setBlogPageAliasName] = useState();
     const [writePageAliasName, setWritePageAliasName] = useState();
+    const [contactPageAliasName,setContactPageAliasName] = useState()
+    const [contactPageName,  setContPageName] = useState();
+
+    const [aboutPageName,setAboutPageName] = useState()
+    const [aboutPageAliasName, setAboutPageAliasName] = useState()
+
+
+
     const [generalFetchError, setgeneralFetchError] = useState(false);
     const [tokenError,  setTokenError] = useState(false)
     const [ allSubscribersState, setAllsubscribersState] = useState(false);
@@ -221,6 +229,24 @@ return function cleanup() {
 
 
 
+//fetch posts that would be used for home page, footer section and some other components that rely on footer components too
+
+ useEffect( () => {
+        dispatch({ type: "ISLOADING_START" });
+        const fetchPosts = async ()=>{
+
+            try{
+                const res = await axios.get(`${BASE_URL}/posts/`)
+                setPosts(res.data)
+                dispatch({ type: "ISLOADING_END" });
+            }catch(err){
+                
+            }            
+                }
+        fetchPosts()
+         
+    }, [])
+
 
 
     return(
@@ -259,7 +285,10 @@ return function cleanup() {
             sliderStateLoad, setSliderStateLoad,
             headerImage, setHeaderImage,
            sliderState, setSliderState,
-           sliderStateText, setSliderStateText
+           sliderStateText, setSliderStateText,
+           contactPageAliasName,setContactPageAliasName,
+           aboutPageName,setAboutPageName,
+           aboutPageAliasName, setAboutPageAliasName
 
            
 

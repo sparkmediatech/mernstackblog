@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import React, {useRef, useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import {AuthContext} from '../../context/AuthProvide';
-import {LogContext} from '../../context/LogContext';
 import  BASE_URL from '../../hooks/Base_URL'
 
 
@@ -26,7 +25,7 @@ export default function AdminLogin() {
     const handleSubmit = async (e) =>{
         e.preventDefault();
         try{
-            const response = await axios.post(BASE_URL +"/auth/admin", {
+            const response = await axios.post(`${BASE_URL}/auth/admin`, {
                  username: adminUser,
                  password: adminPassword
             });           

@@ -54,7 +54,7 @@ function Subscribers() {
             try{
                 dispatch({type:"CURSOR_NOT_ALLOWED_START"});
                 
-               const response = await axiosPrivate.get(`/v1/emailsub/subscribers?page=${Number(pageNumber)}`, { withCredentials: true,
+               const response = await axiosPrivate.get(`${BASE_URL}/emailsub/subscribers?page=${Number(pageNumber)}`, { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}
             })
              dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
