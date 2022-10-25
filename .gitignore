@@ -12,10 +12,7 @@
 /build
 
 
-/.dockerignore
-/.Dockerfile
-/.docker-compose.yml
-/.render.yaml
+/dockerfile
 /sum
 # misc
 .DS_Store
