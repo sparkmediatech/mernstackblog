@@ -330,8 +330,8 @@ useEffect(()=>{
                                    <div className='custom-BTN-div  flex-2 center-flex-align-display'>
                                     
                                        
-                                        {(singleUser && !blockDateSetting && singleUser?.isBlocked === false && openAdminSideBar ==  'admin-sidebar-slideOut' || mobileMode && !blockDateSetting )  && <button onClick={turOnBlockingDateSetting}  className='button-general-2 block-user-custom-btn flex '>Block User</button> }
-                                        {singleUser && singleUser?.isBlocked === true && <button onClick={handleUnblockUser} className='button-general-2 block-user-custom-btn '>Unblock User</button>}
+                                        {(singleUser && !blockDateSetting && singleUser?.isBlocked === false && openAdminSideBar ==  'admin-sidebar-slideOut' || (mobileMode && !blockDateSetting && singleUser?.isBlocked === false && singleUser))  && <button onClick={turOnBlockingDateSetting}  className='button-general-2 block-user-custom-btn flex '>Block User</button> }
+                                        {singleUser && singleUser?.isBlocked === true && openAdminSideBar ==  'admin-sidebar-slideOut' || (mobileMode && !blockDateSetting && singleUser?.isBlocked === false && singleUser) && <button onClick={handleUnblockUser} className='button-general-2 block-user-custom-btn flex '>Unblock User</button>}
                                          {userBlocked && <p className='paragraph-text'>User has been blocked</p>}
                                         {unblockUser && <p className='paragraph-text'>User has been unblocked</p>}
                                         {singleUser && console.log(singleUser.isBlocked)}
