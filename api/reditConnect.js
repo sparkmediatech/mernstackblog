@@ -7,7 +7,7 @@ const { promisify } = require("util");
 //const redis_client = redis.createClient();
 
 let redis_client = redis.createClient({
-    url: 'redis://redis:6379',
+    url: 'redis://red-cdce5o02i3msb943nfog:6379',
 })
 
 
