@@ -20,7 +20,7 @@ const sendConfirmationEmail = async (user, res) => {
     const emailToken = jwt.sign({userId: user._id, username: user.username}, process.env.EMAIL_JWT_SECRET,  {
             expiresIn: process.env.EMAIL_JWT_DURATION})
 
-    const url = `http://localhost:3000/confirm/${user._id}/${emailToken}`
+    const url = `${process.env.API_URL}/confirm/${user._id}/${emailToken}`
 
     //console.log(emailToken)
     transport.sendMail({
@@ -44,7 +44,7 @@ const subscribeEmailConfirmation = async (user, res) => {
     const emailToken = jwt.sign({userId: user._id, username: user.username}, process.env.EMAIL_JWT_SECRET,  {
             expiresIn: process.env.EMAIL_JWT_DURATION})
 
-    const url = `http://localhost:3000/subverify/${user._id}/${emailToken}`
+    const url = `${process.env.API_URL}/subverify/${user._id}/${emailToken}`
 
     //console.log(emailToken)
     transport.sendMail({
@@ -90,7 +90,7 @@ const resetPasswordLink = async (user) =>{
     const passwordToken = jwt.sign({userId: user._id, username: user.username}, process.env.PASSWORD_RESET_SECRET,  {
             expiresIn: process.env.PASSWORD_JWT_DURATION}); 
 
-    const url = `http://localhost:5000/updatepassword/${passwordToken}`
+    const url = `${process.env.API_URL}/updatepassword/${passwordToken}`
 
     //console.log(emailToken)
     transport.sendMail({
