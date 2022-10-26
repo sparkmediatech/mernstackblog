@@ -65,7 +65,7 @@ function Texteditor() {
         data.append("name", filename);
         data.append("file", file);
     try{
-      const response = await axiosPrivate.post('/v1/posts/uploadImage',  data,{ withCredentials: true,
+      const response = await axiosPrivate.post(`${BASE_URL}/posts/uploadImage`,  data,{ withCredentials: true,
             headers:{authorization: `Bearer ${auth.token}`}
            
         },)

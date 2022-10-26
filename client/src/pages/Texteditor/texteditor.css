@@ -41,7 +41,8 @@
 }
 .custom-editor-className{
     overflow: hidden;
-    width: 97%;  
+    width: 97%; 
+    padding-left:5px ; 
 }
 .toolbar-class{
     width: 99.3%;
@@ -240,7 +241,14 @@
 .custom-toolbox {
         width: 25%;
     }
+.custom-editor-wrapper{
+    margin-top: 2px;
 }
+}
+
+
+
+
 
 @media (max-width: 440px){
    
