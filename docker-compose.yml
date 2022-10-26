@@ -1,0 +1,19 @@
+version: "3"
+services:
+  redisdb:
+    container_name: redisdb
+    hostname: redis
+    image: redis
+    ports:
+      - "6379:6379"
+
+
+  fullstack-cms:
+    build: .
+    image: kings19/fulstackcms
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./api/.env
+    depends_on:
+      - redisdb
