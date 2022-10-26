@@ -316,7 +316,7 @@ useEffect(()=>{
                                             return(
                                                 <>
                                                     <div className='flex-3 margin-small paragraph-custom-div center-flex-justify-display'>
-                                                        <p className='text-general-small color2 '>{singleUser.username} posted</p> 
+                                                        <p className='text-general-small color2 '>{singleUser?.username} posted</p> 
                                                         <p className='text-general-small color1 marginLeft-sm custom-post-title'><Link className='link' to={`/post/${_id}`}>{title}</Link> </p>
                                                     </div>
                             
