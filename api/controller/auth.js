@@ -130,7 +130,7 @@ try{const user = await User.findOne({username: req.body.username})
        
    }
 }catch(err){
-    console.log(err)
+    
    return res.status(500).json('something went wrong');
     
 }
