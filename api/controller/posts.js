@@ -546,12 +546,12 @@ const getRandomPostS = async (req, res)=>{
 const uploadImage = async(req, res) =>{
         try {
        
-        const fileStr = req.file.path
+        const fileStr = req.file?.path
         console.log(fileStr, 'check filestr')
         
         if(!fileStr){
-           if(req.file){
-                 fs.unlinkSync(req.file.path);
+           if(req?.file.path){
+                 fs.unlinkSync(req.file?.path);
            }
             return res.status(500).json( 'No image found');
         }else{
@@ -568,8 +568,8 @@ const uploadImage = async(req, res) =>{
         
     
     } catch (err) {
-        if(req.file.path){
-                 fs.unlinkSync(req.file.path);
+        if(req.file?.path){
+                 fs.unlinkSync(req.file?.path);
            }
            console.log(err)
         return res.status(500).json({ err: 'Something went wrong with image' });

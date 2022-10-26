@@ -127,7 +127,7 @@ const handleShowCategory = () =>{
        
         
         try{
-             const response = await axiosPrivate.post('/v1/posts',  data,{ withCredentials: true,
+             const response = await axiosPrivate.post(`${BASE_URL}/posts`,  data,{ withCredentials: true,
             headers:{authorization: `Bearer ${auth.token}`}
            
         },)
