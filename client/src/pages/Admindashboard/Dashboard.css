@@ -504,6 +504,7 @@ margin-top: 0 !important;
 .custom-sidebar-close-div{
   display: flex;
   justify-content: right;
+  float: right;
 }
 .custom-sub-wensite-setting-div{
   margin-left: 20px;

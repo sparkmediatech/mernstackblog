@@ -8,6 +8,7 @@ import { useLocation } from 'react-router';
 import { FiTrendingUp } from 'react-icons/fi';
 import { useMediaQuery } from '../../hooks/CustomMediaQuery';
 import {FiMenu} from 'react-icons/fi'
+import BASE_URL from '../../hooks/Base_URL';
 
 
 function SingleUser(props ) {
@@ -41,7 +42,7 @@ function SingleUser(props ) {
 useEffect(()=>{
         const getSingleUser = async () =>{
             try{
-               const res = await axiosPrivate.get(`/v1/users/${path}`, { withCredentials: true,
+               const res = await axiosPrivate.get(`${BASE_URL}/users/${path}`, { withCredentials: true,
                 headers:{authorization: `Bearer ${auth.token}`}})
                 setSingleUser(res.data)
                
@@ -79,7 +80,7 @@ const handleBlockingUser = async() =>{
           expTime: expTime.current.value
       }
     try{
-            const res = await axiosPrivate.patch(`/v1/users/${singleUser._id}/block`, expdate, { withCredentials: true,
+            const res = await axiosPrivate.patch(`${BASE_URL}/users/${singleUser._id}/block`, expdate, { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}}) 
             setuserBlocked(true);
             setUnblockUser(false);
@@ -119,7 +120,7 @@ const handleBlockingUser = async() =>{
 const handleUnblockUser = async() =>{
       dispatch({type:"CURSOR_NOT_ALLOWED_START"});
     try{
-            const res = await axiosPrivate.patch(`/v1/users/${singleUser._id}/unblock`, { withCredentials: true,
+            const res = await axiosPrivate.patch(`${BASE_URL}/users/${singleUser._id}/unblock`, { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}}) 
             setuserBlocked(false);
             setUnblockUser(true)

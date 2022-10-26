@@ -23,7 +23,7 @@ const refreshTokenverify = async (req, res,) =>{
          
         //get the token from redis database
         const key = await redis_client.get(payload.userId.toString())
-        console.log(key, 'hello redis key')
+        
         
         //compare the redis token with the current refresh token.
         if(key === refreshToken ){
