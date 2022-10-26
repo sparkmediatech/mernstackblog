@@ -407,6 +407,7 @@
 /*Tablet */
 @media (max-width: 768px){
   .singlePost {
+    margin-top: 0px;
     flex: 14 !important;
     width: 100%;
   }

@@ -120,19 +120,18 @@
 
 @media(max-width: 576px){
     .user-profile-pics-div{
-        width: 35%;
-        height: 200px;
+        width: 40%;
+        height: 250px;
     }
     .custom-user-profile-pics{
         width: 90%;
+        height: 90%;
+       
     }
     .custom-user-details-div{
         margin-top: 50px !important;
     }
 
-     .custom-user-profile-pics{
-        height: 87%;
-    }
     .custom-user-details-div p{
         font-size: 14px !important;
     }
@@ -144,15 +143,16 @@
 @media(max-width: 500px){
     .custom-user-detail-wrapper{
         align-items: center;
+        margin-top: 0px !important;
     }
     .custom-user-details-div {
         width: 90%;
     }
     .custom-user-profile-pics{
-        height: 87%;
+        height: 90%;
     }
     .user-profile-pics-div{
-        margin-top: 65px !important;
+        margin-top: 35px !important;
     }
     .custom-userProfile-titleText{
         font-size: 25px !important;
@@ -167,6 +167,6 @@
 
 @media(max-width: 320px){
     .user-profile-pics-div{
-       width:80%;
+       width:90%;
     }
 }

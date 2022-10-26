@@ -137,8 +137,11 @@
 
 
 @media(max-width: 476px){
+.category-div-wrapper{
+    height: 80vh;
+}
 .category-single-div {
-    height: 85px;
+    height: 80px;
     }
 .custom-category-name-div{
     width: 100%;

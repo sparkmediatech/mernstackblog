@@ -360,7 +360,7 @@ console.log(openAdminSideBar)
      <FiMenu onClick={handleOpenSidebarMenu}  className={openAdminSideBar == 'admin-sidebar-slideOut' ?  'custom-sidebar-menuOpen' :  'custom-sidebar-menuOpen customMenuOpenOff' }/>
 
                 <div className={openAdminSideBar === 'admin-sidebar-slideIn' ? 'other-pages custom-other-page bg-blur2 curson-not-allowed-2 pointer-events-none ' : 'other-pages custom-other-page'}>
-                                <h3 className='text-general-Medium margin-small custom-page-setting-title-text'>Page Setting</h3>
+                                <h3 className='text-general-Medium  custom-page-setting-title-text'>Page Setting</h3>
                         <div className='category-custom-div-wrapper margin-small'>
                                
                             <div className='flex-3 category-div-wrapper'>

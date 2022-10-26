@@ -76,7 +76,7 @@ useEffect(()=>{
           <div className='mainContainer custom-main-userProfile-div flex-3'>
         
            
-            <div className='user-profile-pics-div topMargin-Extral-Large'>
+            <div className='user-profile-pics-div topMargin-Extral-Large flex'>
                 <img className='custom-user-profile-pics' src={user.profilePicture} alt="" />
             </div>
 

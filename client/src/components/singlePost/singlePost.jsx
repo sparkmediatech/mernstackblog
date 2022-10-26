@@ -413,7 +413,7 @@ if(postLikeError){
            <div className='main-container'>
         {post.map((singleItem, index)=>{
             const {_id: postId} = singleItem
-           console.log(singleItem, 'this is single item')
+          
            
             const contentState = convertFromRaw(JSON.parse(singleItem.description));
 

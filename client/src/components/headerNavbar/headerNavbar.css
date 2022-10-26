@@ -283,7 +283,7 @@
     animation-duration: 0.8s;
     animation-name: slidein;
     height: auto;
-    margin-top: 270px;
+    margin-top: 255px;
     padding-bottom: 15px;
 
 }
@@ -308,6 +308,8 @@
 
     /* ends the animation for menu bar  */
 }
+
+ 
 .mobile-radius {
     margin-right: 10px;
     width: 25px !important;
@@ -405,30 +407,55 @@
 
 
 @media(max-width: 500px) {
-    .mobile-view-custom-menu-div {
+.mobile-view-custom-menu-div {
         width: 95%;
         left: 10px;
         }
 .customItemDiv {
     width: 92vw;
 }
-    .top {
+
+.top {
         justify-content: center !important; 
 
     }
-    .topLeft{
+.topLeft{
         margin-top: 15px;
     }
-    .topRight{
+.topRight{
         margin-left: 10px;
     }
-   .custom-mobil-font {
+.custom-mobil-font {
        font-size: 12px !important;
    }
-   .topListItem{
+.topListItem{
     font-size: 15px;
    }
+
+
+   /* sttarts animation for menu bar from the top   */
+@keyframes slidein {
+    from {
+        margin-top: 130px;
+        opacity: 0;
+
+    }
+
+    25% {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+        margin-top: 255px;
+
+    }
+
+    /* ends the animation for menu bar  */
 }
+}
+
+
 
 @media(max-width: 420px){
 .navBar-header-div{

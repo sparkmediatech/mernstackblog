@@ -78,7 +78,7 @@ const login = async (req, res) =>{
               await client.set(user._id.toString(), (refreshToken));
 
               const key = await client.get(user._id.toString())
-              console.log(key, user._id, 'checking redis key')
+              
 
                 res.cookie('refreshJWT', refreshToken, {
                 httpOnly: true,

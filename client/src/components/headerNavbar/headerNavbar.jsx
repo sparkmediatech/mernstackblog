@@ -70,6 +70,8 @@ const handleLogout = async (e) =>{
         
         window.location('/login')
         }catch(err){
+            console.log(err)
+            dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
             setAuth(null)
         }
  
@@ -271,7 +273,7 @@ console.log(aboutPageAliasName, aboutPageName, 'header now')
             {mobileMenuOpen && 
 
                  <div className={mobileMenuOpen ? 'mobile-view-custom-menu-div-animated mobile-view-custom-menu-div ' : 'mobile-view-custom-menu-div  '}>
-                     <ul className='  custom-mobile-view-ul margin-extra-small-Top'>
+                     <ul className='  custom-mobile-view-ul '>
 
                         {pathName.map((singlePathName, key) =>{
                          const {pathName, aliasName, _id, menuName} = singlePathName || {}
