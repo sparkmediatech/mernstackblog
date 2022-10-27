@@ -56,16 +56,16 @@ useEffect(()=>{
 
   return (
       <article className='mainWrapper'>
-           <div className='mainContainer flex-2 center-flex-align-display topMargin-Extral-Large '>
+           <div className='mainContainer flex-2 center-flex-align-display topMargin-Extral-Large custom-password-rest-main-div'>
             { !sent ?
                <div className={userNotFoundError ? 'passwordreset-custom-div2 box-div flex-2 center-flex-justify-display passwordreset-custom-div topMargin-Extral-Large': ' box-div flex-2 center-flex-justify-display passwordreset-custom-div topMargin-Extral-Large'}>
                    <h2 className='text-general-BIG resetTitle'>Reset Password</h2>
-                   <label className='label-general reset-lebel '>Email</label>
+                   <label className='text-general-small color1 reset-lebel '>Email</label>
                     <input className='input-general' type="text"  ref={emailRef} required/>
 
                     {userNotFoundError && <p className='paragraph-text red-text topMargin-Extral-Large'>There is no user with such email</p>}
                     {somethingWentWrongError && <p className='paragraph-text red-text'>Something Went Wrong, ensure you are using valid email</p>}
-                    <button onClick={handleSendResetPasswordEmailLink} className='button-general'>Reset</button>
+                    <div className='custom-pass-reset-div flex'><button onClick={handleSendResetPasswordEmailLink} className='button-general custom-reset-password-BTN flex'>Reset</button></div>
                     <p className='support-team-text center-text'>Nodejs and Reactjs Blog application team</p>
                </div>
                :
