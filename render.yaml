@@ -1,0 +1,9 @@
+services:
+  # A Docker web service
+  - type: web
+    name: nodejs-fullstack-cms
+    env: docker
+    repo: https://github.com/sparkmediatech/mernstackblog.git
+    branch: master
+    rootDir: app
+    healthCheckPath: /
