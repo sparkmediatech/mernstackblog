@@ -7,3 +7,9 @@ services:
     branch: master
     rootDir: app
     healthCheckPath: /
+    envVars:
+      - key: REDIS_HOST
+        fromService:
+          name: lightning
+          type: redis
+          connectionString: redis://red-cdce5o02i3msb943nfog:6379
