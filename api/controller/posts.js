@@ -570,10 +570,11 @@ const uploadImage = async(req, res) =>{
         
     
     } catch (err) {
+        console.log(err)
         if(req?.file?.path){
                  fs.unlinkSync(req.file?.path);
            }
-           console.log(err)
+           
         return res.status(500).json({ err: 'Something went wrong with image' });
        
     }
