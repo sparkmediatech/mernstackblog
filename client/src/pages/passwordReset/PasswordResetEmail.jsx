@@ -69,10 +69,10 @@ useEffect(()=>{
                     <p className='support-team-text center-text'>Nodejs and Reactjs Blog application team</p>
                </div>
                :
-              <div className='box-div flex-2 flex passwordreset-custom-div passwordreset-custom-div2 topMargin-Extral-Large'>
+              <div className='box-div flex-2 flex passwordreset-custom-div passwordreset-custom-div2 topMargin-Extral-Large custom-resetpass-link-sent-div'>
                    <h2 className='text-general-BIG resetTitle'>Reset Password Sent</h2>
                     <MdOutlineMail className='Icon password-reset-custom-email-icon'/>
-                    <p className='center-text paragraph-text'>Kindly check your email inbox or spam box for your password reset link. Click on the link to reset your password</p>
+                    <p className='center-text paragraph-text custom-password-sent-text'>Kindly check your email inbox or spam box for your password reset link. Click on the link to reset your password</p>
                     <p className='support-team-text center-text  padding-bottom margin-small'>Nodejs and Reactjs Blog application team</p>
                </div> 
             }

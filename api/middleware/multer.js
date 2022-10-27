@@ -21,7 +21,7 @@ const multer = require("multer");
 });
 
 const upload = multer({storage:storage});//uploading file to the file storage variabe that we created above
-console.log(upload)
+
 
 
 module.exports = {upload}

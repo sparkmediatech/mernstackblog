@@ -32,7 +32,7 @@ function ChanagePassword() {
             try{
                 const response = await axios.patch(`${BASE_URL}/updatepassword/${temp.emailToken}`, userDetails, {
                      withCredentials: true,
-                    headers:{authorization: `Bearer ${temp.emailToken}`}  
+                     headers:{authorization: `Bearer ${temp.emailToken}`}  
                 });
                  setRegData(response);
                  setUpdate(false);
@@ -41,7 +41,7 @@ function ChanagePassword() {
                if(err.response.data === 'Unable to verify expired token, please resend token'){
 
                 setAlreadyVerified(true);
-                console.log('I am here')
+
                 setUpdate(false);
                 setIsLoading(false);
                 } 
@@ -83,16 +83,23 @@ useEffect(() =>{
   }
   
 }, [notMatchError, notUpdatedError, userNotFoundError])
+
+
+
+
+
+
+
 return (
   <>
       <article className='mainWrapper'>
-          <div className='mainContainer center-flex-justify-display topMargin-Extral-Large'>
+          <div className='mainContainer center-flex-justify-display topMargin-Extral-Large custom-change-pass-main-div'>
         {
          update &&
-          <div className='box-div flex-2 padding-left-right topMargin  '>
+          <div className='box-div flex-2 padding-left-right topMargin custom-change-password-wrapper '>
        
-                <h4 className='text-general-small2 color1 center-text topMargin-medium'>Reset Your Password</h4>
-              <label className='label-general color1 '>password</label>
+                <h4 className='text-general-small2 color1 center-text topMargin-medium resetTitle'>Reset Password</h4>
+              <label className='label-general color1 margin-small'>password</label>
                 <input className='input-general margin-small' type="password" ref={passwordRef} />
 
                 <label className='label-general margin-small color1'>confirmpassword</label>
@@ -101,7 +108,8 @@ return (
                 {notMatchError && <h4 className='paragraph-text notMatchCustomText  '>Password does not match</h4>}
                 {notUpdatedError && <h4 className='paragraph-text notMatchCustomText '>Password not updated, please ensure that you provide all required details</h4>}
                  {userNotFoundError && <h4 className='paragraph-text notMatchCustomText '>User not found in our database</h4>}
-                <button onClick={handleChangePassword } className='button-general'>Reset</button>
+                
+                <div className='custom-pass-reset-div flex'><button onClick={handleChangePassword } className='button-general custom-reset-password-BTN'>Reset</button></div>
 
                 <p className='support-team-text center-text topMargin-medium '>Nodejs and Reactjs Blog application team</p>
                 
@@ -111,12 +119,15 @@ return (
            {
             regData?.status == 200 &&
              <div className='box-div flex-2 center-flex-align-display topMargin resetPassCustom-Div '>
-                <h3 className='text-general-small2 color1 center-text topMargin-medium'>Password Reset Successfull</h3>
-                <AiFillCheckCircle className='Icon'/>
-                <p className='paragraph-text center-text topMargin-medium '>Reset was successful, kindly click on Login button to login</p>
-                <Link to={'/login'}>
-                   <button className='button-general button-general-2'>Login</button>
+                <h3 className='text-general-small2 color1 center-text topMargin-medium custom-change-pass-title-text'>Password Reset Successfull</h3>
+                <AiFillCheckCircle className='Icon custom-change-pass-icon'/>
+                <p className='paragraph-text center-text topMargin-medium custom-change-pass-text'>Reset was successful, kindly click on Login button to login</p>
+                
+                <div className='flex custom-pass-reset-div'>
+                <Link to={'/login'} className='link'>
+                   <button className='button-general button-general-2  flex custom-change-pass-word-BTN'>Login</button>
                 </Link>
+                </div>
                 
 
                 <p className='support-team-text center-text topMargin-medium '>Nodejs and Reactjs Blog application team</p>
@@ -127,12 +138,15 @@ return (
            {
              alreadyVerified &&
              <div className='box-div flex-2 center-flex-align-display topMargin resetPassCustom-Div '>
-                <h3 className='text-general-small2 color1 center-text topMargin-medium'>Password Reset Link Expired</h3>
-                <FaSadCry className='Icon'/>
-                <p className='paragraph-text center-text topMargin-medium '>Reset has expired, kindly resend the reset link</p>
-                <Link to={'/passrest'}>
-                   <button className='button-general button-general-2'>Resend</button>
+                <h3 className='text-general-small2 color1 center-text topMargin-medium custom-change-pass-title-text'>Password Reset Link Expired</h3>
+                <FaSadCry className='Icon custom-change-pass-icon'/>
+                <p className='paragraph-text center-text topMargin-medium custom-change-pass-text'>Reset has expired, kindly resend the reset link</p>
+                
+                <div className='flex custom-pass-reset-div'>
+                <Link to={'/passrest'} className='link'>
+                   <button className='button-general button-general-2 flex flex custom-change-pass-word-BTN'>Resend</button>
                 </Link>
+                </div>
                 
 
                 <p className='support-team-text center-text topMargin-medium '>Nodejs and Reactjs Blog application team</p>
@@ -142,12 +156,14 @@ return (
          {
            noToken &&
             <div className='box-div flex-2 center-flex-align-display topMargin resetPassCustom-Div '>
-                <h3 className='text-general-small2 color1 center-text topMargin-medium'>Access Denied</h3>
-                <MdGppBad className='Icon'/>
-                <p className='paragraph-text center-text topMargin-medium '>A required parameter not found, kindly resend the reset link</p>
+                <h3 className='text-general-small2 color1 center-text topMargin-medium custom-change-pass-title-text'>Access Denied</h3>
+                <MdGppBad className='Icon custom-change-pass-icon'/>
+                <p className='paragraph-text center-text topMargin-medium custom-change-pass-text'>A required parameter not found, kindly resend the reset link</p>
+                <div className='flex custom-pass-reset-div'>
                 <Link to={'/passrest'}>
-                   <button className='button-general button-general-2'>Resend</button>
+                   <button className='button-general button-general-2  flex custom-change-pass-word-BTN'>Resend</button>
                 </Link>
+                </div>
                 <p className='support-team-text center-text topMargin-medium '>Nodejs and Reactjs Blog application team</p>
                 
             </div>
@@ -156,12 +172,15 @@ return (
           {
            somethingWentWrongError &&
             <div className='box-div flex-2 center-flex-align-display topMargin resetPassCustom-Div '>
-                <h3 className='text-general-small2 color1 center-text topMargin-medium'>Something Went wrong</h3>
+                <h3 className='text-general-small2 color1 center-text topMargin-medium custom-change-pass-title-text'>Something Went wrong</h3>
                 <MdGppBad className='Icon'/>
-                <p className='paragraph-text center-text topMargin-medium '>There is something wrong somewhere, do resend the link</p>
+                <p className='paragraph-text center-text topMargin-medium custom-change-pass-text'>There is something wrong somewhere, do resend the link</p>
+                
+                <div className='flex custom-pass-reset-div'>
                 <Link to={'/passrest'}>
-                   <button className='button-general button-general-2'>Resend</button>
+                   <button className='button-general button-general-2 custom-reset-password-BTN flex custom-change-pass-word-BTN'>Resend</button>
                 </Link>
+                </div>
                 <p className='support-team-text center-text topMargin-medium '>Nodejs and Reactjs Blog application team</p>
                 
             </div>
