@@ -197,7 +197,7 @@ const handleUserAboutUpdateState = ()=> {
                 
                 <div className="settingsProfilePic  flex-3 topMargin-Extral-Large">
                    
-                   <div className="flex-2 ">
+                   <div className="flex-2 custom-user-image-sub-div">
                      {editImageMode &&
                                 <div className="edit-image-input-custom-div">
                                     <label htmlFor="fileInput">

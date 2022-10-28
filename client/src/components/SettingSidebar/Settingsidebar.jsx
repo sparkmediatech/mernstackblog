@@ -46,7 +46,7 @@ function Settingsidebar() {
 
   return (
     
-         <div className='sidebar '>
+         <div className='settingSideBar-custom-div'>
             <div className='sidebarItem custom-sidebar-item'>
                 <p className='sidebarTitle text-general-small color1'>USER LOG DETAILS</p>
                

@@ -336,6 +336,7 @@
 }
 .editor {
   padding: 16px;
+  padding-top: 0;
   border-radius: 2px;
   box-shadow: inset 0px 1px 8px -3px #ABABAB;
   background: #fefefe;
@@ -389,6 +390,8 @@
 
 @media (max-width: 992px){
   .singlePost{
+    flex: 12;
+    width: 99vw;
     margin-top: 50px;
   }
   .sidebar{
@@ -397,6 +400,9 @@
  
 .singlePostWrapper .postTitle {
   font-size: 20px !important;
+}
+.comment-div{
+padding-bottom: 10px;
 }
 }
 
@@ -409,7 +415,7 @@
   .singlePost {
     margin-top: 0px;
     flex: 14 !important;
-    width: 100%;
+    width: 98vw;
   }
   .singlePostWrapper{
     margin-top: 50px !important;
@@ -460,13 +466,29 @@
 }
 
 
+@media(max-width: 576px){
+  .singlePost {
+    width: 96vw;
+  }
+}
 
 
 
 
 @media(max-width: 500px){
+
+  .singlePostWrapper{
+    padding: 5px;
+    display: flex;
+    padding-right: 0px;
+  }
+  .singlePost {
+    width: 100%;
+    margin-top: 5px;
+  }
   .editor {
-      width: 90%;
+      width: 97%;
+      
     }
   .singlePostInfo {
     margin-top:5px; 
@@ -507,4 +529,36 @@
 .reply-div{
   width: 90%;
 }
+}
+
+
+
+
+@media(max-width: 430px){
+  .editor {
+    width: 95%;
+    
+  }
+}
+
+
+
+
+@media(max-width: 350px){
+  .editor {
+    width: 93%;
+    
+  }
+
+}
+
+
+
+
+
+@media(max-width: 350px){
+  .editor {
+    width: 90%;
+    
+  }
 }

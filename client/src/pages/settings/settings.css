@@ -269,6 +269,8 @@
 @media(max-width: 992px){
   .settingsProfilePic {
       width: 60%;
+      flex-direction: row;
+    justify-content: center !important;
     }
 .custom-setting-container{
   align-items: center;
@@ -298,6 +300,8 @@
     justify-content: center;
   }
 .settingsProfilePic {
+  flex-direction: row;
+  justify-content: center !important;
   width: 80%;
   margin-top: 80px !important;
 }
@@ -341,10 +345,13 @@
     font-size: 12px;
   }
   .custom-setting-container{
-  padding: 0 20px;
-  padding-bottom: 0;
+    align-items: center !important;
+    padding: 0 20px;
+    padding-bottom: 0;
 }
 .settingsProfilePic {
+  flex-direction: row;
+  justify-content: center !important;
   width: 90%;
   height: auto;
   margin-top: 80px !important;
@@ -357,8 +364,14 @@
 }
 
 
-@media(max-width: 400px){
+@media(max-width: 470px){
+  .custom-setting-container{
+    padding: 0 20px;
+    padding-bottom: 0;
+}
   .settingsProfilePic {
+    flex-direction: row;
+    justify-content: center !important;
     width: 85%;
   }
   .settingsProfilePic img{
@@ -370,9 +383,11 @@
 
 
 
-@media(max-width: 330px){
+@media(max-width: 420px){
   .settingsProfilePic {
     width: 80%;
+    flex-direction: row;
+    justify-content: center !important;
   }
   .settingsProfilePic img{
     width: 250px;
@@ -383,12 +398,32 @@
 
 
 
-@media(max-width: 280px){
+@media(max-width: 360px){
   .settingsProfilePic {
     width: 70%;
+    flex-direction: row;
+    justify-content: center !important;
   }
   .settingsProfilePic img{
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
+  }
+}
+
+
+
+@media(max-width: 300px){
+  
+  
+  .settingsProfilePic {
+    width: 70%;
+    flex-direction: row;
+    justify-content: center !important;
+   
+  }
+  .settingsProfilePic img{
+    width: 200px;
+    height: 200px;
+    
   }
 }

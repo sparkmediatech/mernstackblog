@@ -35,6 +35,13 @@
     align-items: flex-start;
 }
 
+
+@media(max-width: 1200px){
+    .custom-sidebar-item{
+        margin-top: 70px !important;
+    }
+}
+
 /*Tablet */
 @media (max-width: 768px){
     .sidebar{

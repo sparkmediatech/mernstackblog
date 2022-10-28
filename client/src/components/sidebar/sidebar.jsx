@@ -35,7 +35,7 @@ export default function Sidebar() {
         <div className='sidebar'>
             <div className='sidebarItem'>
                 <p className='sidebarTitle text-general-small color1'>ABOUT THE AUTHOR</p>
-                <img src={authorDetails.profilePicture} alt="" />
+                <img className='custom-sidebar-author-image' src={authorDetails.profilePicture} alt="" />
                 <h5 className='text-general-small color1 margin-small'>Name: {authorDetails.username}</h5>
                 <p className='text-general-small color1'>{authorDetails.aboutUser}</p>
             </div>

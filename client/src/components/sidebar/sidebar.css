@@ -16,7 +16,7 @@
 .sidebarTitle {
   margin: 10px;
   padding: 5px;
-  width: 100%;
+  width: 80%;
   border-top: 1px solid #a7a4a4;
   border-bottom: 1px solid #a7a4a4;
   font-family: "Varela", sans-serif;
@@ -26,10 +26,11 @@
   line-height: 20px;
   text-align: center;
 }
-.sidebarItem img {
+.custom-sidebar-author-image{
   margin-top: 15px;
-  height: 250px;
-  width: 90%;
+  height: 300px;
+  width: 400px;
+  border-radius: 15px;
   padding-left: 2px;
 }
 .sidebarItem p {
@@ -66,8 +67,22 @@
 @media (max-width: 1200px){
 .sidebarTitle {
     width: auto;
+    margin-top: 50px;
   }
 }
+
+
+
+
+@media (max-width: 992px){
+  .sidebarTitle {
+      width: auto;
+      margin-top: 0px;
+    }
+  }
+
+
+
 /* Mobile*/
 @media (max-width: 768px) {
   .sidebarItem img {
