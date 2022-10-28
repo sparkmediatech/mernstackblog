@@ -10,6 +10,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .latest-text{
   font-family: "Lato",
@@ -31,6 +32,11 @@
   .latest-text{
     font-size: 23px;
   }
+
+  .home{
+    padding: 0 25px;
+   
+  }
 }
 
 
@@ -45,7 +51,21 @@
   }
   .home{
     overflow: hidden !important;
+    padding: 0 15px;
    
   }
   
+}
+
+@media (max-width: 576px){
+  .home {
+    padding: 0 15px;
+  }
+}
+
+
+@media (max-width: 420px){
+  .home {
+    padding: 0 8px;
+  }
 }

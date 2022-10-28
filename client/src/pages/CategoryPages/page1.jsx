@@ -64,7 +64,7 @@ useEffect(()=>{
     }
 
     else if(biggerScreen1 && !tabletMode && !mobileMode){
-      return setScreenMode(2)
+      return setScreenMode(3)
     }
     else if(mobileMode){
       return setScreenMode(1)
