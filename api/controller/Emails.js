@@ -478,7 +478,7 @@ const resendSubcriberEmailVerification = async(req, res)=>{
 //contact admin
 const contactAdminEmail = async(req, res) =>{
     try {
-         const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        const validRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const emailBody = req.body.emailBody;
         const emailSubject = req.body.emailSubject;
         const userName = req.body.userName

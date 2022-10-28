@@ -17,12 +17,13 @@
 .registerContainer {
   margin-top: 60px;
   height: auto;
-
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   background-color: #FFFFFF;
   width: 400px;
+  padding: 10px;
   padding-bottom: 25px;
   box-shadow: 8px 8px 8px -6px black;
 }
@@ -35,12 +36,17 @@
   margin-top: 20px;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 .registerform label {
   margin: 10px 0;
 }
+
+.custom-reg-BTN{
+  width: 45%;
+}
 .registerInput {
-  width: 300px;
+  width: 95%;
   padding: 10px;
 }
 .registerButton {

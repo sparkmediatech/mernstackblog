@@ -58,8 +58,8 @@ try{
        const string = aboutUserCaps.split('');
        const aboutUserWordCount = string.filter(word => word !== '').length;
        console.log(aboutUserWordCount)
-       if( aboutUserWordCount >= 400){
-           return res.status(500).json('about section must not be more than 400 words')
+       if( aboutUserWordCount >= 1000){
+           return res.status(500).json('about section must not be more than 1000 words')
             
        }
        if(aboutUserWordCount <= 45){

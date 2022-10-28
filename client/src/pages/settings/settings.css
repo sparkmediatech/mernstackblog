@@ -10,7 +10,6 @@
   flex: 9;
   max-width: 1800px;
   margin: 0 auto;
- 
   overflow: auto;
   padding: 0 40px;
   padding-bottom: 0;
@@ -22,9 +21,8 @@
   font-family: "Lato", sans-serif;
 }
 .custom-user-data-div{
-  width: 51%;
-  margin-left: 100px;
-  
+  width: 30%;
+  margin-left: 150px;  
 
 }
 .settingsWrapper {
@@ -67,17 +65,16 @@
 }
 .settingsProfilePic {
   display: flex;
-  align-items: center;
-  justify-content: center;
   width: 40%;
-  height: auto; 
-  
+  height: auto;
+  padding: 5px;
+
 }
 .settingsProfilePic img {
-  width: 100%;
+  width: 400px;
   height: 400px;
-  border-radius: 200px;
-  border: 2px solid #31302C;
+  border-radius: 300px;
+ 
 }
 .settingsProfilePicicon {
   width: 25px;
@@ -141,7 +138,7 @@
 .user-details-div .settingsProfilePic {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  
 }
 .settingsProfilePic label {
   padding-bottom: 10px;
@@ -240,6 +237,8 @@
 @media(max-width: 1200px){
   .custom-setting-container{
     flex-direction: column;
+    justify-content: center !important;
+    align-items: center;
 
   }
 .settingsProfilePic{
@@ -247,10 +246,10 @@
 }
 
 .settingsProfilePic img {
-  width: 100%;
-  height: 400px;
-  border-radius: 200px;
-  border: 2px solid #31302C;
+  width: 85%;
+  height: 450px;
+  border-radius: 300px;
+  border: none;
 }
 .custom-user-data-div {
   width: 97%;
@@ -273,10 +272,15 @@
     }
 .custom-setting-container{
   align-items: center;
+  width: 80%;
 }
  .settingsProfilePic img {
-   height:250px;
-  
+  width: 350px;
+   height:350px;
+   
+ }
+ .custom-edit-icon-2{
+  font-size: 30px !important;
  }
 }
 
@@ -289,21 +293,17 @@
     flex-direction: column !important;
   }
   .custom-setting-container{
-    flex-direction: column !important;
+    flex-direction: row !important;
     align-items: center !important;
-    
-   
+    justify-content: center;
   }
 .settingsProfilePic {
-  width: 35%;
+  width: 80%;
   margin-top: 80px !important;
 }
 .settingsProfilePic img{
-  width: 70%;
-  height: 50%;
-  
-
-  
+  width: 400px;
+  height: 400px;  
 }
 .custom-user-data-div {
   width: 100%;
@@ -328,13 +328,67 @@
 .custom-edit-icon{
   font-size: 17px;
 }
+
+.custom-error-text{
+  font-size: 15px;
+}
+
 }
 
 /*  smaller mobile  */
 @media(max-width: 500px){
+  .custom-error-text{
+    font-size: 12px;
+  }
   .custom-setting-container{
   padding: 0 20px;
   padding-bottom: 0;
 }
+.settingsProfilePic {
+  width: 90%;
+  height: auto;
+  margin-top: 80px !important;
+ 
+}
+.settingsProfilePic img{
+  width: 350px;
+  height: 350px;
+}
+}
 
+
+@media(max-width: 400px){
+  .settingsProfilePic {
+    width: 85%;
+  }
+  .settingsProfilePic img{
+    width: 300px;
+    height: 300px;
+  }
+}
+
+
+
+
+@media(max-width: 330px){
+  .settingsProfilePic {
+    width: 80%;
+  }
+  .settingsProfilePic img{
+    width: 250px;
+    height: 250px;
+  }
+}
+
+
+
+
+@media(max-width: 280px){
+  .settingsProfilePic {
+    width: 70%;
+  }
+  .settingsProfilePic img{
+    width: 150px;
+    height: 150px;
+  }
 }

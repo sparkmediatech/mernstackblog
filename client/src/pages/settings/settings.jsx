@@ -53,7 +53,7 @@ const handleUpdate = async (e) =>{
         data.append("aboutUser", aboutUser);
 
     try{
-            const response = await axiosPrivate.patch("/v1/users/" + logUser.userId, data, { withCredentials: true,
+            const response = await axiosPrivate.patch(`${BASE_URL}/users/${logUser.userId}`, data, { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}
            })  
            setAuth(response.data)
@@ -61,7 +61,7 @@ const handleUpdate = async (e) =>{
             
     }catch(err){
         dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-       if(err.response.data === "about section must not be more than 400 words"){
+       if(err.response.data === "about section must not be more than 1000 words"){
             setAboutUserUpdateMaxError(true);
         }
         if(err.response.data == 'username can not be empty'){
@@ -161,7 +161,7 @@ const handleDelete = async () =>{
     dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
     try{
          
-        await axiosPrivate.delete(`/v1/users/${logUser.userId}`, {data: {userId: logUser.userId, role: logUser.role}},  { withCredentials: true,
+        await axiosPrivate.delete(`${BASE_URL}/users/${logUser.userId}`, {data: {userId: logUser.userId, role: logUser.role}},  { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}})
             setAuth(null);
             localStorage.removeItem('buf');
@@ -218,7 +218,7 @@ const handleUserAboutUpdateState = ()=> {
                 {editImageMode && userUpdateMode &&  <MdCancel className="custom-edit-icon mousePointer-click-general custom-edit-icon-2" onClick={() => setEditImageMode(false)}/>}
                 </div>
 
-                <div className="custom-user-data-div topMargin flex-2">
+                <div className="custom-user-data-div topMargin flex-2 flex-2">
                     <h4 className="text-general-Medium custom-update-acct-text">Update Your Account</h4>
 
                        
@@ -230,7 +230,7 @@ const handleUserAboutUpdateState = ()=> {
                             required/>
                           }
                         </div>
-                       {usernameEmptyError && <p className='paragraph-text red-text'>User name can not be empty</p> }
+                       {usernameEmptyError && <p className='paragraph-text red-text custom-error-text'>User name can not be empty</p> }
                     
                    
                       
@@ -284,13 +284,13 @@ const handleUserAboutUpdateState = ()=> {
                             
                                
                             }
-                                {aboutUserUpdateMaxError && <p className='paragraph-text red-text'>About user section should not be more than 400 words</p>}
-                                {aboutUserUpdateMinError && <p className='paragraph-text red-text'>About user section should not be less than 45 words</p>}
-                                {unAuthorizedUserError && <p className='paragraph-text red-text'>You're not permitted to carry out this action</p>}
-                                {somethingWentWrongError && <p className='paragraph-text red-text'>something went wrong, contact support</p>}
-                                {aboutUserSectionEmptyError && <p className='paragraph-text red-text'>About user section must not be empty</p>}
-                                {aboutUserSectionEmptyError && <p className='paragraph-text red-text'>You need to verify your account</p>}
-                                {noUserFoundError && <p className='paragraph-text red-text'>No user found</p>}
+                                {aboutUserUpdateMaxError && <p className='paragraph-text red-text custom-error-text'>About user section should not be more than 1000 words</p>}
+                                {aboutUserUpdateMinError && <p className='paragraph-text red-text custom-error-text'>About user section should not be less than 45 words</p>}
+                                {unAuthorizedUserError && <p className='paragraph-text red-text custom-error-text'>You're not permitted to carry out this action</p>}
+                                {somethingWentWrongError && <p className='paragraph-text red-text custom-error-text'>something went wrong, contact support</p>}
+                                {aboutUserSectionEmptyError && <p className='paragraph-text red-text custom-error-text'>About user section must not be empty</p>}
+                                {aboutUserSectionEmptyError && <p className='paragraph-text red-text custom-error-text'>You need to verify your account</p>}
+                                {noUserFoundError && <p className='paragraph-text red-text custom-error-text'>No user found</p>}
                             
                          </div>
                         }

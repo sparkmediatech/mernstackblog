@@ -13,8 +13,17 @@ export default function Register() {
     const [error, setError] = useState(false);
     const [isfectching, setIsFetching] = useState(false);
     const {dispatch, cursorState} = useContext(AuthContext);
+
+    //error state starts
     const [emailAlreadyExist, setEmailAlreadyExis] = useState(false);
-    const [passwordNotMatchError, setPasswordNotMatchError] = useState(false)
+    const [passwordNotMatchError, setPasswordNotMatchError] = useState(false);
+    const [passwordPresentError, setPasswordPresentError] = useState(false);
+    const [passwordMinError, setPasswordMinError] = useState(false);
+    const [emailPresentError, setEmailPresentError] = useState(false);
+    const [emailInvalidError, setEmailInvalidError] = useState(false);
+    const [passwordInvalidError, setPasswordInvalidError] = useState(false);
+    const [somethingWentWrongError, setSomethingWentWrongError] = useState(false);
+    const [userNamePresentError,  setUserNamePresentError] = useState(false)
    
 
     const handleSubmit = async (e)=>{
@@ -37,15 +46,41 @@ export default function Register() {
         window.location.replace("/linksent");
         
         } catch(err){
+            dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
             if(err.response.data === 'Email already exist'){
-                setEmailAlreadyExis(true)
+                return setEmailAlreadyExis(true)
             }
             if(err.response.data === "Password does not match"){
-                setPasswordNotMatchError(true)
+                return setPasswordNotMatchError(true)
             }
-            dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+           
+        if(err.response.data == 'password must be present'){
+            return setPasswordPresentError(true)
+        }
+        
+        if(err.response.data == 'password must not be less than 8 characters'){
+            return setPasswordMinError(true)
+        }
 
-            console.log(err)
+        if(err.response.data == 'email must be present'){
+            return setEmailPresentError(true)
+        }
+
+        if(err.response.data == 'your email is not valid'){
+            return setEmailInvalidError(true)
+        }
+
+        if(err.response.data == 'password must contain at least 1 upper case, lower case, number and special characters'){
+            return setPasswordInvalidError(true)
+        }
+
+        if(err.response.data == 'something went wrong'){
+            return setSomethingWentWrongError(true)
+        }
+
+        if(err.response.data == 'username must be present'){
+            return setUserNamePresentError(true)
+        }
         }        
     }
 
@@ -62,9 +97,50 @@ if(passwordNotMatchError){
         setPasswordNotMatchError(false)
     }, 2000);
 }
-    
 
-}, [emailAlreadyExist, passwordNotMatchError]);
+if(passwordPresentError){
+    setTimeout(() => {
+        setPasswordPresentError(false)
+    }, 3000);
+}
+
+
+if(passwordMinError){
+    setTimeout(() => {
+        setPasswordMinError(false)
+    }, 3000);
+}
+
+if(emailPresentError){
+    setTimeout(() => {
+        setEmailPresentError(false)
+    }, 3000);
+}
+
+if(emailInvalidError){
+    setTimeout(() => {
+        setEmailInvalidError(false)
+    }, 3000);
+}
+
+if(passwordInvalidError){
+    setTimeout(() => {
+        setPasswordInvalidError(false)
+    }, 4000);
+}
+
+if(somethingWentWrongError){
+    setTimeout(() => {
+        setSomethingWentWrongError(false)
+    }, 3000);
+}
+
+if(userNamePresentError){
+    setTimeout(() => {
+        setUserNamePresentError(false)
+    }, 3000);
+}
+}, [emailAlreadyExist, passwordNotMatchError, passwordPresentError, passwordMinError, emailPresentError, emailInvalidError, passwordInvalidError, somethingWentWrongError, userNamePresentError]);
 
 
 
@@ -94,10 +170,26 @@ if(passwordNotMatchError){
                         onChange={e=>setConfirmPassword(e.target.value)}
                     />
 
-                     {emailAlreadyExist && <p className='paragraph-text red-text '>Email already exist, you can login</p>}
-                     {passwordNotMatchError && <p className='paragraph-text red-text '>Password does not match</p>}
+                     <div className='custom-error-text-div'>
+                     {emailAlreadyExist && <p className='paragraph-text red-text custom-error-text'>Email already exist, you can login</p>}
+                     {passwordNotMatchError && <p className='paragraph-text red-text custom-error-text '>Password does not match</p>}
 
-                    <button type='submit' className="button-general">Register</button>
+                     {passwordPresentError && <p className='paragraph-text red-text custom-error-text'>Password must be present</p>}
+
+                     {passwordMinError && <p className='paragraph-text red-text custom-error-text'>Password must not be less than 8 characters</p>}
+
+                     {emailPresentError && <p className='paragraph-text red-text custom-error-text'>Email must be present</p>}
+
+                     {emailInvalidError && <p className='paragraph-text red-text custom-error-text'>Email is invalid, use a valid email address</p>}
+
+                     {passwordInvalidError && <p className='paragraph-text red-text custom-error-text'>Password must contain at least 1 lower, upper case letters, speacial character and number</p>}
+
+                     {somethingWentWrongError && <p className='paragraph-text red-text custom-error-text'>Something went wrong, refresh page</p>}
+
+                     {userNamePresentError && <p className='paragraph-text red-text custom-error-text'>Username must be provided</p>}
+                     </div>
+
+                    <div className='flex'><button type='submit' className="button-general custom-reg-BTN">Register</button></div>
                 </form>
                 <button className="button-general-2">
                 <Link className='link' to='/login'>Login</Link>

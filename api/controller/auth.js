@@ -8,14 +8,39 @@ const crypto = require('crypto');
 //function to register a user
 const register = async (req, res) =>{
     try{
-        const salt = await bcrypt.genSalt(10)
-        const hashedPass = await bcrypt.hash(req.body.password, salt);
+        const salt = await bcrypt.genSalt(10);
+        const password = req.body.password;
+        const validRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const validPassword = /^([^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$/
+      
+        if(!password){
+            return res.status(500).json('password must be present')
+        }
+
+        if(password.length < 8){
+            return res.status(500).json('password must not be less than 8 characters')
+        }
+        const hashedPass = await bcrypt.hash(password, salt);
         const confirmPassword = await bcrypt.hash(req.body.confirmPassword, salt);
         const email = req.body.email;
+        
+        if(!email){
+            return res.status(500).json('email must be present')
+        }
+
+        if(!email.match(validRegex)){
+            return res.status(500).json('your email is not valid')
+        }
+
+        if(password.match(validPassword)){
+            return res.status(500).json('password must contain at least 1 upper case, lower case, number and special characters')
+        }
         if(hashedPass !== confirmPassword){
             return res.status(404).json("Password does not match")
         }
-
+        if(!req.body.username){
+            return res.status(500).json('username must be present')
+        }
        checkEmail = await User.findOne({email: email})
        if(checkEmail){
             return res.status(401).json("Email already exist")
@@ -35,8 +60,9 @@ const register = async (req, res) =>{
         return res.status(200).json({Id:user._id, emailToken})
 
     } catch(err){
-        res.status(500).json(err);
-        console.log(err) 
+        console.log(err)
+        res.status(500).json('something went wrong');
+        
     }
 }
 
