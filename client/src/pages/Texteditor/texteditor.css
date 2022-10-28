@@ -255,6 +255,9 @@
     padding-left:0 ;
     padding: 5px; 
 }
+.custom-editor-className img{
+    margin-top: 0 !important;
+}
 }
 
 
