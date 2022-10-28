@@ -18,56 +18,32 @@ const createNewPost =  async (req, res) =>{
   try{  
     const user = await User.findById(req.user.userId);
     if(!user){
-       if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
         return res.status(404).json('User not found'); 
     };
     
     if(user.isBlocked === true){
-        if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
         return res.status(500).json('Sorry, you can not make a post at this moment');
     };
     if(user.isVerified === false){
-       if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
         return res.status(500).json('Only verified users can perform this action');
     };
     
     if(req.body.categories === ""){
-       if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
         return res.status(500).json('Post category should not be empty')
 
     }
     //check duplicate post
     const duplicatePost = await Post.exists({title: req.body.title});
     if(duplicatePost){
-       if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
         return res.status(500).json('Post title already exist')
     }
     if(uppercaseTitle.length > 61){
-         if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
         return res.status(500).json('post title should not be more than 60 characters')
     }
     if(uppercaseTitle.length < 10){
-        if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
         return res.status(500).json('post title should not be less than 10 characters')
     }
      if(uppercaseTitle === " "){
-         if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
         return res.status(500).json('post title should not be empty')
     }
      const newPost = new Post({
@@ -94,9 +70,6 @@ const createNewPost =  async (req, res) =>{
 
    
   }catch(err){
-       if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
       res.status(500).json({message: 'Something went wrong with user or post', err: err});
   }
   
@@ -109,21 +82,12 @@ const updatePost = async (req, res)=>{
     const title = postTitle.toUpperCase()
     const user = await User.findById(req.user.userId);
     if(!user){
-       if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
          return res.status(404).json("User not found");
     }
     if(user.isBlocked === true){
-       if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
         return res.status(401).json("Sorry, you're banned from making posts");
     };
     if(user.isVerified === false){
-       if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
          return res.status(401).json("Sorry, only verified users can update their posts");
     };
 
@@ -132,15 +96,9 @@ const updatePost = async (req, res)=>{
     }
 
     if(title.length > 61){
-         if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
         return res.status(500).json('post title should not be more than 60 characters')
     }
     if(title.length < 10){
-        if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
         return res.status(500).json('post title should not be less than 10 characters')
     }
     
@@ -148,9 +106,7 @@ const updatePost = async (req, res)=>{
         const post = await Post.findById(req.params.id);
 
          if(!post){
-            if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
+
             return res.status(401).json("No post with this Id found");
             };
         //check if user is the owner of the post
@@ -165,24 +121,15 @@ const updatePost = async (req, res)=>{
                    return res.status(200).json(updatedPost);
 
          } else{
-             if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
+            
              return res.status(401).json("you can only update your posts");
 
          }  
     }catch(err){
-        console.log(err)
-       if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
+      
        return res.status(500).json(err);
     };
 }catch(err){
-    console.log(err)
-    if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
     return res.status(500).json("Something went wrong");
 }
 };
@@ -547,14 +494,8 @@ const uploadImage = async(req, res) =>{
         try {
        
         const fileStr = req?.file?.path
-        console.log(fileStr, 'check filestr')
         
         if(!fileStr){
-            console.log('No, it is here')
-           if(req?.file?.path){
-            console.log('I carried out here')
-                 fs.unlinkSync(req?.file?.path);
-           }
             return res.status(500).json( 'No image found');
         }else{
         //calling the cloudinary function for upload
@@ -570,25 +511,13 @@ const uploadImage = async(req, res) =>{
         
     
     } catch (err) {
-        console.log(err)
-        if(req?.file?.path){
-                 fs.unlinkSync(req?.file?.path);
-           }
            
         return res.status(500).json('Something went wrong with image' );
        
     }
 }
 
-//handle deletion of image from cloudinary and database. 
 
-const handleImageDelete = async (req, res) =>{
-    //find the post with the image
-    const post = await Post.findById(req.params.id);
-    //find the image to delete using cloudinary public id of the image
-    
-    
-}
 
 module.exports = {
     createNewPost,

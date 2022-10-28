@@ -31,38 +31,26 @@ try{
     const resUser = await User.findById(req.user.userId);
      
     if(!resUser){
-         if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
+
        return res.status(404).json('No user found'); 
     };
     if(resUser.isBlocked === true){
-        if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
+        
         return res.status(401).json('You are banned from updating your profile'); 
     };
     if(resUser.isVerified === false){
-        if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
+       
         return res.status(401).json('You are not authorized from updating your profile'); 
     };
    
     if(resUser._id.toString() === req.params.id){
         
        if(aboutUserCaps === '' ||  aboutUserCaps === null ||  !aboutUserCaps){
-           if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
           
            return res.status(500).json('about user section must not be empty')
             
        }
        if(!req.body.username){
-        if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
           
            return res.status(500).json('username can not be empty')
        }
@@ -71,16 +59,10 @@ try{
        const aboutUserWordCount = string.filter(word => word !== '').length;
        console.log(aboutUserWordCount)
        if( aboutUserWordCount >= 400){
-           if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
            return res.status(500).json('about section must not be more than 400 words')
             
        }
        if(aboutUserWordCount <= 45){
-          if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
            return res.status(500).json('about user section must not be less than 45 words')
             
        }
@@ -134,15 +116,10 @@ try{
             return res.status(200).json({token});
             
    } else{
-        if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
        return res.status(401).json("You can only update your account!")
    };
 }catch(err){
-    if(req.file){
-                 fs.unlinkSync(req.file.path);
-           }
+   
     return res.status(500).json("Something went wrong, try again");
 };
   
