@@ -247,11 +247,13 @@
     }
 .custom-editor-wrapper{
     margin-top: 2px;
+    width: 95%;
 }
 .custom-editor-className{
     overflow: hidden;
     width: 100%; 
-    padding-left:0 ; 
+    padding-left:0 ;
+    padding: 5px; 
 }
 }
 
