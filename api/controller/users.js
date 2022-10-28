@@ -95,7 +95,7 @@ try{
 
                  //compare the two public ids. If they are not same and the value is not an empty string, the cloudinary delete method would run
                 if(currentUserPhotoPublicId !== "" && currentUserPhotoPublicId !== updatedUserPhotoPublicId && updateUserProfilePics.photoPublicId !== " "){
-                    console.log('I ran here')
+                   
                     await deleteCloudinary(resUser.photoPublicId)
                 }
                 
