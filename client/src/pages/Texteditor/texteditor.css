@@ -249,8 +249,9 @@
     margin-top: 2px;
 }
 .custom-editor-className{
-    display: flex;
-    justify-content: center;
+    overflow: hidden;
+    width: 100%; 
+    padding-left:0 ; 
 }
 }
 
