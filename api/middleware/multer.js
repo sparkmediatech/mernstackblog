@@ -6,7 +6,6 @@ const multer = require("multer");
 //allowed image formats
         const ALLOWED_FORMATS = ['image/jpeg', 'image/png', 'image/jpg'];
 
-        //login to upload images using libery called multer
         const storage = multer.diskStorage({//choosing destination of the file
         destination:(req, file, cb) =>{
         if(ALLOWED_FORMATS.includes(file.mimetype)){
@@ -21,7 +20,7 @@ const multer = require("multer");
     }
 });
 
-const upload = multer({storage:storage});//uploading file to the file storage variabe that we created above
+const upload = multer({storage:storage});
 
 
 
