@@ -531,7 +531,6 @@ module.exports = {
     getPostCategory_1,
     getRandomPostS,
     uploadImage,
-    handleImageDelete,
     getPostSearchResults,
    
 }
