@@ -256,7 +256,7 @@
     padding: 5px; 
 }
 .custom-editor-className img{
-    margin-top: 0 !important;
+    margin-top: 0;
 }
 }
 
