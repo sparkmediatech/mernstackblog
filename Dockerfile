@@ -1,15 +1,15 @@
 FROM  node:lts-alpine
 
-WORKDIR /app
+WORKDIR /home/node/app
+RUN chown -R node:node /home/node/app
 
-COPY package*.json ./
+COPY --chown=node:node package*.json ./
 
 COPY client/package*.json client/
 RUN npm run install-client --only=production
 
 
-COPY api/package*.json api/
-RUN chown -R node:node /app/images
+COPY --chown=node:node api/package*.json api/
 RUN npm run install-api --only=production
 
 
@@ -18,7 +18,7 @@ COPY client/ client/
 RUN npm run client-build --prefix client
 
 
-COPY api/ api/
+COPY COPY --chown=node:node api/ api/
 
 
 
