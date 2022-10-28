@@ -12,7 +12,7 @@ export default function single() {
         <div className='single'>
             <SinglePost/> 
             
-            {postLength?.length > 0 && <Sidebar/>}
+            {postLength > 0 && <Sidebar/>}
         </div>
     )
 }
