@@ -36,7 +36,7 @@ export default function SinglePost() {
     const [username, setUsername] = useState();
     const [isLoading, setIsLoading] = useState(false);   
     let currentUrl = `http://www.localhost:3000/post/${path}`;
-    const {auth, logUser, dispatch, authorDetails, setAuthorDetails, imageDetails, tokenError, generalFetchError, setgeneralFetchError} = useContext(AuthContext);
+    const {auth, logUser, dispatch, authorDetails, setAuthorDetails, imageDetails, tokenError, generalFetchError, setgeneralFetchError,  setPostLength} = useContext(AuthContext);
     const [liked, setLiked] = useState();
     //const [showCategories, setShowCategories] = useState(false);
     const imagePlugin = createImagePlugin();
@@ -56,7 +56,8 @@ export default function SinglePost() {
     const [postTitleMaxError, setPostTitleMaxError] = useState(false);
     const [postTitleEmptyError, setPostTitleEmptyError] = useState(false);
     const [postTitleMinError, setPostTitleMinError] = useState(false);
-    const [isFetching, setIsFetching] = useState(true)
+   
+
     
 
    
@@ -87,7 +88,8 @@ export default function SinglePost() {
                 setLiked(response.data.postLikes)
                 //set author's details globally
                 setAuthorDetails(response.data.username)
-                setIsLoading(false)
+                setIsLoading(false);
+                setPostLength(post?.length)
                
            
            

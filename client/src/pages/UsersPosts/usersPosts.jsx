@@ -60,9 +60,9 @@ console.log(logUser.username)
 
             if(logUser?.userId){
                 try{
-                const response = await axios.post(`/posts/searches?page=${pageNumber}`,  userPosts)
+                const response = await axios.post(`${BASE_URL}/posts/searches?page=${pageNumber}`,  userPosts)
                      setUsersPosts(response.data)
-                     console.log(response.data)
+                    
             }catch(err){
 
             }
@@ -72,7 +72,7 @@ console.log(logUser.username)
         fetchAllUsersPosts()
     }, [isLoaded, pageNumber, path, logUser]);
 
-    console.log(logUser)
+   
    
     //push selected post Ids into an array and handles the toggling of checked state for selected input box
    const arrayOfSelectedPostId = (postId, indexPosition) =>{
@@ -107,7 +107,7 @@ console.log(logUser.username)
        }
       
        try{
-            const res = await axiosPrivate.post(`/v1/posts/deleteSelected`, ids, { withCredentials: true,
+            const res = await axiosPrivate.post(`${BASE_URL}/posts/deleteSelected`, ids, { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}
            })
             dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
@@ -142,7 +142,7 @@ console.log(logUser.username)
   const handleSinglePost = async (postId) =>{
        dispatch({type:"CURSOR_NOT_ALLOWED_START"});
       try{
-        const res = await axiosPrivate.delete(`/v1/posts/${postId}`, { withCredentials: true,
+        const res = await axiosPrivate.delete(`${BASE_URL}/posts/${postId}`, { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}
            });
             dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
@@ -177,7 +177,7 @@ const handleDeleteAllPosts = async ()=>{
     }
     try{
         dispatch({type:"CURSOR_NOT_ALLOWED_START"}); 
-        await axiosPrivate.post(`/v1/posts/deleteall`,   { withCredentials: true,
+        await axiosPrivate.post(`${BASE_URL}/posts/deleteall`,   { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}});
              dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
     }catch(err){

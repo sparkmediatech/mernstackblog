@@ -74,7 +74,10 @@ export const AuthProvider = ({children})=>{
     const [headerImage, setHeaderImage] = useState();
     //global state to manage sliderState contents
     const [sliderState, setSliderState] = useState([]);
-    const [sliderStateText, setSliderStateText] = useState()
+    const [sliderStateText, setSliderStateText] = useState();
+
+    //What this state does is to store the length of single Post component. When the length is greater than 0, then we can show the sidebar. This helps to encourage user experience
+    const [postLength,  setPostLength] = useState([])
 
     
 
@@ -288,7 +291,8 @@ return function cleanup() {
            sliderStateText, setSliderStateText,
            contactPageAliasName,setContactPageAliasName,
            aboutPageName,setAboutPageName,
-           aboutPageAliasName, setAboutPageAliasName
+           aboutPageAliasName, setAboutPageAliasName,
+           postLength,  setPostLength
 
            
 
