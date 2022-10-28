@@ -8,7 +8,14 @@ const multer = require("multer");
 
         //login to upload images using libery called multer
         const storage = multer.diskStorage({//choosing destination of the file
-        filename:(req, file,cb)=> {//choosing file name
+        destination:(req, file, cb) =>{
+        if(ALLOWED_FORMATS.includes(file.mimetype)){
+             cb(null, "./images")
+        }else{
+            cb(new Error('Not supported file type!'), false)
+        }
+       
+    }, filename:(req, file,cb)=> {//choosing file name
        cb(null, req.body.name) 
     }
 });

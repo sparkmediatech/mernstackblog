@@ -13,10 +13,10 @@ const uploadCloudinary = async (fileToUpload)=>{
                 return console.log('failed to upload')
             }
             //delete file from local server storage
-                //fs.unlinkSync(fileToUpload);
+                fs.unlinkSync(fileToUpload);
                 return result 
         });
-        //fs.unlinkSync(fileToUpload);  
+        fs.unlinkSync(fileToUpload);  
         return uploadResponse
 };
 
