@@ -9,6 +9,7 @@ RUN npm run install-client --only=production
 
 
 COPY api/package*.json api/
+RUN chown -R node:node /app/images
 RUN npm run install-api --only=production
 
 
@@ -19,7 +20,7 @@ RUN npm run client-build --prefix client
 
 COPY api/ api/
 
-RUN chown -R node:node /app/images
+
 
 USER node
 
