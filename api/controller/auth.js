@@ -60,7 +60,7 @@ const register = async (req, res) =>{
         return res.status(200).json({Id:user._id, emailToken})
 
     } catch(err){
-        console.log(err)
+        
         res.status(500).json('something went wrong');
         
     }
