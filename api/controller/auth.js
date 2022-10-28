@@ -113,7 +113,7 @@ const login = async (req, res) =>{
             return res.status(200).json({token, sessionId})
         } 
     } catch(err) {
-        console.log(err)
+        
         return res.status(500).json('Something went wrong');
     }
 }
