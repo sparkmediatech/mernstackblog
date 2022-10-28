@@ -27,6 +27,8 @@
    width: 85%;
     padding-bottom: 20px;
     margin-left: -40px;
+    position: relative;
+    z-index: 99;
 }
 .custom-submit-btn{
     cursor: pointer;
@@ -146,6 +148,7 @@
 }
 .category-display-main-div-animated {
     height: auto;
+    display: 0;
    
 }
 .category-div{
