@@ -216,6 +216,7 @@
     }
     .toolbar-class{
         width: auto;
+        
     }
     .category-box {
         width: 35%;
@@ -246,6 +247,10 @@
     }
 .custom-editor-wrapper{
     margin-top: 2px;
+}
+.custom-editor-className{
+    display: flex;
+    justify-content: center;
 }
 }
 
