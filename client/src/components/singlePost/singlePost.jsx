@@ -89,7 +89,7 @@ export default function SinglePost() {
                 //set author's details globally
                 setAuthorDetails(response.data.username)
                 setIsLoading(false);
-                setPostLength(post?.length)
+                
                
            
            
@@ -122,6 +122,13 @@ export default function SinglePost() {
        
      
     }, []);
+
+
+//this helps to get the post length when the state changes and passes it to global state. This helps to prevent the sidebar from showing until post is fetched. 
+useEffect(()=>{
+    setPostLength(post?.length)
+   
+}, [post])
    
     //handle the convertion of the the server content to editor content
     useEffect(()=>{
