@@ -85,7 +85,7 @@ return(
   
         <div className='mainContainer box-div flex-2 center-flex-align-display already-verified-custom-div'>
             <MdMarkEmailRead className='Icon'/>
-            <h2 className='text-general-small2 color1 center-text custom-confirm-email-text' >Dear {regUser.username}, Your email address has been verified</h2> 
+            <h2 className='text-general-small2 color1 center-text custom-confirm-email-text' >Dear user, Your email address has been verified</h2> 
             <p className='paragraph-text'>Thank you. You can click the login button to login into the web application</p>
             <Link to={'/login'}>
                 <button className="button-general-2 custom-confirm-btn">Login</button>

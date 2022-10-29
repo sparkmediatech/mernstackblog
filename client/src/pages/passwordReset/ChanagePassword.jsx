@@ -5,9 +5,13 @@ import {AiFillCheckCircle} from 'react-icons/ai';
 import {FaSadCry} from 'react-icons/fa';
 import {MdGppBad} from 'react-icons/md'
 import { Link, useLocation } from 'react-router-dom';
-import  BASE_URL from '../../hooks/Base_URL'
+import  BASE_URL from '../../hooks/Base_URL';
+
 
 function ChanagePassword() {
+    const location = useLocation()
+    const path = location.pathname.split("/")[2];
+    const pathId = location.pathname.split("/")[3];
     const {temp} = useContext(AuthContext);
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
@@ -19,24 +23,28 @@ function ChanagePassword() {
     const [notMatchError, setNotMatchError] = useState(false);
     const [notUpdatedError, setNotUpdatedError] = useState(false);
     const [userNotFoundError, setUserNotFoundError] = useState(false);
-    const [somethingWentWrongError, setSomethingWentWrongError] = useState(false)
+    const [somethingWentWrongError, setSomethingWentWrongError] = useState(false);
+    const [passWordPresentError, setPassWordPresentError] = useState(false);
+    const [passWordMinError, setPassWordMinError] = useState(false);
+    const [passWordInvalidError, setPassWordInvalidError] = useState(false)
 
+console.log(path, 'path')
 
     const handleChangePassword = async ()=>{
             const userDetails ={
-                    userId: temp.Id,
+                    userId: pathId,
                     password: passwordRef.current.value,
                     confirmPassword: confirmPasswordRef.current.value,        
             }
             console.log(userDetails.password === userDetails.confirmPassword)
             try{
-                const response = await axios.patch(`${BASE_URL}/updatepassword/${temp.emailToken}`, userDetails, {
+                const response = await axios.patch(`${BASE_URL}/updatepassword/${path}`, userDetails, {
                      withCredentials: true,
-                     headers:{authorization: `Bearer ${temp.emailToken}`}  
+                     headers:{authorization: `Bearer ${path}`}  
                 });
                  setRegData(response);
                  setUpdate(false);
-                console.log(response);
+               
             }catch(err){
                if(err.response.data === 'Unable to verify expired token, please resend token'){
 
@@ -61,6 +69,18 @@ function ChanagePassword() {
               if(err.response.data === 'Something went wrong'){
                 setSomethingWentWrongError(true)
               }
+
+              if(err.response.data == 'password must be present'){
+                return setPassWordPresentError(true)
+              }
+
+            if(err.response.data == 'password must not be less than 8 characters'){
+              return setPassWordMinError(true)
+            }
+
+            if(err.response.data == 'password must contain at least 1 upper case, lower case, number and special characters'){
+              return setPassWordInvalidError(true)
+            }
             }
     } 
 
@@ -81,8 +101,25 @@ useEffect(() =>{
     setUserNotFoundError(true)
   }, 5000);
   }
-  
-}, [notMatchError, notUpdatedError, userNotFoundError])
+  if(passWordPresentError){
+    setTimeout(() => {
+      setPassWordPresentError(false)
+    }, 3000);
+  }
+
+
+if(passWordMinError){
+  setTimeout(() => {
+    setPassWordMinError(false)
+  }, 3000);
+}
+
+if(passWordInvalidError){
+  setTimeout(() => {
+    setPassWordInvalidError(false)
+  }, 3000);
+}
+}, [notMatchError, notUpdatedError, userNotFoundError, passWordPresentError, passWordMinError, passWordInvalidError])
 
 
 
@@ -96,7 +133,7 @@ return (
           <div className='mainContainer center-flex-justify-display topMargin-Extral-Large custom-change-pass-main-div'>
         {
          update &&
-          <div className='box-div flex-2 padding-left-right topMargin custom-change-password-wrapper '>
+          <div className={passWordInvalidError || notMatchError || notUpdatedError || userNotFoundError || passWordPresentError || passWordMinError? 'custom-change-password-wrapper-2 box-div flex-2 padding-left-right topMargin custom-change-password-wrapper ': 'box-div flex-2 padding-left-right topMargin custom-change-password-wrapper '}>
        
                 <h4 className='text-general-small2 color1 center-text topMargin-medium resetTitle'>Reset Password</h4>
               <label className='label-general color1 margin-small'>password</label>
@@ -107,7 +144,12 @@ return (
 
                 {notMatchError && <h4 className='paragraph-text notMatchCustomText  '>Password does not match</h4>}
                 {notUpdatedError && <h4 className='paragraph-text notMatchCustomText '>Password not updated, please ensure that you provide all required details</h4>}
-                 {userNotFoundError && <h4 className='paragraph-text notMatchCustomText '>User not found in our database</h4>}
+                {userNotFoundError && <h4 className='paragraph-text notMatchCustomText '>User not found in our database</h4>}
+                {passWordPresentError && <h4 className='paragraph-text notMatchCustomText '>Password must not be empty</h4>}
+  
+                {passWordMinError && <h4 className='paragraph-text notMatchCustomText '>Password must not be less than 8 characters</h4>}
+
+                {passWordInvalidError && <h4 className='paragraph-text notMatchCustomText '>Password must contain atleast 1 uppercase, 1 lowercase, 1 number and 1 special character</h4>}
                 
                 <div className='custom-pass-reset-div flex'><button onClick={handleChangePassword } className='button-general custom-reset-password-BTN'>Reset</button></div>
 

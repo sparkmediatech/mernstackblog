@@ -35,6 +35,9 @@ const register = async (req, res) =>{
         if(password.match(validPassword)){
             return res.status(500).json('password must contain at least 1 upper case, lower case, number and special characters')
         }
+        if(password.match(validPassword)){
+            return res.status(500).json('password must contain at least 1 upper case, lower case, number and special characters')
+        }
         if(hashedPass !== confirmPassword){
             return res.status(404).json("Password does not match")
         }

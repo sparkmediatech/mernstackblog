@@ -90,7 +90,7 @@ const resetPasswordLink = async (user) =>{
     const passwordToken = jwt.sign({userId: user._id, username: user.username}, process.env.PASSWORD_RESET_SECRET,  {
             expiresIn: process.env.PASSWORD_JWT_DURATION}); 
 
-    const url = `${process.env.API_URL}/updatepassword/${passwordToken}`
+    const url = `${process.env.API_URL}/updatepassword/${passwordToken}/${user._id}`
 
     //console.log(emailToken)
     transport.sendMail({

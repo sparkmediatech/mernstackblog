@@ -135,20 +135,30 @@ const changePassword = async (req, res) =>{
         const paramId = req.params.passwordId;
         const password = req.body.password;
         const confirmPassword = req.body.confirmPassword;
+        const validPassword = /^([^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$/
         
         const getRedis = await client.GET(user._id.toString())
+        if(!password){
+            return res.status(500).json('password must be present')
+        }
+        if(password.length < 8){
+            return res.status(500).json('password must not be less than 8 characters')
+        }
+        if(password.match(validPassword)){
+            return res.status(500).json('password must contain at least 1 upper case, lower case, number and special characters')
+        }
         if(!getRedis){
             return res.status(401).json('You are not authorized, reset token not found') 
         };
-       
+        
         if(!user){
              return res.status(404).json('User not found') 
         };
-        console.log(password == confirmPassword)
+       
         if(password != confirmPassword){
              return res.status(401).json('Confirm password does not match password') 
         }
-         if(password && user._id.toString() === req.body.userId){
+         if(user._id.toString() === req.body.userId){
                 const salt = await bcrypt.genSalt(10);
                 hashedPassword = await bcrypt.hash(password, salt);
 
@@ -221,7 +231,7 @@ const verifySubscriberEmail = async (req, res)=>{
 const resendSubscriberEmailVerification = async (req, res) =>{
     try{
         const subscriberEmail = req.params.userId;
-        console.log(subscriberEmail)
+       
 
         const user = await Subscribers.findById({_id:subscriberEmail});
         if(!user){

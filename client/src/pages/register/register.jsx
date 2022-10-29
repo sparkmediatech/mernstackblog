@@ -41,8 +41,6 @@ export default function Register() {
                 confirmPassword 
         });
          
-        dispatch({type:"REG_SUCCESS", payload: response.data});
-        localStorage.removeItem('buf');
         window.location.replace("/linksent");
         
         } catch(err){

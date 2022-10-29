@@ -189,24 +189,24 @@ useEffect(() =>{
           {<SubscriberConfirmation/>}
         </Route>
 
-      <Route path="/confirm/:tokenId">
-          {temp?.emailToken ? <ConfirmEmail/>: <Login /> }
+      <Route path="/confirm/:userId/:tokenId">
+          {<ConfirmEmail/>}
         </Route>
 
         <Route path="/linksent">
-          {temp?.emailToken ? <ActivationLinkSent/>:  <Login /> }
+          {<ActivationLinkSent/>}
         </Route>
 
         <Route path="/passrest">
           <PasswordResetEmail/>
         </Route>
                           
-        <Route path="/updatepassword/:passwordId">
-          {temp?.emailToken ?<ChangePassword /> :  <Login />}
+        <Route path="/updatepassword/:passwordId/:owerID">
+          {<ChangePassword />}
         </Route>
       
        <Route path="/resendemaillink">
-          {temp?.emailToken ?<ResendVerifyLink /> :  <Register />}
+          {<ResendVerifyLink />}
         </Route>
 
         

@@ -27,7 +27,7 @@ function PasswordResetEmail() {
             const response = await axios.post(`${BASE_URL}/resetPassword`, {
                  email: emailRef.current.value,
             })
-            dispatch({type:"REG_SUCCESS", payload: response.data});
+            //dispatch({type:"REG_SUCCESS", payload: response.data});
             setSent(true);
             setLoading(false)
             console.log(response.data)

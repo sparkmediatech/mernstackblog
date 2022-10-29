@@ -132,7 +132,9 @@ background-color: #5D6D7E;
   .custom-resend-verified-email-div {
       width: 95% !important;
     }
-  
+  .verifyText2{
+    font-size: 12px;
+  }
 }
 
 
