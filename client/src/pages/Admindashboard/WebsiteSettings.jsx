@@ -735,7 +735,7 @@ const handleHeaderOn = async ()=>{
               </div> 
             }
           
-           {!dashboardEditMode && sliderStateText !== 'headerOFF' &&  smallScreenMode && openAdminSideBar == 'admin-sidebar-slideOut' || (!smallScreenMode && !dashboardEditMode) &&
+           {!dashboardEditMode && sliderStateText !== 'headerOFF' &&  smallScreenMode && openAdminSideBar == 'admin-sidebar-slideOut' || (!smallScreenMode && !dashboardEditMode && sliderStateText !== 'headerOFF') &&
            <div className='flex-3 center-flex-align-display margin-left-sm1 margin-small-small'>
             
             
