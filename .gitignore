@@ -7,10 +7,12 @@
 
 # testing
 /coverage
-
+/__mocks__
+route.auth.test.js
+route.post.test.js
+/test*
 # production
 /build
-
 
 render.yaml
 /sum
