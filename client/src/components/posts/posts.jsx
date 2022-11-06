@@ -62,8 +62,8 @@ useEffect(()=>{
     return (
         <div className='posts margin-small '>
            
-           { posts.slice(0,screenMode).map((post, index)=>{
-                const contentState = convertFromRaw(JSON.parse(post.description));
+           { posts?.slice(0,screenMode).map((post, index)=>{
+                const contentState = convertFromRaw(JSON.parse(post?.description));
                 const editorState = EditorState.createWithContent(contentState); 
                
                return <div className='post' onMouseEnter={()=> {setSelectedId(post._id); setSelectedPostTitle(post.title)}} onMouseLeave={()=> {setSelectedId(''); setSelectedPostTitle('')}}>

@@ -1,12 +1,10 @@
 const express = require("express");
 const app = express(); 
-const multer = require("multer");
-const {uploadCloudinary} = require("./middleware/CloudinaryFunctions")
 const path = require("path")
 //import middleware
 const notFoundMiddleware = require('./middleware/not-found');
 const cookieParser = require('cookie-parser');
-const checkDB = require('./middleware/scheduleTask');
+
 const cors = require('cors');
 const fs = require('fs');
 
@@ -83,9 +81,8 @@ app.use("/api/v1/sliderstate", SliderState);
 app.get('*', (req, res)=>{
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 })
-//app.use(notFoundMiddleware);
-//app.use("/api", (req, res, next) => {console.log(req.originalUrl); next()}, verifyEmailRoute);
-app.use(checkDB);
+
+
 
 
 module.exports = app;

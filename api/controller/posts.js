@@ -22,29 +22,29 @@ const createNewPost =  async (req, res) =>{
     };
     
     if(user.isBlocked === true){
-        return res.status(500).json('Sorry, you can not make a post at this moment');
+        return res.status(401).json('Sorry, you can not make a post at this moment');
     };
     if(user.isVerified === false){
-        return res.status(500).json('Only verified users can perform this action');
+        return res.status(401).json('Only verified users can perform this action');
     };
     
     if(req.body.categories === ""){
-        return res.status(500).json('Post category should not be empty')
+        return res.status(204).json('Post category should not be empty')
 
     }
     //check duplicate post
     const duplicatePost = await Post.exists({title: req.body.title});
     if(duplicatePost){
-        return res.status(500).json('Post title already exist')
+        return res.status(409).json('Post title already exist')
     }
     if(uppercaseTitle.length > 61){
-        return res.status(500).json('post title should not be more than 60 characters')
+        return res.status(501).json('post title should not be more than 60 characters')
     }
     if(uppercaseTitle.length < 10){
-        return res.status(500).json('post title should not be less than 10 characters')
+        return res.status(502).json('post title should not be less than 10 characters')
     }
      if(uppercaseTitle === " "){
-        return res.status(500).json('post title should not be empty')
+        return res.status(205).json('post title should not be empty')
     }
      const newPost = new Post({
          _id: req.body._id,
@@ -70,7 +70,8 @@ const createNewPost =  async (req, res) =>{
 
    
   }catch(err){
-      res.status(500).json({message: 'Something went wrong with user or post', err: err});
+    console.log(err)
+      res.status(509).json({message: 'Something went wrong with user or post', err: err});
   }
   
 };
@@ -491,12 +492,14 @@ const getRandomPostS = async (req, res)=>{
 }
 //handle upload post image. This is needed since the react application is using a text editor that requres the image to be sent to server first before previewing inside the post. 
 const uploadImage = async(req, res) =>{
+    console.log(req.file, 'image req')
         try {
        
         const fileStr = req?.file?.path
+        console.log(fileStr, 'file')
         
         if(!fileStr){
-            return res.status(500).json( 'No image found');
+            return res.status(404).json( 'No image found');
         }else{
         //calling the cloudinary function for upload
         const uploadResponse = await uploadCloudinary(fileStr)
@@ -506,13 +509,13 @@ const uploadImage = async(req, res) =>{
         publicId: uploadResponse.public_id
         }
             
-            return res.status(200).json( result)
+            return res.status(200).json(result)
         }
         
     
     } catch (err) {
-           
-        return res.status(500).json('Something went wrong with image' );
+           console.log(err, 'check error')
+        return res.status(501).json('Something went wrong with image' );
        
     }
 }

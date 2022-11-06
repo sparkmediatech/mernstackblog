@@ -15,7 +15,8 @@ export default function Login() {
     const [wrongCredentialError, setWrongCredentialError] = useState(false);
     const [unauthorizedError, setUnauthorizedError] = useState(false);
     const [unverifiedError, setUnverifiedError] = useState(false);
-    const [somethingWentWrongError, setSomethingWentWrongError] = useState(false)
+    const [somethingWentWrongError, setSomethingWentWrongError] = useState(false);
+    const [noUserFoundError, setNoUserFoundError] = useState(false)
     
    
     const handleSubmit = async (e) =>{
@@ -51,6 +52,10 @@ export default function Login() {
                setSomethingWentWrongError(true)
                
             }
+
+            if(err.response.data == 'no user found'){
+                return setNoUserFoundError(true)
+            }
            
         }
 
@@ -80,8 +85,14 @@ if(somethingWentWrongError){
       }, 3000);
   
 }
+
+if(noUserFoundError){
+    setTimeout(() => {
+        setNoUserFoundError(false)
+    }, 3000);
+}
    
-}, [wrongCredentialError, unauthorizedError, somethingWentWrongError, unverifiedError])
+}, [wrongCredentialError, unauthorizedError, somethingWentWrongError, unverifiedError, noUserFoundError])
 
 
 
@@ -114,6 +125,7 @@ if(somethingWentWrongError){
                     {wrongCredentialError &&  <p className='paragraph-text red-text center-text'>Wrong credentials</p>}
                     {unauthorizedError && <p className='paragraph-text red-text center-text'>You're not authorized to use this channel</p>}
                     {somethingWentWrongError &&  <p className='paragraph-text red-text center-text'>Something went wrong</p>}
+                    {noUserFoundError &&  <p className='paragraph-text red-text center-text'>No such user found in our database</p>}
 
                 <button className="loginRegisterButton">
                     <Link className='link' to='/register'>Register</Link>

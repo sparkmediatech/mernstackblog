@@ -29,10 +29,10 @@ const sendConfirmationEmail = async (user, res) => {
     subject: 'Account verication',
     html: `Hello ${user.username}, please, confirm your Email by clicking this link <a href=${url}> ${url}</a>`
 }).then(() =>{
-    console.log("Emails was sent")
+    return emailToken 
 }).catch((err)=>{
-    console.log(err)
-    return res.status(500).json(("Email was not sent, please try and resend by clicking the resend button"))
+   return
+    
 })
 
 return emailToken
@@ -78,7 +78,7 @@ const sendEmailSubscriber = async (subscriberemail, res, emailSubject, emailBody
     })
     return res.status(200).json('email sent')
 }).catch((err)=>{
-    console.log(err.response.body)
+   
     return res.status(500).json(("Email was not sent, please try and resend by clicking the resend button"))
 })
 

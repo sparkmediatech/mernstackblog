@@ -12,7 +12,13 @@ const register = async (req, res) =>{
         const password = req.body.password;
         const validRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const validPassword = /^([^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$/
-      
+       
+        
+        const checkUser = await User.exists({username: req.body.username});
+        if(checkUser){
+             return res.status(401).json("User already exist")
+        }
+
         if(!password){
             return res.status(500).json('password must be present')
         }
@@ -35,18 +41,16 @@ const register = async (req, res) =>{
         if(password.match(validPassword)){
             return res.status(500).json('password must contain at least 1 upper case, lower case, number and special characters')
         }
-        if(password.match(validPassword)){
-            return res.status(500).json('password must contain at least 1 upper case, lower case, number and special characters')
-        }
+       
         if(hashedPass !== confirmPassword){
-            return res.status(404).json("Password does not match")
+            return res.status(500).json("Password does not match")
         }
         if(!req.body.username){
             return res.status(500).json('username must be present')
         }
-       checkEmail = await User.findOne({email: email})
+        const checkEmail = await User.exists({email: email});
        if(checkEmail){
-            return res.status(401).json("Email already exist")
+            return res.status(500).json("Email already exist")
        }
         const newUser = new User({
           
@@ -55,12 +59,18 @@ const register = async (req, res) =>{
             password: hashedPass 
         })
         const user = await newUser.save();
-        const emailToken = await sendConfirmationEmail(user, res);
-       
-       
-        await  client.SET(user._id.toString(), emailToken);
         
-        return res.status(200).json({Id:user._id, emailToken})
+        const emailToken = await sendConfirmationEmail(user, res);
+        if(emailToken){
+            await  client.SET(user._id.toString(), emailToken);
+        
+            return res.status(200).json('email sent')
+        }else{
+            return res.status(500).json('something went wrong with email')
+        }
+       
+       
+        
 
     } catch(err){
         
@@ -75,6 +85,10 @@ const register = async (req, res) =>{
 const login = async (req, res) =>{
     try {
         const resUser = await User.findOne({username: req.body.username});
+        
+        if(!resUser){
+            return res.status(404).json('no user found')
+        }
         let passValidate
         if(resUser) {
             passValidate = await bcrypt.compare(req.body.password, resUser.password)
@@ -97,6 +111,7 @@ const login = async (req, res) =>{
             }
            //generate random strings
             const sessionId = crypto.randomBytes(12).toString('hex');  
+            const userId = user._id
                
             //generate access token
             const token = resUser.JWTAccessToken()
@@ -113,7 +128,7 @@ const login = async (req, res) =>{
                 httpOnly: true,
                 maxAge: 604800000,
             } )
-            return res.status(200).json({token, sessionId})
+            return res.status(200).json({token, userId})
         } 
     } catch(err) {
         
@@ -139,7 +154,7 @@ try{const user = await User.findOne({username: req.body.username})
         return res.status(401).json('Your account is not verified yet'); 
    }
    if(user.role !== "admin"){
-      return res.status(400).json("You do not have permission")
+      return res.status(401).json("You do not have permission")
    }else{
         //generate access token
          const token = user.JWTAccessToken()
