@@ -7,10 +7,11 @@
 
 # testing
 /coverage
-/__mocks__
+__mocks__
 route.auth.test.js
 route.post.test.js
 /test*
+nodemailer.js
 # production
 /build
 

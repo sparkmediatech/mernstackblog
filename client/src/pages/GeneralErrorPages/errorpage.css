@@ -1,7 +1,37 @@
 .fetchError-custom-div{
-    width: 100vw;
+    width: 100%;
     position: fixed;
     height: 100%;
     z-index: 999;
     background-color: #FFFFFF;
 }
+
+
+@media (max-width: 576px){
+    .custom-general-error-icon{
+        font-size: 70px !important;
+    }
+    .custom-general-error-text {
+        font-size: 15px !important;
+      }
+
+      .custom-general-error-BTN{
+        padding: 13px 30px 13px 30px !important;
+        font-size: 15px !important;
+      }
+    
+    }
+
+
+@media (max-width: 320px){
+    .custom-general-error-icon{
+        font-size: 60px !important;
+    }
+    .custom-general-error-text {
+        font-size: 11px !important;
+        padding-left: 2px;
+        padding-right: 2px;
+      }
+    
+    }
+    

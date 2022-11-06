@@ -63,6 +63,7 @@ useEffect(()=>{
         <div className='posts margin-small '>
            
            { posts?.slice(0,screenMode).map((post, index)=>{
+                
                 const contentState = convertFromRaw(JSON.parse(post?.description));
                 const editorState = EditorState.createWithContent(contentState); 
                
@@ -79,13 +80,13 @@ useEffect(()=>{
                 </div>
                 
                <div className='latest-post-title-div'>
-                 <Link to={`/post/${post._id}`} className="link">
-                    <h4 className={selectedId == post._id ?'transitionText text-general-small margin-small color2 custom-home-page-postTitle': 'transitionText text-general-small margin-small custom-home-page-postTitle'}>{post.title}</h4>
+                 <Link to={`/post/${post?._id}`} className="link">
+                    <h4 className={selectedId == post?._id ?'transitionText text-general-small margin-small color2 custom-home-page-postTitle': 'transitionText text-general-small margin-small custom-home-page-postTitle'}>{post?.title}</h4>
                 </Link>
                </div>
-                  <div className={selectedId == post._id ? 'animated-post-titlte-line latest-post-line-div transitionText' : 'transitionText latest-post-line-div'}></div>
+                  <div className={selectedId == post?._id ? 'animated-post-titlte-line latest-post-line-div transitionText' : 'transitionText latest-post-line-div'}></div>
                      <div className='flex-3 post-name-date-div'>
-                      <p className='text-general-small color1'>{post.username.username}</p><p className='text-general-small color1 postDate'> {new Date(post.createdAt).toDateString()}</p>
+                      <p className='text-general-small color1'>{post?.username?.username}</p><p className='text-general-small color1 postDate'> {new Date(post?.createdAt)?.toDateString()}</p>
                   </div>
               
             </div>

@@ -101,7 +101,8 @@ describe('Test POST /api/v1/posts/uploadImage', ()=>{
 
 //test making posts
 describe('Test POST /api/v1/posts', ()=>{
-
+//Please make sure you delete the test result in your database to avoid errors with JSON. Due to the search application system in the post model, the find and delete wont work here
+//And the mongoode operators arent working here.
     const newPost = {
         username: "628cf9594aea9c5450a6f4a5",
         postPhoto: "https://res.cloudinary.com/blognodeapi/image/upload/v1658836053/nodeblog/egubupgnodtokscugb33.jpg",
@@ -123,11 +124,8 @@ describe('Test POST /api/v1/posts', ()=>{
         .expect('Content-Type', /json/)
         .expect(200)
         
-        //expect(response.statusCode).toBe(200);
-        
-        await Post.findOneAndDelete({title: newPost.title})
     }, 40000);
-    
+  
 })
 
 })

@@ -14,12 +14,12 @@ function FetchingError() {
   return (
     <div className='fetchError-custom-div flex-2 center-flex-justify-display center-flex-align-display'>
       
-        <BiError className='Icon'/>
+        <BiError className='Icon custom-general-error-icon'/>
      
-      <h5 className='color1 text-general-small2'>Something went wrong with fetching resources. 
-    Visit home page or contact admin</h5>
+      <div className='flex'> <h5 className='color1 text-general-small2 custom-general-error-text center-text'>Something went wrong with fetching resources. 
+    Visit home page or contact admin</h5></div>
    
-      <button className='button-general-2' onClick={handlePageReload}>Home</button>
+      <button className='button-general-2 custom-general-error-BTN' onClick={handlePageReload}>Home</button>
    
     
     </div>

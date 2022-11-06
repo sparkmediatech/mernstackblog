@@ -4,7 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-/__mocks__
+__mocks__
 
 # testing
 /coverage
@@ -12,6 +12,7 @@
 route.auth.test.js
 route.post.test.js
 /test*
+nodemailer.js
 # production
 /build
 .env

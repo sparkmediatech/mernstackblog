@@ -1,7 +1,7 @@
 .custom-loader-wrapper{
     overflow: hidden;
     background-color: #FF661F;
-    width: 100vw;
+    width: 100%;
     position: fixed;
     height: 100%;
     z-index: 1200;
@@ -16,3 +16,17 @@
 .loading-text{
     font-size: 30px;
 }
+
+
+
+@media (max-width: 576px){
+    .custom-loader-wrapper {
+        width: 100%;
+    }
+    .page-loader {
+        width: 300px;
+      }
+    .loading-text{
+      font-size: 20px;
+    }
+    }
