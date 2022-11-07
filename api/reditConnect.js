@@ -1,7 +1,7 @@
 const redis = require('redis');
 const { promisify } = require("util");
 
-//connect to redis
+
 
 //const redis_client = redis.createClient();
 /*let redis_client = redis.createClient({
