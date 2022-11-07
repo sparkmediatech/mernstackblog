@@ -391,7 +391,7 @@ const getPostSearchResults = async (req, res)=>{
     const search = req.body.search;
     const catName = req.body.catName;
     const username = req.body.username
-    console.log(username, 'iam search')
+
 
     try{
         let posts;
