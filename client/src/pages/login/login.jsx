@@ -33,7 +33,7 @@ export default function Login() {
            
              localStorage.removeItem('ogB');
             setAuth(response.data);
-            window.location = '/'
+            //window.location = '/'
                    
         }catch(err){
             if(err.response.data === "Wrong credentials"){

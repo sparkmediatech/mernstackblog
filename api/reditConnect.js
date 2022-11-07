@@ -15,7 +15,6 @@ let redis_client = redis.createClient({
 
 
 
-
 redis_client.connect()
 
  redis_client.on('connect', function(){
