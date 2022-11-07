@@ -3,10 +3,10 @@ require('dotenv').config();;//declaring the envy file
 
 
 //replace this with your own mongo cloud username and password inside your env file
-const MONGO_URL = process.env.MONGO_URL
+//const MONGO_URL = process.env.MONGO_URL
 
 const connectDB = async(url) => {
-    mongoose.connect(MONGO_URL, {
+    mongoose.connect(url, {
     useNewUrlParser: true,
     keepAlive: true,
     autoReconnect: true,
