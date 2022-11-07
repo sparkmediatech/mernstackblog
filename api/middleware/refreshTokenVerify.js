@@ -1,11 +1,11 @@
 const redis_client = require('../reditConnect');
 const User = require('../models/User');
+const jwt = require('jsonwebtoken')
 
 
 
 const refreshTokenverify = async (req, res,) =>{
-    console.log(req.cookies)
-    console.log('Hey')
+
     const cookies = req.cookies;
     if(!cookies?.refreshJWT){
           return res.status(401).json({message: "Your session is not valid"})
@@ -36,7 +36,7 @@ const refreshTokenverify = async (req, res,) =>{
             return res.status(401).json({message: "Token is invalid"})
         } 
         }catch(err){
-            console.log(err)
+           
            return res.status(401).json({message: "Token is not validated"})
         
     }
