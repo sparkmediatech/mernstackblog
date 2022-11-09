@@ -69,7 +69,7 @@ const getAllClientComponent = async (req, res) =>{
 //This is automatic and cant be worked except you are good with changiing the component names in reactjs
 const autoUpdateDatabase = async () =>{
     cron.schedule('* * * * *', async ()=>{
-        console.log('hello cron')
+    
         const componentNameAbout = 'ABOUT'; 
         const componentNameBLOG = 'BLOG'
         const componentNameWRITE = 'WRITE'
