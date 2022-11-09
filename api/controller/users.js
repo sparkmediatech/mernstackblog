@@ -13,6 +13,8 @@ const util = require('util');
 const dayjs = require("dayjs");
 const utc = require("dayjs/plugin/utc");
 const customParseFormat = require('dayjs/plugin/customParseFormat');
+const Comment = require("../models/Comment");
+const Replycomment = require("../models/Replycomment");
 const dayJsUTC = dayjs.extend(utc)
 const dayJsDate = dayJsUTC.extend(customParseFormat)
 
@@ -488,9 +490,9 @@ const deleteSelectedUsers = async (req, res)=>{
        //now delete selected users id from redis. This will make their refresh token broken and cant perform any further action on the app
        
        selectedIds.forEach( async(i)=>{
-               const userRedisKey =  await client.get(i)
+               const userRedisKey =  await client.get(i.toString())
               if(userRedisKey){
-                 await client.DEL(selectedIds)
+                 await client.DEL(selectedIds.toString())
               }
                
         })
@@ -522,7 +524,8 @@ const handleDeleteAllUsers = async(req, res)=>{
         }
         //get all users name as array to find their posts. Since username on posts is users' id, we would return the user's id
         const userName = users.map((singleUsers)=> singleUsers._id)
-       if(userName.length > 0){
+      
+        if(userName.length > 0){
             //find all posts written by all users
         const posts = await Post.find({username: userName});
         if(posts){
@@ -541,7 +544,8 @@ const handleDeleteAllUsers = async(req, res)=>{
             await Post.deleteMany({username:userName})
         }
        }
-        
+
+
         //find the users' photoId and delete from cloudinary
          const filteredUserPostPhotoId = users.filter((singleUserPublicId) => singleUserPublicId.photoPublicId !== '');
          
@@ -555,25 +559,50 @@ const handleDeleteAllUsers = async(req, res)=>{
                  //pass the flattened array containing string of public ids to the cloudinary delete method
                 await deleteAllFiles( usersPublicPhotoId)
          }
+         
+        //find posts to remove these users comments id and replies ids along with their like ids
+        const posts = await Post.find();
+        //return the postId to be used with mongoose method of update many
+        const postId = posts.map((singlepostId) => singlepostId._id)
+         //find  all comments associated with these users if there is any
+        const comment = await Comment.find({author: userName});
+        //get the comments id
+        const commentId = comment.map((singleComment) => singleComment._id);
+        console.log(commentId, 'commentId')
+        //find all reply comments associated with these users
+        const replycomment = await Replycomment.find({author: userName});
+        //return their ids
+        const replyCommentId = replycomment.map((singleReply)=> singleReply._id)
+
+        await Post.updateMany({ _id: {$in: postId} }, { $pull: {comments: { $in: commentId,},  } })
+        await Post.updateMany({ _id: {$in: postId} }, { $pull: {postReplyComments: { $in: replyCommentId } } })
+        await Post.updateMany({ _id: {$in:  postId} }, { $pull: { postLikes: { $in: userName } } })
         
-        //now delete selected users id from redis. This will make their refresh token broken and cant perform any further action on the app
+       //delete the comments associated with these users
        
+        await Comment.deleteMany({author: userName})
+         //delete their replies
+        await Replycomment.deleteMany({author: userName})
+
+        //remove userid from redis
         if(userName.length > 0){
             userName.forEach( async(i)=>{
-               const userRedisKey =  await client.get(i)
+        
+               const userRedisKey =  await client.get(i.toString())
+             
               if(userRedisKey){
-                console.log(userRedisKey)
-                 await client.DEL(selectedIds)
+                
+                 await client.DEL(i.toString())
               }
                
         })
         }
               
       //delete users
-      await User.deleteMany({_id: selectedIds})
+      await User.deleteMany({_id: userName})
       return res.status(200).json('users deleted')
     }catch(err){
-        console.log(err)
+      
         return res.status(500).json('something went wrong')
     }
 }

@@ -1,5 +1,6 @@
 const ClientComponents = require('../models/ClientsideComponents');
-const User = require('../models/User')
+const User = require('../models/User');
+const cron = require('node-cron');
 
 
 
@@ -61,6 +62,95 @@ const getAllClientComponent = async (req, res) =>{
          return res.status(500).json('something went wrong');
     }
 }
+
+
+
+//This cron runs to check if there is any component name yet to be created, it creates it automatically. The component name is extremely7 important for the menu on the frontside
+//This is automatic and cant be worked except you are good with changiing the component names in reactjs
+const autoUpdateDatabase = async () =>{
+    cron.schedule('* * * * *', async ()=>{
+        console.log('hello cron')
+        const componentNameAbout = 'ABOUT'; 
+        const componentNameBLOG = 'BLOG'
+        const componentNameWRITE = 'WRITE'
+        const componentNameHOME = 'HOME'
+        const componentNameCONTACT = 'CONTACT'
+
+        const checkDublicateComponentAbout = await ClientComponents.exists({componentName:componentNameAbout});
+        const checkDublicateComponentBlog = await ClientComponents.exists({componentName:componentNameBLOG});
+        const checkDublicateComponentWRITE = await ClientComponents.exists({componentName:componentNameWRITE});
+        const checkDublicateComponentHOME = await ClientComponents.exists({componentName:componentNameHOME});
+        const checkDublicateComponentCONTACT = await ClientComponents.exists({componentName:componentNameCONTACT});
+
+
+
+        if(!checkDublicateComponentAbout){
+            const newClientComponent = new ClientComponents({
+            
+                componentName: componentNameAbout,
+                
+       
+            });
+            await newClientComponent.save();
+            console.log(`component name of ${componentNameAbout}  created`)
+        }
+
+       if(!checkDublicateComponentBlog){
+        const newClientComponent = new ClientComponents({
+            
+            componentName: componentNameBLOG,
+            
+   
+        });
+        await newClientComponent.save();
+        console.log(`component name of ${componentNameBLOG}  created`)
+       }
+
+    
+    if(!checkDublicateComponentWRITE){
+        const newClientComponent = new ClientComponents({
+            
+            componentName: componentNameWRITE,
+            
+   
+        });
+        await newClientComponent.save();
+        console.log(`component name of ${componentNameWRITE}  created`)
+    }
+     
+
+    if(!checkDublicateComponentHOME){
+        const newClientComponent = new ClientComponents({
+            
+            componentName: componentNameHOME,
+            
+   
+        });
+        await newClientComponent.save();
+        console.log(`component name of ${componentNameHOME}  created`)
+    }
+
+
+    if(!checkDublicateComponentCONTACT){
+        const newClientComponent = new ClientComponents({
+            
+            componentName: componentNameCONTACT,
+            
+   
+        });
+        await newClientComponent.save();
+        console.log(`component name of ${componentNameCONTACT}  created`)
+    }
+
+
+
+    });
+   
+};
+
+
+
+autoUpdateDatabase()
 
 
 module.exports = {

@@ -27,7 +27,9 @@ const sendConfirmationEmail = async (user, res) => {
     from: 'kingzanimation19@gmail.com',
     to: `${user.username} <${user.email}>`,
     subject: 'Account verication',
-    html: `Hello ${user.username}, please, confirm your Email by clicking this link <a href=${url}> ${url}</a>`
+    html:  `<div style=" margin: 0 auto;  width: 30%; height:auto; border-radius: 5px; padding: 10px; padding-bottom:20px; background: #FBFCFC;"> <h4 style="text-align: center; font-family:Lato; font-size:12px;">Hello ${user?.username}, 
+    confirm your Email by clicking the button below or click on the link below if you can't see the button</h4> <br>  <button style="cursor: pointer; background: #FF661F; padding-left: 25px; padding-right:25px; padding-top:10px; padding-bottom:10px; 
+    border:none; border-radius:3px; display: block; margin: 0 auto; color:#F8F9F9; "><a href=${url} style="text-decoration:none; color:#F8F9F9;">VERIFY </a></button> <br>  <a href=${url}> ${url}</a></div>`
 }).then(() =>{
     return emailToken 
 }).catch((err)=>{
@@ -51,15 +53,20 @@ const subscribeEmailConfirmation = async (user, res) => {
     from: 'kingzanimation19@gmail.com',
     to: `${user.subscriberName} <${user.subscriberEmail}>`,
     subject: 'Account verication',
-    html: `Hello ${user.subscriberName}, please, confirm your Email by clicking this link <a href=${url}> ${url}</a>`
+    html:  `<div style=" margin: 0 auto;  width: 30%; height:auto; border-radius: 5px; padding: 10px; padding-bottom:20px; background: #FBFCFC;"> <h4 style="text-align: center; font-family:Lato; font-size:12px;">Hello ${user?.subscriberName}, 
+    confirm your Email by clicking the button below or click on the link if you can't see the button</h4> <br>  <button style="cursor: pointer; background: #FF661F; padding-left: 25px; padding-right:25px; padding-top:10px; padding-bottom:10px; 
+    border:none; border-radius:3px; display: block; margin: 0 auto; color:#F8F9F9; "><a href=${url} style="text-decoration:none; color:#F8F9F9;">VERIFY </a></button> <br>  <a href=${url}> ${url}</a></div> <br> 
+   `
+   
 }).then(() =>{
     console.log("Emails was sent")
+    return emailToken
 }).catch((err)=>{
     console.log(err)
     return res.status(500).json(("Email was not sent, please try and resend by clicking the resend button"))
 })
 
-return emailToken
+
 };
 
 //to send email to subscribers
@@ -69,7 +76,7 @@ const sendEmailSubscriber = async (subscriberemail, res, emailSubject, emailBody
     from: 'kingzanimation19@gmail.com',
     to: [subscriberemail],
     subject: `${emailSubject}`,
-    html: `<p> ${emailBody} </p>`
+    html:  `<div style="  width: 50%; height:auto; border-radius: 5px; padding: 10px; padding-bottom:20px; background: #FBFCFC;"> <p style=" font-family:Lato; font-size:12px;">${emailBody}</p> </div>`
 }).then(async() =>{
     //update email and change the delivery status
     await EmailBody.findByIdAndUpdate({_id: sentEmailId}, {
@@ -92,19 +99,21 @@ const resetPasswordLink = async (user) =>{
 
     const url = `${process.env.API_URL}/updatepassword/${passwordToken}/${user._id}`
 
-    //console.log(emailToken)
     transport.sendMail({
     from: 'kingzanimation19@gmail.com',
     to: `${user.username} <${user.email}>`,
     subject: 'Reset Password',
-    html: `Hello ${user.username}, please reset your password by clicking this link <a href=${url}> ${url}</a>`
+    html:  `<div style=" margin: 0 auto;  width: 30%; height:auto; border-radius: 5px; padding: 10px; padding-bottom:20px; background: #FBFCFC;"> <h4 style="text-align: center; font-family:Lato; font-size:12px;">Hello ${user?.username}, 
+    click the button below to begin the process of reseting your password or click the link if you can't see the button</h4> <br>  <button style="cursor: pointer; background: #FF661F; padding-left: 25px; padding-right:25px; padding-top:10px; padding-bottom:10px; 
+    border:none; border-radius:3px; display: block; margin: 0 auto; color:#F8F9F9; "><a href=${url} style="text-decoration:none; color:#F8F9F9;">RESET PASSWORD</a></button><br>  <a href=${url}> ${url}</a></div>`
+
 }).then(() =>{
-    console.log("Emails was sent")
+    
+    console.log('email sent')
 }).catch((err)=>{
     console.log(err)
     console.log("Email was not sent, please try and resend by clicking the resend button")
 })
-
 return passwordToken;
 };
 

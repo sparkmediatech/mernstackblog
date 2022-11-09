@@ -90,7 +90,7 @@ const deleteCategory = async (req, res) =>{
        };
        //check if this category already has posts with the name
        const post = await Post.find({categories: category.catName})
-       if(post){
+       if(post.length > 0){
            return res.status(500).json('You can not delete a category that has been assigned a post. Please, consider changing the name')
        }
         await Category.findByIdAndDelete(req.params.categoryId);

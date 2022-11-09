@@ -66,6 +66,7 @@ const register = async (req, res) =>{
         
             return res.status(200).json('email sent')
         }else{
+         
             return res.status(500).json('something went wrong with email')
         }
        
@@ -73,7 +74,7 @@ const register = async (req, res) =>{
         
 
     } catch(err){
-        
+        console.log(err)
         res.status(500).json('something went wrong');
         
     }
@@ -122,7 +123,8 @@ const login = async (req, res) =>{
               await client.set(user._id.toString(), (refreshToken));
 
               const key = await client.get(user._id.toString())
-              
+
+              console.log(key,' key')
 
                 res.cookie('refreshJWT', refreshToken, {
                 httpOnly: true,

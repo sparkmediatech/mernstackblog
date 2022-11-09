@@ -94,7 +94,7 @@ UserSchema.post('findOneAndDelete', async function (doc) {
         }),
         await Replycomments.deleteMany({
             _id: {
-                $in: doc.userReplyCOmments
+                $in: doc.userReplyComments
             }
         })
     }

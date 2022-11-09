@@ -63,7 +63,7 @@
 
 .custom-list-email-sendEmail-div{
     position: fixed;
-    z-index: 999;
+    z-index: 599;
     background-color: #D0D3D4;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     padding: 10px;
@@ -123,7 +123,7 @@
 .custom-prev-email-main-div{
     justify-content: space-between;
     background-color: #ECF0F1;
-    height: 50px;
+    height: auto;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
@@ -176,7 +176,7 @@
 
 @media (max-width: 1200px){
 .custom-prev-email-main-div{
-        height: 40px;
+        height: auto;
     }
 .custom-createEmail-div{
     height: auto;
@@ -203,6 +203,10 @@
 
 
 @media (max-width: 768px){
+.custom-prev-email-main-div{
+    height: auto;   
+    padding-bottom: 10px;
+    }
 .custom-subscriber-email-div {
     margin-right: 25%;
 }
@@ -244,4 +248,89 @@
 .custom-delivery-mode-BTN{
     padding: 5px;
 }
+.custom-list-email-sendEmail-div{
+    width: 73%;
+}
+}
+
+
+
+@media (max-width: 500px){
+    .custom-delivery-mode-BTN{
+        width: 30%;
+    }
+
+}
+
+@media (max-width: 400px){
+    .custom-list-email-sendEmail-div{
+        width: 71%;
+    }
+}
+
+
+
+@media (max-width: 359px){
+    .custom-list-email-sendEmail-div{
+        position: absolute;
+        width: 81%;
+    }
+
+    .custom-subscriber-listing-email{
+        font-size: 12px !important;
+    }
+    .custom-prev-email-main-div{
+     height: auto;   
+     padding-bottom: 10px;
+    }
+    .custom-prev-email-title{
+        font-size: 12px !important;
+    }
+    .custom-prev-email-icon{
+        font-size: 13px;
+    }
+
+    .custom-scheduled-email-title-div{
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+    .custom-scheduled-email-title{
+        font-size: 13px !important;
+    }
+    .custom-scheduled-email-icon-div{
+        width: 100%;
+        justify-content: right;
+    }
+    .custom-scheduled-email-icon{
+        font-size: 13px;
+        padding-bottom: 5px;
+    }
+    .custom-email-recivers-BTN{
+        font-size: 10px !important;
+    }
+    .custom-selected-recievers-text{
+        font-size: 10px !important;
+    }
+    .custom-email-recievers-title-text{
+        font-size: 12px !important;
+    }
+
+    .custom-delivery-mode-BTN{
+        width: 35%;
+    }
+    .custom-done-sendEmail-BTN{
+        width: 23%;
+    }
+    .custom-subscribers-list-item-div{
+        flex-direction: column !important;
+        align-items: flex-start;
+    }
+    .custom-check-input-list-email{
+        margin-left: 10px !important;
+    }
+    .custom-input-check-email-list-div{
+        width: 100%;
+        justify-content: right;
+    }
 }

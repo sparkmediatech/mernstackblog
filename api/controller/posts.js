@@ -460,7 +460,7 @@ const getRandomPostS = async (req, res)=>{
    //the exclusion is called using .select and I listed out the fields to exclude
     const posts = await Post.find().select("-description -username -photoPublicId -comments -postReplyComments -postLikes -updatedAt   -__v");
    //check if there are no post then return this error
-    if(!posts){
+    if(posts.length < 0){
         return res.status(404).json('no post found')
     };
     //get the length of the posts found

@@ -102,7 +102,7 @@ const handleCloseSideBar = ()=>{
              </div>
           </div>
 
-         {!smallestScreenMode &&
+       
            <div className='flex-3 admin-custom-icon-div'>
             <AiOutlineMail className='admin-custom-icon-div-icons'/>
              <div >
@@ -112,8 +112,7 @@ const handleCloseSideBar = ()=>{
               
              </div>
           </div>
-         }
-          
+        
         </div>
        
        

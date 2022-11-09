@@ -376,9 +376,9 @@ console.log(emailUpdateMode)
         <>
           <div className='flex-3 custom-subscribers-list-item-div margin-small-small center-flex-align-display' key={index}>
              {!mobileScreenMode && <div className='flex-3 custom-email-list-general-div margin-left-sm1 custom-email-list-name-div'><p className='color1 text-general-small'>{subscriberName}</p> </div>}
-              <div  className='flex-3 custom-email-list-general-div custom-subscriber-email-div'><p className='color1 text-general-small'>{subscriberEmail}</p></div>
+              <div  className='flex-3 custom-email-list-general-div custom-subscriber-email-div'><p className='color1 text-general-small custom-subscriber-listing-email'>{subscriberEmail}</p></div>
               { !mobileScreenMode && <div  className='flex-3 custom-email-list-general-div custom-subscriber-verify-status-div'>{isVerified == false ? <p className='color1 text-general-small'>Verifed : No</p> : <p className='color1 text-general-small'> Verified: Yes</p>}</div>}
-              <input className='marginRight-extraSmall' type="checkbox"  id={index} checked={isChecked(subscriberEmail)} onChange={()=> handleCheckedClick(subscriberEmail)}/>
+              <div className='custom-input-check-email-list-div flex'><input className='marginRight-extraSmall custom-check-input-list-email' type="checkbox"  id={index} checked={isChecked(subscriberEmail)} onChange={()=> handleCheckedClick(subscriberEmail)}/></div>
           </div>
         </>
       )
@@ -402,9 +402,9 @@ console.log(emailUpdateMode)
     <p className='color1 text-general-extral-small margin-extra-small-Top'>Email Subject</p>
         <input className='margin-extra-small-Top custom-email-subject-input color1' placeholder='Email Subject...' type="text" defaultValue={emailProp.emailTitle} ref={emailSubject}/>
        <div className='flex-3 center-flex-align-display'> 
-          <p className='color1 text-general-extral-small margin-extra-small-Top'>Email Reciever(s)</p> 
+          <p className='color1 text-general-extral-small margin-extra-small-Top custom-email-recievers-title-text'>Email Reciever(s)</p> 
             <button onClick={handleDisplaySubscribers} className='custom-email-recivers-BTN marginLeft-extraSmall margin-extra-small-Top '>Select Receivers</button>
-            <p className='color2 text-general-extral-small margin-extra-small-Top marginLeft-extraSmall'>{selectedSubscriberId.length} Subcribers selected</p>
+            <p className='color2 text-general-extral-small margin-extra-small-Top marginLeft-extraSmall custom-selected-recievers-text'>{selectedSubscriberId?.length} Subcribers selected</p>
        </div>
 
        {
@@ -484,13 +484,13 @@ console.log(emailUpdateMode)
         </div>
         {!emailUpdateMode ? <div className='flex'>
             <button onClick={handleSendEmail} className={emailLoading ? 'margin-small  custom-email-send-BTN curson-not-allowed-2' : 'margin-small  custom-email-send-BTN general-cursor-pointer' }>Send</button>
-          :
+          
   
           </div> :
           
           <div className='flex'>
             <button onClick={handleUpdateEmail} className={emailLoading ? 'margin-small  custom-email-send-BTN curson-not-allowed-2' : 'margin-small  custom-email-send-BTN general-cursor-pointer' }>Update</button>
-          :
+          
           
           </div> }
     </div>

@@ -192,15 +192,15 @@ useEffect(()=>{
                   !editModeState &&  
                         <div className='flex-3 custom-scheduled-email-title-div margin-small-small center-flex-align-display'>
                             
-                            <div className='flex-2 margin-left-sm1 '>
-                                <h5 className='text-general-small color2'>{emailTitle}</h5>
-                                <p className='color1 text-general-extral-small margin-extra-small-Top'>Delivery Date: {deliveryDate ? new Date( deliveryDate).toDateString() : new Date(createdAt).toDateString()}</p>
+                            <div className='flex-2 margin-left-sm1'>
+                                <h5 className='text-general-small color2 custom-scheduled-email-title'>{emailTitle}</h5>
+                                <p className='color1 text-general-extral-small margin-extra-small-Top custom-scheduled-email-date'>Delivery Date: {deliveryDate ? new Date( deliveryDate).toDateString() : new Date(createdAt).toDateString()}</p>
                             </div>
                 
-                            <div className='flex-3'>
-                                <AiOutlineEdit onClick={()=> toggleEditMode(emailTitle, emailBody, emailId, deliveryDate, emailReciever, deliveryMode)} className='marginRight-sm general-cursor-pointer'/>
+                            <div className='flex-3 custom-scheduled-email-icon-div'>
+                                <AiOutlineEdit onClick={()=> toggleEditMode(emailTitle, emailBody, emailId, deliveryDate, emailReciever, deliveryMode)} className='marginRight-sm general-cursor-pointer custom-scheduled-email-icon'/>
 
-                                <AiFillDelete onClick={()=> handleDeleteScheduledEmail(emailId)} className='marginRight-extraSmall general-cursor-pointer red-text'/>
+                                <AiFillDelete onClick={()=> handleDeleteScheduledEmail(emailId)} className='marginRight-extraSmall general-cursor-pointer red-text custom-scheduled-email-icon'/>
 
                         
                             </div>

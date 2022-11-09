@@ -47,7 +47,7 @@
 .custom-display-allSubscribers-div{
     background-color: #F4F6F7;
     position: absolute;
-    z-index: 999;
+    z-index: 500;
     width: 60%;
     left: 0;
     right: 0;
@@ -75,6 +75,7 @@
 }
 .custom-verified-div{
     justify-content: right;
+   
 }
 .custom-disabled-screen{
     position: fixed;
@@ -243,6 +244,9 @@
 
 
 @media (max-width: 576px){
+.custom-other-page-subscribers{
+    width: 95%;
+}
 .custom-display-allSubscribers-div{
     width: 80%;
     }
@@ -299,7 +303,71 @@
     .custom-subscribers-sub-text-div p {
         font-size: 12.4px !important;
     }
+    .custom-verified-div{
+        margin-left: 20px;
+    }
 
 }
+
+
+@media (max-width: 359px){
+    .custom-other-page-subscribers{
+        width: 94%;
+    }
+    .custom-subscriber-sub-div{
+        flex-direction: column !important;
+        width: 95%;
+    }
+    .custom-subscriber-icon-div{
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+    }
+    .custom-subscribers-sub-text-div{
+        width: 96%;
+    }
+    .custom-subscribers-BTN-div{
+        width: 97%;
+        justify-content: center !important;
+        padding-bottom: 5px;
+    }
+    .custom-subscribers-title-sub-text{
+        text-align: center;
+    }
+    .custom-subscriber-para-text{
+        padding-right: 5px;
+    }
+
+    .displayNoneLastChild{
+        display: none !important;
+    }
+
+    .custom-subscribers-delete{
+        font-size: 12px;
+    }
+    .custom-subscriber-list-header-div{
+        width: 25%;
+        overflow-wrap: break-word;
+        
+       
+    }
+    .custom-subscriber-list-header-div h5{
+        font-size: 10px !important;
+       
+    }
+   
+    .custom-subscriber-list-email-div{
+        margin-right: 35px !important;
+        
+    }
+    .custom-subscribers-general-title-text{
+        font-size: 12px;
+    }
+    .custom-verified-div{
+        margin-left: 0px;
+    }
+}
+
+
 
 

@@ -50,7 +50,12 @@ useEffect(()=>{
     }, 2000);
     }
    
-}, [userNotFoundError]);
+    if(somethingWentWrongError){
+        setTimeout(() => {
+            setSomethingWentWrongError(false)
+        }, 3000);
+    }
+}, [userNotFoundError, somethingWentWrongError]);
 
 
 

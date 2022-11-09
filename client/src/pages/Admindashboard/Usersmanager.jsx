@@ -35,7 +35,7 @@ function Usersmanager(props,) {
     const [somethingWentWrongError, setSomethingWentWrongError] = useState(false);
     const [noUserSelectedError, setNoUserSelectedError] = useState(false)
   
-    const {logUser, auth, dispatch, openAdminSideBar, setOpenAdminSideBar, isLoading} = useContext(AuthContext);
+    const {logUser, auth, dispatch, openAdminSideBar, setOpenAdminSideBar, isLoading, cursorState} = useContext(AuthContext);
     const PF = "http://localhost:5000/images/";
      let   tabletMode = useMediaQuery('(max-width: 1200px)');
      
@@ -294,13 +294,18 @@ useEffect(()=>{
         <h2 className='text-general-Medium topMargin-medium custom-user-manager-title-text'>Users</h2>
        
        
-             <p onClick={handleDeleteAllUsers} className={selectedUsers.length == 1 || selectedUsers.length > 1 ? 'topMargin-medium red-text text-general-extral-small curson-not-allowed-2 custom-user-manager-title-text': 'topMargin-medium red-text text-general-extral-small general-cursor-pointer custom-user-manager-title-text'}>Delete All</p>
-              <p onClick={handleDeleteSelectedUsers} className={selectedUsers.length > 1 ? 'topMargin-medium red-text text-general-extral-small general-cursor-pointer custom-user-manager-title-text': 'topMargin-medium red-text text-general-extral-small curson-not-allowed-2 custom-user-manager-title-text'}>Delete Selected</p>
+             <p onClick={handleDeleteAllUsers} className={selectedUsers.length == 1 || selectedUsers.length > 1 || allUsers.length < 1 ? 'displayNoneText topMargin-medium red-text text-general-extral-small curson-not-allowed-2 custom-user-manager-title-text pointer-events-none': 'topMargin-medium red-text text-general-extral-small general-cursor-pointer custom-user-manager-title-text'}>Delete All</p>
+              <p onClick={handleDeleteSelectedUsers} className={selectedUsers.length > 1 ? 'topMargin-medium red-text text-general-extral-small general-cursor-pointer custom-user-manager-title-text': 'topMargin-medium red-text text-general-extral-small curson-not-allowed-2 custom-user-manager-title-text pointer-events-none displayNoneText'}>Delete Selected</p>
            
             
       
     </div>
     
+    {allUsers.length < 1 &&
+         <div className='flex noUser-custom-div'>
+         <h5 className='color1  topMargin-Extral-Large text-general-extral-small'>No users yet</h5>
+     </div>
+    }
     
         {
             allUsersState && allUsers.length !== 0 &&
@@ -315,7 +320,7 @@ useEffect(()=>{
                 <div className='blocked-div'><h4 className='text-general-small color1 custom-userdashboard-title-text'>BLOCKED</h4></div>
             </div>
                
-
+           
             
             { allUsers.map((singleUser, index)=>{
                 const {username, profilePicture, isBlocked, isVerified, email, role, _id: userId} = singleUser
@@ -324,47 +329,52 @@ useEffect(()=>{
 
                 return(
                     <>
-                       <div className='displayUser-div-container flex-3' key={index}>
+                   
+                       
+                  
+                       {
+                        allUsers.length > 0 && <div className='displayUser-div-container flex-3' key={index}>
 
-                           <div className='flex-3 users-custom-name-container  '>
-                               <div className='userImg-div'>
-                                   <img className='users-img' src={profilePicture} alt="" />
+                        <div className='flex-3 users-custom-name-container  '>
+                            <div className='userImg-div'>
+                                <img className='users-img' src={profilePicture} alt="" />
 
-                               </div>
-                                    <div className='users-detail-container flex-2'>
+                            </div>
+                                 <div className='users-detail-container flex-2'>
 
-                                        <p className='text-general-small color1 custom-paragrap-text '>
-                                             <Link className='link'  to={`/users/${userId}`}>
-                                                 {username}
-                                            </Link>
-                                        </p>
+                                     <p className='text-general-small color1 custom-paragrap-text '>
+                                          <Link className='link'  to={`/users/${userId}`}>
+                                              {username}
+                                         </Link>
+                                     </p>
+                                     
+                                    
                                         
-                                       
-                                           
-                                            <p className='text-general-small color1 custom-email-text'>{email}</p>
-                                        
-                                            
-                                    </div>
-                               
-                              
-                            </div>
+                                         <p className='text-general-small color1 custom-email-text'>{email}</p>
+                                     
+                                         
+                                 </div>
+                            
+                           
+                         </div>
 
-                            <div className='users-role-custom-div center-flex-align-display'>
-                                <p  className='text-general-small color1'>{role?.toUpperCase()}</p>
-                            </div>
+                         <div className='users-role-custom-div center-flex-align-display'>
+                             <p  className='text-general-small color1'>{role?.toUpperCase()}</p>
+                         </div>
 
-                          <div className='users-verified-custom-div center-flex-align-display'>
-                               {isVerified == true ? <p className='text-general-small color1'>YES</p >: <p className='text-general-small color1'>NO</p>} 
-                            </div>
+                       <div className='users-verified-custom-div center-flex-align-display'>
+                            {isVerified == true ? <p className='text-general-small color1'>YES</p >: <p className='text-general-small color1'>NO</p>} 
+                         </div>
 
-                            <div className='users-isBlocked-custom-div center-flex-align-display flex-3'>
-                                {isBlocked == false ? <p className='text-general-small color1'>NO</p>: <p className='text-general-small color1'>YES</p>}
-                                  <AiFillDelete onClick={()=> handleDeleteSingleUser(userId)} className='general-cursor-pointer color2 custom-userdashboard-delete-icon'/>
-                                  <input type="checkbox" checked={checkedState[index]}  onChange={()=>{arrayOfSelectedUserId(userId, index); handleChangeState(userId)}}/>
-                            </div>
+                         <div className='users-isBlocked-custom-div center-flex-align-display flex-3'>
+                             {isBlocked == false ? <p className='text-general-small color1'>NO</p>: <p className='text-general-small color1'>YES</p>}
+                               <AiFillDelete onClick={()=> handleDeleteSingleUser(userId)} className='general-cursor-pointer color2 custom-userdashboard-delete-icon'/>
+                               <input type="checkbox" checked={checkedState[index]}  onChange={()=>{arrayOfSelectedUserId(userId, index); handleChangeState(userId)}}/>
+                         </div>
 
-                          
-                       </div>
+                       
+                    </div>
+                       }
                    
                     </>
                 )
@@ -383,8 +393,8 @@ useEffect(()=>{
       }
    
       {
-        allUsers.length != 0 && openAdminSideBar !== 'admin-sidebar-slideIn' &&
-        <div className='custom-userdashboard-navigation-div flex-3 margin-small center-flex-align-display'>
+        allUsers.length != 0 && openAdminSideBar !== 'admin-sidebar-slideIn' && 
+        <div className='custom-userdashboard-navigation-div flex-3  center-flex-align-display'>
             <div className='custom-userDashboard-Pre-div'>
                 <MdNavigateBefore  onClick={handlePrev} className={path > 1  ? 'custom-next-prev-userdashboard-icon marginRight-extraSmall flex-2' :'custom-next-prev-userdashboard-icon marginRight-extraSmall flex-2 curson-not-allowed-2' }/>
               <p className='margin-extra-small-Top color1 text-general-extral-small general-cursor-pointer'>PREV</p>

@@ -671,3 +671,12 @@ margin-top: 0 !important;
   margin-left: 30px;
 }
 }
+
+
+
+
+@media (max-width: 359px){
+.customMenuOpenOff{
+  display: none;
+}
+}

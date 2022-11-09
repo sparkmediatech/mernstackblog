@@ -30,7 +30,8 @@ function Subscribers() {
     const [subDeletedState, setSubDeletedState] = useState(false);
     const [resendVerification, setResendVerification] = useState(false);
     let   tabletMode = useMediaQuery('(max-width: 1200px)');
-   
+    let smallestScreen = useMediaQuery('(max-width: 333px)');
+    let smallerScreenMode = useMediaQuery('(max-width: 349px)');
 
 
     //error states
@@ -334,9 +335,9 @@ useEffect(()=>{
                             <div className='flex-2 custom-subscribers-heading-div margin-small'>
                            
                                 <div className='flex-3 custom-sub-subscribers-heading-text-div margin-small'>
-                                    <div><p className='color1 text-general-small'>Name</p></div>
-                                    <div><p className='color1 text-general-small'>Email</p></div>
-                                    <div><p className='color1 text-general-small marginRight-sm'>Verified</p></div>
+                                    <div><p className='color1 text-general-small custom-subscribers-general-title-text'>Name</p></div>
+                                    <div><p className='color1 text-general-small custom-subscribers-general-title-text'>Email</p></div>
+                                    <div>{!smallerScreenMode && <p className='color1 text-general-small marginRight-sm custom-subscribers-general-title-text'>Verified</p>}</div>
                                 </div>
 
                                 <hr className='margin-extra-small-Top color1'/>
@@ -370,13 +371,15 @@ useEffect(()=>{
                             return(
                                 <div className='flex-3 custom-subscribers-listing-div margin-small center-flex-align-display margin-small '>
                                     <div className='custom-subscriber-list-header-div'><h5 className='color1 text-general-extral-small'>{subscriberName}</h5> </div>
-                                    <div className='custom-subscriber-list-header-div flex'><h5 className='color1 text-general-extral-small'>{subscriberEmail}</h5></div>
-                                    <div className='custom-subscriber-list-header-div flex custom-verified-div'>{isVerified == false && <p onMouseEnter={()=> handleReminderState(subscriberId)} onMouseLeave={handleReminderOppositeState} className={selectedReminder == subscriberId ? 
-                                    'color1 text-general-extral-small marginRight-sm custom-reminder-subscriber-text' : 
-                                    'color1 text-general-extral-small marginRight-sm'} onClick={()=>handleVeryReminder(subscriberId)}>Reminder</p>}
-                                    {isVerified === true ? <p className='color1 text-general-extral-small marginRight-sm'>YES</p>: <p className='color1 text-general-extral-small marginRight-sm'>No</p>}
-                                        <AiFillDelete onClick={()=> handleDeleteSubscriber(subscriberId)} className='general-cursor-pointer red-text'/>
-                                    </div>
+                                    <div className='custom-subscriber-list-header-div flex custom-subscriber-list-email-div'><h5 className='color1 text-general-extral-small'>{subscriberEmail}</h5></div>
+                                  {!smallerScreenMode &&   <div className='custom-subscriber-list-header-div flex custom-verified-div'>{isVerified == false && <p onMouseEnter={()=> handleReminderState(subscriberId)} onMouseLeave={handleReminderOppositeState} className={selectedReminder == subscriberId ? 
+                                    'color1 text-general-extral-small marginRight-sm custom-reminder-subscriber-text general-verified-text' : 
+                                    'color1 text-general-extral-small marginRight-sm general-verified-text'} onClick={()=>handleVeryReminder(subscriberId)}>Remind</p>}
+                                    {isVerified === true && <p className='color1 text-general-extral-small marginRight-sm'>Yes</p>} 
+                                  
+                                       
+                                    </div>}
+                                    <div className='flex '> <AiFillDelete onClick={()=> handleDeleteSubscriber(subscriberId)} className='general-cursor-pointer red-text custom-subscribers-delete'/></div>
                                 </div>
                             )
                         })}
@@ -421,8 +424,8 @@ useEffect(()=>{
                         </div>
                         
                         <div className='flex-2 margin-left-sm1 margin-small-small custom-subscribers-sub-text-div '>
-                            <h5 className='text-general-Medium '>Subscribers</h5>
-                            <p className='color1 text-general-small margin-extra-small-Top'>Use this channel to see all subscribers on your list. You can also manage these subscribers. You can delete subscribers and also send them verification remainder email from here</p>
+                            <h5 className='text-general-Medium custom-subscribers-title-sub-text'>Subscribers</h5>
+                            <p className='color1 text-general-small margin-extra-small-Top custom-subscriber-para-text'>Use this channel to see all subscribers on your list. You can also manage these subscribers. You can delete subscribers and also send them verification remainder email from here</p>
 
                         </div>
                     
@@ -439,8 +442,8 @@ useEffect(()=>{
                         </div>
                         
                         <div className='flex-2 margin-left-sm1 margin-small-small custom-subscribers-sub-text-div '>
-                            <h5 className='text-general-Medium '>Previous Emails</h5>
-                            <p className='color1 text-general-small margin-extra-small-Top'>Use this channel to check your previous emails sent to your subscribers. This is the section where you manage your sent email records You can also delete previously sent emails here</p>
+                            <h5 className='text-general-Medium custom-subscribers-title-sub-text'>Previous Emails</h5>
+                            <p className='color1 text-general-small margin-extra-small-Top custom-subscriber-para-text'>Use this channel to check your previous emails sent to your subscribers. This is the section where you manage your sent email records You can also delete previously sent emails here</p>
 
                         </div>
 
@@ -449,14 +452,14 @@ useEffect(()=>{
                         </div>
                     </div>
 
-                    <div className={activeDisplayMode ? 'flex-3 custom-subscriber-sub-div bg-blur' : 'flex-3 custom-subscriber-sub-div'}>
+                    <div className={activeDisplayMode  ? 'flex-3 custom-subscriber-sub-div bg-blur ' : 'flex-3 custom-subscriber-sub-div'}>
                          <div className='flex margin-left-sm1 custom-subscriber-icon-div flex'>
                             <BiTime  className='custom-subscribers-icon'/>
                         </div>
                         
                         <div className='flex-2 margin-left-sm1 margin-small-small custom-subscribers-sub-text-div '>
-                            <h5  className='text-general-Medium '>Scheduled Email</h5>
-                            <p className='color1 text-general-small margin-extra-small-Top'>Use this channel to check your emails you scheduled for future delivery. You may decide to change the delivery date as well. You may also delete it or update the content of the email here</p>
+                            <h5  className='text-general-Medium custom-subscribers-title-sub-text'>Scheduled Email</h5>
+                            <p className='color1 text-general-small margin-extra-small-Top custom-subscriber-para-text'>Use this channel to check your emails you scheduled for future delivery. You may decide to change the delivery date as well. You may also delete it or update the content of the email here</p>
                         </div>
                         
                          <div className='custom-subscribers-BTN-div flex'>
@@ -464,16 +467,16 @@ useEffect(()=>{
                         </div>
                     </div>
 
-                    <div className={activeDisplayMode ? 'flex-3 custom-subscriber-sub-div bg-blur' : 'flex-3 custom-subscriber-sub-div'}>
+                    <div className={activeDisplayMode || openAdminSideBar == "admin-sidebar-slideIn"  || (openAdminSideBar == "admin-sidebar-slideIn" && smallestScreen)? 'displayNoneLastChild flex-3 custom-subscriber-sub-div bg-blur ' : 'flex-3 custom-subscriber-sub-div '}>
                         <div className='flex margin-left-sm1 custom-subscriber-icon-div flex'>
                         
                             <AiOutlineFileText className='custom-subscribers-icon'/>
                         </div>
 
-                        <div className='flex-2 margin-left-sm1 margin-small-small custom-subscribers-sub-text-div '>
-                            <h5 className='text-general-Medium '>Create New Email</h5>
+                        <div className='flex-2 margin-left-sm1 margin-small-small custom-subscribers-sub-text-div  '>
+                            <h5 className='text-general-Medium custom-subscribers-title-sub-text'>Create New Email</h5>
 
-                            <p className='color1 text-general-small margin-extra-small-Top'>Use this channel to create a new email to send to your subscribers. You can decide if the email should be sent instantly or decide when it can be delivered on a later date</p>
+                            <p className='color1 text-general-small margin-extra-small-Top custom-subscriber-para-text'>Use this channel to create a new email to send to your subscribers. You can decide if the email should be sent instantly or decide when it can be delivered on a later date</p>
                         </div>
                         
                      <div className='custom-subscribers-BTN-div flex'>

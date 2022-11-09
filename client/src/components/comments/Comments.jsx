@@ -623,8 +623,8 @@ userBannedReplyError, userAccessDeniedReplyError, somethingWentWrongDelReply
         <div className="comment">
 
             <h5 className='users-comment'>Users' comments</h5>
-                {comments.map((singleComment, index)=>{
-                    const {author, commentdescription, _id, createdAt, replies} = singleComment
+                {comments?.map((singleComment, index)=>{
+                    const {author, commentdescription, _id, createdAt, replies} = singleComment || {}
                     
                     return(
                         <>
@@ -671,14 +671,15 @@ userBannedReplyError, userAccessDeniedReplyError, somethingWentWrongDelReply
                                 
                                 <div className="commentPic">
                                     
-                                    <img className="user-pics" src={singleComment.author.profilePicture} alt="" />
+                                    <img className="user-pics" src={singleComment?.author?.profilePicture} alt="" />
                                       
                                 </div>
                                 <div className="comment-info">
                                     <div className="comment-author-div">
                                         <div className='comment-author-date-info'>
-                                            <h4 className="comment-author">{singleComment.author.username}</h4>
-                                             <p className="comment-date">{new Date(singleComment.createdAt).toDateString()}
+                                            {console.log(singleComment?.author?.username)}
+                                            <h4 className="comment-author">{singleComment?.author?.username}</h4>
+                                             <p className="comment-date">{new Date(singleComment?.createdAt)?.toDateString()}
                                                 </p>
                                         </div>
                                        {
@@ -691,7 +692,7 @@ userBannedReplyError, userAccessDeniedReplyError, somethingWentWrongDelReply
                                        }
                                        
                                     </div>
-                                    <p className="comment-content">{singleComment.commentdescription}</p>
+                                    <p className="comment-content">{singleComment?.commentdescription}</p>
                                     
                                     <div>
                                      {/* Reply text button   */}
