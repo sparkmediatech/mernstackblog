@@ -89,7 +89,8 @@ try{
 
 try{
     //upload image to cloudinary
-    const fileStr = req.file.path
+    const fileStr = req?.file?.path
+    console.log(fileStr, 'file')
     if(!fileStr){
         if(req.file){
                  fs.unlinkSync(req.file.path);
@@ -122,6 +123,7 @@ try{
          return res.status(200).json(response)
         }
 }catch(err){
+    console.log(err)
     if(req.file){
         fs.unlinkSync(req.file.path);
         }

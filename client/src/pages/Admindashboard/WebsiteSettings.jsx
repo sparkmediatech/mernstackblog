@@ -31,6 +31,8 @@ function WebsiteSettings() {
     
     const [editAboutWebsiteState, setEditAboutWebsite] = useState(false);
     let   tabletMode = useMediaQuery('(max-width: 1200px)');
+    let   midtabletScreen = useMediaQuery('(max-width: 768px)');
+    let   midtabletScreen2 = useMediaQuery('(max-width: 476px)');
     let   smallScreenMode = useMediaQuery('(max-width: 320px)');
     //toggle state for slider and static image
     //const [sliderOn, setSliderOn] = useState('sliderON')
@@ -51,6 +53,8 @@ function WebsiteSettings() {
     const [noValueIdFoundError, setNoValueIdFoundError] = useState(false);
     const [somethingWentWrongWithUserError, setSomethingWentWrongWithUserError] = useState(false);
     const [invalidSliderStateValue,setInvalidSliderStateValue] = useState(false);
+    //this helps to set the state of headervalue object to eithe true of false. By default, the headervalue should not be empty which means it is true
+    const [headerValueState, setHeaderValueState] = useState(true)
 
     //slider errors
     const [userNotFoundSliderError, setUserNotFoundSliderError] = useState(false);
@@ -546,6 +550,19 @@ const handleHeaderOn = async ()=>{
 }
 
 
+//using useEffect and for loop, we checked if the headervalue is empty or not. If it is iterable, that makes it is not empty, we ste it to true
+//if it is not iterable, we set it to false. When the headervalue is empty, it means the admin has to create the web app name and other information
+useEffect(()=>{
+  for (const property in headerValues) {
+    return setHeaderValueState(true);
+  }
+  return setHeaderValueState(false);
+
+}, [headerValues])
+
+
+
+
 
 
 
@@ -566,28 +583,29 @@ const handleHeaderOn = async ()=>{
 
          <div className=" admin-dashboard-custom-container flex-3">
       
-      < AdminSidebar/>
+     {headerValueState && !dashboardEditMode &&  < AdminSidebar/>}
       
+{console.log(openAdminSideBar, headerValueState, 'header')}
   
-  
- <FiMenu onClick={handleOpenSidebarMenu}  className={openAdminSideBar == 'admin-sidebar-slideOut' && !dashboardEditMode ?  'custom-sidebar-menuOpen' :  'custom-sidebar-menuOpen customMenuOpenOff' }/>
-   <div className={openAdminSideBar === 'admin-sidebar-slideIn' ? 'other-pages topMargin-medium custom-website-setting-div bg-blur2 curson-not-allowed-2 pointer-events-none': 'other-pages topMargin-medium custom-website-setting-div'}>
+ {headerValueState && <FiMenu onClick={handleOpenSidebarMenu}  className={openAdminSideBar == 'admin-sidebar-slideOut' && !dashboardEditMode ?  'custom-sidebar-menuOpen' :  'custom-sidebar-menuOpen customMenuOpenOff' }/>}
+   <div className={openAdminSideBar === 'admin-sidebar-slideIn' ? 'other-pages topMargin-medium custom-website-setting-div bg-blur2 curson-not-allowed-2 pointer-events-none ': !headerValueState ? 'other-pages topMargin-medium custom-website-setting-div custom-create-setting-other-pages ':
+   'other-pages topMargin-medium custom-website-setting-div '}>
      
       <div className='custom-sub-wensite-setting-div'>
         
            <h2 className='text-general-Medium margin-small custom-website-title-name'>Website Information</h2>
-          {!dashboardEditMode && headerValues.length !== 0 && <button className='button-general-2 custom-edit-website-BTN' onClick={handleEditMode}>Edit</button>} 
-           {dashboardEditMode && <button className='button-general custom-admin-BTN' onClick={handleCancleEditMode}>Cancel</button>}
+          {!dashboardEditMode && headerValueState && <button className='button-general-2 custom-edit-website-BTN' onClick={handleEditMode}>Edit</button>} 
+           {dashboardEditMode && headerValueState && <button className='button-general custom-admin-BTN' onClick={handleCancleEditMode}>Cancel</button>}
           
      
-             
+        {headerValueState &&    
           <div  className='dashboard-wrapper'>
              <div className="updatedText">{textUpdate && <h3>Updated successfully</h3>}</div>
             <div className="dashboard-form">
 
             <div className={dashboardEditMode ? "dasboard-input-div custom-dashboard-input-div": 'dasboard-input-div'}>
               <p  className='text-general-small color1'>Website Name</p>
-              {dashboardEditMode ? <input className="dashboard-input input-general" type="text" placeholder={headerValues.websiteName} autoFocus
+              {dashboardEditMode ? <input className="dashboard-input input-general custom-edit-setting-input" type="text" placeholder={headerValues.websiteName} autoFocus
                  onChange={(e) => setWebsiteName(e.target.value)}
                  required
                 /> : 
@@ -771,59 +789,57 @@ const handleHeaderOn = async ()=>{
 
 
 
+{console.log(openAdminSideBar, 'open')}
 
-
-            {!dashboardEditMode &&  openAdminSideBar == 'admin-sidebar-slideOut' &&
-              <div className="headerImg-div custom-header-image-2 ">
+           
+              <div className={midtabletScreen && !dashboardEditMode && openAdminSideBar == 'admin-sidebar-slideIn' && !midtabletScreen2 && !smallScreenMode ? "headerImg-div custom-header-image-2 imageDispayNone" : "headerImg-div custom-header-image-2 " }>
                 <p className='text-general-small color1'>Header Image</p>
                 <img className='headerValueImg  customHeaderValueImage-2' src={file? URL.createObjectURL(file): headerValues.headerImg} alt="" />
                </div>
-            }
+         
             {dashboardEditMode && <div className='custom-website-setting-update-BTN-div'><button onClick={(e)=>handleHeaderValueUpdate(headerValues._id, e)} className={updating ? "updateModeBTN-unclick button-general" : "button-general custom-website-setting-update-BTN"} type="submit">Update</button></div>}
 
             
              </div>
           </div>
-   
+      }
 
 {/* handles creation of header values     */}
-    {headerValues.length === 0 && 
+    {!headerValueState && 
       <div className='flex-2 header-value-create-div center-flex-align-display margin-small'>
         <div className='flex-2 header-value-create-wrapper margin-small'>
                <p className='text-general-small color1'>Website Name</p>
-                <input onChange={(e) => setWebsiteName(e.target.value)} className='margin-small dashboard-input  ' type="text" />
-              {websiteNameEmptyError? <p className='color2 text-general-small customParaText fadeInText'>Website name section must not be empty or less than 4 words</p>: 
-               <p className='color2 text-general-small customParaText'>Website name section must not be empty or less than 4 words</p>
+                <input onChange={(e) => setWebsiteName(e.target.value)} className='margin-small dashboard-input  custom-create-siteName-input' type="text" />
+              {websiteNameEmptyError && <p className='color2 text-general-small'>Website name section must not be empty or less than 4 words</p>
                
                }
 
-                {websiteNameMaxTextError ? <p className='color2 text-general-small customParaText fadeInText'>Website name section must not be more than 13 words</p>: 
-               <p className='color2 text-general-small customParaText'>Website name section must not be more than 13 words</p>
+                {websiteNameMaxTextError && <p className='color2 text-general-small'>Website name section must not be more than 13 words</p>
                
                }
-              <div className='margin-small flex-3'>
+              <div className='margin-small flex-3 custom-main-color-picker-div'>
                 <div className='color-picker-input-div'>
                     <p className='text-general-small color1'>Header Color</p>
-                    <input className='color-pciker1' onChange={(e) => setHeaderColor(e.target.value)} type="color" value={headerColor} />
+                    <input className='color-pciker1 custom-create-color-picker-input' onChange={(e) => setHeaderColor(e.target.value)} type="color" value={headerColor} />
                 </div>
                   <div className='color-picker-input-div'>
                       <label className='color-picker-label'>Hex Value</label >
-                      <input className='color-pciker1 color-picker-hex-input' type="text" placeholder={headerColor} onChange={(e) => setHeaderColor(e.target.value)} />
+                      <input className='color-pciker1 color-picker-hex-input custom-create-color-picker-input' type="text" placeholder={headerColor} onChange={(e) => setHeaderColor(e.target.value)} />
                   
                   </div>
                
               </div>
               
        
-              <div className='margin-small flex-3 '>
+              <div className='margin-small flex-3 custom-main-color-picker-div'>
                   <div className='color-picker-input-div'>
-                      <p className='text-general-small color1'>Navbar Color</p>
-                      <input className='color-pciker1' onChange={(e) => setNavColor(e.target.value)} type="color" value={navColor} />
+                      <p className='text-general-small color1 '>Navbar Color</p>
+                      <input className='color-pciker1 custom-create-color-picker-input' onChange={(e) => setNavColor(e.target.value)} type="color" value={navColor} />
                   </div>
 
                 <div className='color-picker-input-div'>
                     <label className='color-picker-label'>Hex Value</label >
-                    <input className='color-pciker1 color-picker-hex-input' type="text" placeholder={navColor} onChange={(e) => setNavColor(e.target.value)} />
+                    <input className='color-pciker1 color-picker-hex-input custom-create-color-picker-input' type="text" placeholder={navColor} onChange={(e) => setNavColor(e.target.value)} />
                   
                 </div>
                
@@ -832,7 +848,7 @@ const handleHeaderOn = async ()=>{
                
                
               <p className='text-general-small color1 margin-small'>About Website</p>
-              <textarea className='margin-small custom-about-user-textbox'  
+              <textarea className='margin-small custom-about-user-textbox custom-create-value-textox'  
                   onChange={e => setAboutWebsite(e.target.value)}
                  >
                 
@@ -859,13 +875,13 @@ const handleHeaderOn = async ()=>{
                }
 
              <p className='text-general-small color1 margin-small'>Upload Image</p>
-              <div className='custom-upload-image-div '>
+              <div className='custom-upload-image-div custom-create-setting-upload-img-div'>
                   <input  className='margin-small  custom-upload-image-input' type="file" 
                     onChange={e=> setFile(e.target.files[0])} 
                   />
 
                   
-                <img className='custom-display-header-image ' src={file && URL.createObjectURL(file)} alt="" />
+                <img className='custom-display-header-image custom-create-setting-image' src={file && URL.createObjectURL(file)} alt="" />
                 
               </div>
                {websiteHeaderImageEmptyError ? <div  className='empty-div-text  fadeInText'><p className='color2 text-general-small'>Website header image can not be empty</p></div>: 
@@ -879,7 +895,7 @@ const handleHeaderOn = async ()=>{
                }
 
              
-          <div className='flex-3 center-flex-justify-display'><button onClick={handleHeaderValueCreation} className=' button-general-2'  type='button'>Submit</button></div>
+          <div className='flex-3 center-flex-justify-display custom-create-setting-BTN-div'><button onClick={handleHeaderValueCreation} className=' button-general-2'  type='button'>Submit</button></div>
         </div>
       </div>
     

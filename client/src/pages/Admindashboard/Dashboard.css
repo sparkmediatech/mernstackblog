@@ -291,15 +291,17 @@ margin-top: 0 !important;
 
 /*  create header values section */
 .header-value-create-div{
-  width: 99%;
+  width: 100%;
   padding-bottom: 30px;
   background-color:#F7F9F9 ;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .header-value-create-wrapper{
   width: 98%;
-  height: 85vh;
+  height: auto;
+
 }
+
 .custom-header-value-input{
   border: none;
   outline: none;
@@ -439,7 +441,21 @@ margin-top: 0 !important;
   width: 90%;
 }
 
+.custom-create-setting-image{
+  height: 100%;
+  width: 40%;
+}
+.custom-create-setting-upload-img-div{
+  height: 200px;
+}
 
+.custom-create-setting-other-pages{
+  width: 98%;
+}
+
+.custom-create-value-textox{
+  width: 99%;
+}
 
 
 @media(max-width: 1200px){
@@ -539,12 +555,26 @@ margin-top: 0 !important;
   width: 97%;
 }
 
+
+
+.custom-create-value-textox{
+  width: 98%;
+}
+.custom-create-color-picker-input{
+  width: 98%;
+}
+.custom-create-siteName-input{
+  width: 99%;
+}
 }
 
 
 
 
 @media(max-width: 992px){
+.custom-website-setting-div{
+  width: 99%;
+}
 .text-general-Medium{
   font-size: 20px !important;
 }
@@ -556,6 +586,15 @@ margin-top: 0 !important;
 }
 .admin-sidebar-slideIn {
   width: 50%;
+}
+.custom-create-value-textox{
+  width: 98%;
+}
+.custom-create-color-picker-input{
+  width: 98%;
+}
+.custom-create-siteName-input{
+  width: 100%;
 }
 }
 
@@ -603,6 +642,35 @@ margin-top: 0 !important;
   padding: 13px 40px 13px 40px !important;
   font-size: 12px !important;
 }
+
+
+.color-pciker1{
+  width: 97%;
+ }
+ .custom-create-value-textox{
+   width: 96%;
+ }
+ .header-value-create-wrapper{
+   width: 98%;
+   height: auto;
+ }
+ .custom-main-color-picker-div{
+   flex-direction: column !important;
+   width: 98%;
+ }
+ .color-picker-input-div{
+ flex-direction: column !important;
+ width: 100%;
+ }
+ .custom-create-color-picker-input{
+  width: 100%;
+ }
+ .custom-create-siteName-input{
+  width: 98%;
+ }
+ .custom-create-setting-other-pages{
+  width: 97%;
+ }
 }
 
 
@@ -648,12 +716,14 @@ margin-top: 0 !important;
 .dashboard-input{
   width: 95%;
 }
-.color-pciker1{
- width: 97%;
+
+.imageDispayNone{
+  display: none;
 }
 }
 
 @media(max-width: 476px){
+  
 .admin-sidebar{
   height: 790px;
 }
@@ -678,5 +748,15 @@ margin-top: 0 !important;
 @media (max-width: 359px){
 .customMenuOpenOff{
   display: none;
+}
+.custom-create-value-textox{
+  width: 90%
+}
+.custom-create-setting-image{
+  width: 90%;
+ 
+}
+.custom-create-setting-other-pages{
+  width: 99%;
 }
 }
