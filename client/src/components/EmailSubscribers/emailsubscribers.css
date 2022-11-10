@@ -262,18 +262,14 @@
 
 }
 
+
+
+
 @media (max-width: 400px){
-    .custom-list-email-sendEmail-div{
-        width: 71%;
-    }
-}
-
-
-
-@media (max-width: 359px){
+    
     .custom-list-email-sendEmail-div{
         position: absolute;
-        width: 81%;
+        width: 86%;
     }
 
     .custom-subscriber-listing-email{
@@ -332,5 +328,26 @@
     .custom-input-check-email-list-div{
         width: 100%;
         justify-content: right;
+    }
+}
+
+
+
+
+@media (max-width: 340px){
+    
+    .custom-list-email-sendEmail-div{
+        position: absolute;
+        width: 84%;
+    }
+}
+
+
+
+@media (max-width: 300px){
+    
+    .custom-list-email-sendEmail-div{
+        position: absolute;
+        width: 82%;
     }
 }

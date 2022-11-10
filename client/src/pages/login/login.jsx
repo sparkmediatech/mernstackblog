@@ -16,16 +16,17 @@ export default function Login() {
     const [unauthorizedError, setUnauthorizedError] = useState(false);
     const [unverifiedError, setUnverifiedError] = useState(false);
     const [somethingWentWrongError, setSomethingWentWrongError] = useState(false);
-    const [noUserFoundError, setNoUserFoundError] = useState(false)
+    const [noUserFoundError, setNoUserFoundError] = useState(false);
+
     
-   
+
     const handleSubmit = async (e) =>{
         e.preventDefault();
 
         try{
             const response = await axios.post(`${BASE_URL}/auth/login`, {
                 username: userRef.current.value,
-                password: passwordRef.current.value
+                password:  passwordRef.current.value
             }, {
                 headers: {'Content-Type': 'application/json'},
                 withCredentials: true
@@ -48,7 +49,7 @@ export default function Login() {
                 
             };
 
-            if(err.response.data === "'Something went wrong'"){
+            if(err.response.data === "Something went wrong"){
                setSomethingWentWrongError(true)
                
             }
@@ -61,6 +62,9 @@ export default function Login() {
 
     }
  
+
+
+
 useEffect(() =>{
 
   if(wrongCredentialError){
@@ -114,18 +118,17 @@ if(noUserFoundError){
                         ref={passwordRef}
                     />
                    
-                  
                    
                     <button className="loginButton" type="submit" >{/* enabled me to disble the cursor when isFething is true */}
                         Login
                         </button>
                 </form>
            
-                    {unverifiedError &&  <p className='paragraph-text red-text center-text'>Your account is yet to be verified. Check your email to verify your account</p>}
-                    {wrongCredentialError &&  <p className='paragraph-text red-text center-text'>Wrong credentials</p>}
-                    {unauthorizedError && <p className='paragraph-text red-text center-text'>You're not authorized to use this channel</p>}
-                    {somethingWentWrongError &&  <p className='paragraph-text red-text center-text'>Something went wrong</p>}
-                    {noUserFoundError &&  <p className='paragraph-text red-text center-text'>No such user found in our database</p>}
+                    {unverifiedError &&  <p className='paragraph-text red-text center-text custom-error-text-login'>Your account is yet to be verified. Check your email to verify your account</p>}
+                    {wrongCredentialError &&  <p className='paragraph-text red-text center-text custom-error-text-login'>Wrong credentials</p>}
+                    {unauthorizedError && <p className='paragraph-text red-text center-text custom-error-text-login'>You're not authorized to use this channel</p>}
+                    {somethingWentWrongError &&  <p className='paragraph-text red-text center-text custom-error-text-login'>Something went wrong</p>}
+                    {noUserFoundError &&  <p className='paragraph-text red-text center-text custom-error-text-login'>No such user found in our database</p>}
 
                 <button className="loginRegisterButton">
                     <Link className='link' to='/register'>Register</Link>

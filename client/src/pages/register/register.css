@@ -95,4 +95,10 @@
   .registerInput {
     width: 90%;
   }
+  .custom-error-text-register{
+    font-size: 11px !important;
+  }
+  .customer-register-title-text{
+    font-size: 25px !important;
+  }
 }

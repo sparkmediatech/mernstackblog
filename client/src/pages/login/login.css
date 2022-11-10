@@ -140,6 +140,10 @@
 .loginTitle{
   font-size: 30px;
 }
+.custom-error-text-login{
+  font-size: 11px !important;
+  padding: 5px !important;
+}
 }
 
 

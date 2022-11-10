@@ -35,7 +35,7 @@ function UsersPosts() {
    //I created a variable that holds the false bolean value for all the array items based on the userPost length
    //This new array variable is passed to a state and this state can be passed to the input check boxes based on their index value
    //a useEffect is used to set the checked state only when the userPost array is changed.
-   const totalPosts = usersPosts.length
+   const totalPosts = usersPosts?.length
    const fillArray = new Array(totalPosts).fill(false)
    const [checkedState, setCheckedState] = useState();
 
