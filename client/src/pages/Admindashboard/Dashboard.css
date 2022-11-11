@@ -722,6 +722,10 @@ margin-top: 0 !important;
 }
 }
 
+
+
+
+
 @media(max-width: 476px){
   
 .admin-sidebar{
@@ -739,6 +743,9 @@ margin-top: 0 !important;
 .custom-web-setting-BTN-div{
   width: 50%;
   margin-left: 30px;
+}
+.custom-display-setting-img{
+  height: 150px;
 }
 }
 

@@ -583,9 +583,9 @@ useEffect(()=>{
 
          <div className=" admin-dashboard-custom-container flex-3">
       
-     {headerValueState && !dashboardEditMode &&  < AdminSidebar/>}
+     {headerValueState  &&  < AdminSidebar/>}
       
-{console.log(openAdminSideBar, headerValueState, 'header')}
+
   
  {headerValueState && <FiMenu onClick={handleOpenSidebarMenu}  className={openAdminSideBar == 'admin-sidebar-slideOut' && !dashboardEditMode ?  'custom-sidebar-menuOpen' :  'custom-sidebar-menuOpen customMenuOpenOff' }/>}
    <div className={openAdminSideBar === 'admin-sidebar-slideIn' ? 'other-pages topMargin-medium custom-website-setting-div bg-blur2 curson-not-allowed-2 pointer-events-none ': !headerValueState ? 'other-pages topMargin-medium custom-website-setting-div custom-create-setting-other-pages ':
@@ -789,13 +789,13 @@ useEffect(()=>{
 
 
 
-{console.log(openAdminSideBar, 'open')}
-
-           
-              <div className={midtabletScreen && !dashboardEditMode && openAdminSideBar == 'admin-sidebar-slideIn' && !midtabletScreen2 && !smallScreenMode ? "headerImg-div custom-header-image-2 imageDispayNone" : "headerImg-div custom-header-image-2 " }>
+              {
+                !dashboardEditMode && 
+                <div className={midtabletScreen && !dashboardEditMode && openAdminSideBar == 'admin-sidebar-slideIn' && !midtabletScreen2 && !smallScreenMode ? "headerImg-div custom-header-image-2 imageDispayNone" : "headerImg-div custom-header-image-2 " }>
                 <p className='text-general-small color1'>Header Image</p>
-                <img className='headerValueImg  customHeaderValueImage-2' src={file? URL.createObjectURL(file): headerValues.headerImg} alt="" />
+                <img className='headerValueImg  customHeaderValueImage-2 custom-display-setting-img' src={file? URL.createObjectURL(file): headerValues.headerImg} alt="" />
                </div>
+              }
          
             {dashboardEditMode && <div className='custom-website-setting-update-BTN-div'><button onClick={(e)=>handleHeaderValueUpdate(headerValues._id, e)} className={updating ? "updateModeBTN-unclick button-general" : "button-general custom-website-setting-update-BTN"} type="submit">Update</button></div>}
 

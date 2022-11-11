@@ -85,7 +85,7 @@ export const AuthProvider = ({children})=>{
     const refreshToken = async () =>{
         
         try{
-            const response = await axios.post(`${BASE_URL}/refresh`, {
+            const response = await axios.post(`/refresh`, {
                  withCredentials: true
              });
              setAuth(response.data);
