@@ -13,9 +13,12 @@ const {upload} = require('../middleware/multer');
 
 //create new post
 const createNewPost =  async (req, res) =>{
+
+    try{ 
     const postTitle = req.body.title
     const uppercaseTitle = postTitle.toUpperCase() 
-  try{  
+    console.log(req.body, 'upper')
+ 
     const user = await User.findById(req.user.userId);
     if(!user){
         return res.status(404).json('User not found'); 
@@ -27,24 +30,24 @@ const createNewPost =  async (req, res) =>{
     if(user.isVerified === false){
         return res.status(401).json('Only verified users can perform this action');
     };
-    
-    if(req.body.categories === ""){
-        return res.status(204).json('Post category should not be empty')
+    console.log(req.body.categories, 'cat')
+    if(!req.body.categories || req.body.categories == '' || req.body.categories == 'undefined'){
+        return res.status(500).json('Post category should not be empty')
 
     }
     //check duplicate post
     const duplicatePost = await Post.exists({title: req.body.title});
     if(duplicatePost){
-        return res.status(409).json('Post title already exist')
+        return res.status(401).json('Post title already exist')
     }
     if(uppercaseTitle.length > 61){
-        return res.status(501).json('post title should not be more than 60 characters')
+        return res.status(500).json('post title should not be more than 60 characters')
     }
     if(uppercaseTitle.length < 10){
-        return res.status(502).json('post title should not be less than 10 characters')
+        return res.status(500).json('post title should not be less than 10 characters')
     }
      if(uppercaseTitle === " "){
-        return res.status(205).json('post title should not be empty')
+        return res.status(401).json('post title should not be empty')
     }
      const newPost = new Post({
          _id: req.body._id,
@@ -71,7 +74,7 @@ const createNewPost =  async (req, res) =>{
    
   }catch(err){
     console.log(err)
-      res.status(509).json({message: 'Something went wrong with user or post', err: err});
+      res.status(500).json({message: 'Something went wrong with user or post', err: err});
   }
   
 };

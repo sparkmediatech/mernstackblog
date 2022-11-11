@@ -22,9 +22,9 @@ function Texteditor() {
 
   const [file, setFile] = useState('')
   const {auth, logUser, dispatch, setPathNameMount, pathNameMount} = useContext(AuthContext);
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState();
   const [description, setDescription] = useState(editorState);
-  const [selectedCategoryId, setSelectedCategoryId] = useState('')
+  const [selectedCategoryId, setSelectedCategoryId] = useState()
   const axiosPrivate = useAxiosPrivate();
   const [imageDetails, setImageDetails] = useState()
   const [arrayImagePublicId, setArrayImagePublicID] = useState([]);
