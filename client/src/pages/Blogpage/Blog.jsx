@@ -16,67 +16,96 @@ function Blog() {
   const location = useLocation()
   const path = Number(location.pathname.split("/")[3]);
   const history = useHistory();  
-  const { dispatch, query, searchState, setQuery, blogPageName, setgeneralFetchError} = useContext(AuthContext);
-  const [categoryName, setCategoryName] = useState('')
+  const { dispatch, query, searchState, setQuery, blogPageName, setgeneralFetchError,categoryName, setCategoryName, searchRef } = useContext(AuthContext);
+
  
 
   
  
 
-console.log(query)
 
-  //get all posts
+
+  //get all posts based on the value of data. We could get posts based on user search term or category name or simply fetch all posts
 
   useEffect(() =>{
+   console.log(searchRef?.current?.value, 'search ref')
+    const ourRequest = axios.CancelToken.source() 
     const fetchAllPosts = async () =>{
-      const search = {
-            search: query
-           }
+      
+    const search = {
+        search: searchRef?.current?.value
+       }
+
+    const catName = {
+        catName: categoryName
+      }
+
+    let data;
+
+    if(searchRef?.current?.value && !categoryName){
+      console.log('I tested ref search')
+      data = search
+    }
+  
+  
+    if(categoryName && !searchRef?.current?.value){
+      console.log('I tested ref cat')
+      data = catName
+    }
+    
+    if(!searchRef?.current?.value && !categoryName){
+      console.log('I tested ref all')
+      data = data
+    }
      
-           if(query && !categoryName){
-              try{
+      try{
           dispatch({type:"CURSOR_NOT_ALLOWED_START"});
-          const response = await axiosPrivate.post(`${BASE_URL}/posts/searches?page=${path}`, search)
+          const response = await axiosPrivate.post(`${BASE_URL}/posts/searches?page=${path}`, data, {cancelToken: ourRequest.token})
           dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
           setAllPosts(response.data)
+          //setQuery('')
+          searchRef.current.value = ''
         }catch(err){
+          setQuery('')
           dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
           if(err.response.data == 'something went wrong'){
             return setgeneralFetchError(true)
           }
-        }
-
-           }        
+        }       
+         
     }
     
     fetchAllPosts()
-  }, [path, searchState])
+
+    return () => {
+      ourRequest.cancel() // <-- 3rd step
+    }
+  }, [path, searchState, categoryName,])
 
 
-//call this API route when category is set as search term by the user
+
+
+
+
+/*call this API route when category is set as search term by the user
   useEffect(() =>{
-     const fetchCategoryPosts = async () =>{
-      const catName = {
-        catName: categoryName
+    const ourRequest = axios.CancelToken.source() 
+   
+      const fetchCategoryPosts = async () =>{
+        const catName = {
+          catName: categoryName
+        }
+      
       }
       
-         try{
-          dispatch({type:"CURSOR_NOT_ALLOWED_START"});
-          const response = await axiosPrivate.post(`${BASE_URL}/posts/searches?page=${path}`, catName)
-          dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-          setAllPosts(response.data)
-        }catch(err){
-          dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-            if(err.response.data == 'something went wrong'){
-            return setgeneralFetchError(true)
-          }
-        }
-      }
+      fetchCategoryPosts()
+      return () => {
+        ourRequest.cancel() // <-- 3rd step
      
-    fetchCategoryPosts()
-  }, [categoryName, path])
+    }
+  }, [categoryName, path])*/
 
-  console.log(categoryName, 'I am cat')
+
 
 //handle prev
 const handlePrev = () =>{
@@ -86,7 +115,7 @@ const handlePrev = () =>{
 
 //handle next
 const handleNext = ()=>{
-  if(path < allPosts.length && path !== allPosts.length -1 ){
+  if(allPosts.length > 11){
     history.push(`/${blogPageName}/page/${path + 1}`);
     //setPage(page + 1)
   }
@@ -98,11 +127,11 @@ const handleNext = ()=>{
 
 const handleCategorySearch = (categories)=>{
   setCategoryName(categories);
-  setQuery('')
+ 
 }
 
 
-
+console.log(allPosts.length, 'lenghth post')
   return (
     <div className='custom-all-posts-wrapper flex-2 center-flex-align-display'>
       <div className=' blog-page-custom-div'><h4 className='text-general-BIG custom-blog-text'>Blog</h4></div>
@@ -144,10 +173,10 @@ const handleCategorySearch = (categories)=>{
        
           {
             
-            path < allPosts.length && path !== allPosts.length -1 && allPosts &&
+          allPosts.length > 0 &&
             <>
-             <MdNavigateNext onClick={handleNext} className='custom-next-prev-icon'/>
-             <p className='margin-extra-small-Top color1 text-general-extral-small general-cursor-pointer'>NEXT</p>
+             <MdNavigateNext onClick={handleNext} className={allPosts.length > 11 ? 'custom-next-prev-icon' : 'custom-next-prev-icon diplayNavBTNNone'}/>
+             <p className={allPosts.length > 11 ? 'margin-extra-small-Top color1 text-general-extral-small general-cursor-pointer': 'margin-extra-small-Top color1 text-general-extral-small general-cursor-pointer diplayNavBTNNone'}>NEXT</p>
             </>
           }
         

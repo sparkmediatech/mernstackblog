@@ -12,6 +12,7 @@ import { useLocation } from 'react-router';
 import {FiMenu} from 'react-icons/fi'
 import {MdOutlineCancel} from 'react-icons/md';
 import { useMediaQuery } from '../../hooks/CustomMediaQuery';
+import { useHistory, useParams } from 'react-router-dom';
 
 
 
@@ -20,18 +21,32 @@ import { useMediaQuery } from '../../hooks/CustomMediaQuery';
 function HeaderNavbar() {
     const location = useLocation()
     const path = location.pathname.split("/")[1];
+    const blogPath = location.pathname.split("/")[1];
+    const pageNum = location.pathname.split("/")[3];
     const axiosPrivate = useAxiosPrivate();
     const PF = "http://localhost:5000/images/" 
     const {auth, setAuth, logUser, setWebsiteName, setAboutWebsite, setQuery,  searchState, setSearchState,  blogPageName, pathName,  writePageName,
     pathLocation, setPathLocation, blogPageAliasName, writePageAliasName, setgeneralFetchError,dispatch, headerValues, setHeaderValues, headerImage, setHeaderImage,
-    contactPageName, contactPageAliasName, aboutPageName, aboutPageAliasName
+    contactPageName, contactPageAliasName, aboutPageName, aboutPageAliasName, globalPathName, setGlobalPathName,setCategoryName, searchRef
     } = useContext(AuthContext);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     let   tabletMode = useMediaQuery('(max-width: 1200px)');
     //const [searchState, setSearchState] = useState(false);
+    const history = useHistory();  
     
 
-  
+
+
+
+//set the global state here
+useEffect(()=>{
+    setGlobalPathName(path)
+}, [globalPathName, blogPageName, writePageName, aboutPageName, contactPageName, path == "", path])
+
+
+
+
+
 
 useEffect(() => {
 
@@ -105,7 +120,7 @@ useEffect(()=>{
 //the setSearchState has been set as a useContext state and can be gotten globally. Whenever there is a change on this state, the API can be called
 
 const handleSearchQuery = ()=>{
-
+    setCategoryName('')
     setSearchState(!searchState)
 }
 
@@ -135,9 +150,13 @@ useEffect(()=>{
 
 
 
-
-console.log(aboutPageAliasName, aboutPageName, 'header now')
-
+//this function turns off the mobile menu open state to enable the mobile menu to disappear when moving to another page if it was open
+const customFunction = ()=>{
+    setMobileMenuOpen(false);
+    setCategoryName('')
+    setQuery('')
+    searchRef.current.value = ''
+}
 
 
   return (
@@ -216,7 +235,7 @@ console.log(aboutPageAliasName, aboutPageName, 'header now')
                                             <div className={!path && path.toUpperCase() !==blogPageAliasName && path.toUpperCase() !== writePageAliasName  ? 'flex home-div ' : 'flex' }>
                          
                                                 <>
-                                                    <Link className='link ' to={'/'}>
+                                                    <Link onClick={customFunction} className='link ' to={'/'}>
                                                         <li className={!path && path.toUpperCase() !==blogPageAliasName && path.toUpperCase() !== writePageAliasName ? 'topListItem home-custom-color  ' :"topListItem " }>
                                                             {menuName}
                                 
@@ -239,7 +258,7 @@ console.log(aboutPageAliasName, aboutPageName, 'header now')
                         return(
                             <>
                                 <div key={key} className={path == singlePathName?.pathName ? 'flex customItemDiv colorBG marginLeft-extraSmall':   'flex customItemDiv marginLeft-extraSmall '}>
-                                    <Link className='link ' to={singlePathName?.aliasName == blogPageAliasName ? `/${blogPageName?.toLowerCase()}/page/${Number(1)}`: singlePathName?.aliasName == contactPageAliasName? `/${contactPageName?.toLowerCase()}`: 
+                                    <Link onClick={customFunction} className='link ' to={singlePathName?.aliasName == blogPageAliasName ? `/${blogPageName?.toLowerCase()}/page/${Number(1)}`: singlePathName?.aliasName == contactPageAliasName? `/${contactPageName?.toLowerCase()}`: 
                                         singlePathName?.aliasName === writePageAliasName ? `/${writePageName?.toLowerCase() }` : singlePathName?.aliasName === aboutPageAliasName ? `/${aboutPageName?.toLowerCase()}` : '/'
                             
                                 
@@ -282,7 +301,7 @@ console.log(aboutPageAliasName, aboutPageName, 'header now')
                         return(
                             <>
                                 <div key={key} className={path == singlePathName.pathName ? ' customItemDiv colorBG  margin-extra-small-Top':   ' customItemDiv '}>
-                                    <Link onClick={()=> setMobileMenuOpen(false)} className='link ' to={singlePathName.aliasName == blogPageAliasName ? `/${blogPageName.toLowerCase()}/page/${Number(1)}`: singlePathName?.aliasName == contactPageAliasName? `/${contactPageName?.toLowerCase()}`: 
+                                    <Link onClick={customFunction} className='link ' to={singlePathName.aliasName == blogPageAliasName ? `/${blogPageName.toLowerCase()}/page/${Number(1)}`: singlePathName?.aliasName == contactPageAliasName? `/${contactPageName?.toLowerCase()}`: 
                                         singlePathName.aliasName === writePageAliasName ? `/${writePageName?.toLowerCase() }`: singlePathName?.aliasName === aboutPageAliasName ? `/${aboutPageName?.toLowerCase()}` : '/'
                             
                                 
@@ -310,37 +329,44 @@ console.log(aboutPageAliasName, aboutPageName, 'header now')
             }
             
              <div className='custom-topList-section2'>
-                        {path !== 'allPosts' ? 
+                { console.log(globalPathName, blogPageName, !globalPathName == blogPageName, 'Hello globalpage')}
+                        {globalPathName == blogPageName ?
                         
-                            <div className='search-input-div '>
-                            <input className='search-custom' type="text" placeholder='Search Blog Posts'
-                                onChange={(e)=>setQuery(e.target.value)}
-                            /> 
-                                <div className='search-icon-div'>
-                                   <Link to={`allPosts/page/${Number(1)}`}>
-                                        <FaSearch className='fa-search' />
-                                   </Link>
-                                        
-                                    
-                                    
-                                </div>
-                            </div>
+                       
+                        <div className='search-input-div '>
+                        {console.log('I am second to run')}   
+                   <input className='search-custom' type="text" placeholder='Search Blog Posts'
+                       ref={searchRef}
+                   /> 
+                       <div className='search-icon-div'>
+                         
+                               <FaSearch className='fa-search' onClick={handleSearchQuery}/>
+                         
+                               
+                           
+                           
+                       </div>
+                   </div>
+                      
                             :
-
-                            <div className='search-input-div '>
-                            <input className='search-custom' type="text" placeholder='Search Blog Posts'
-                                onChange={(e)=>setQuery(e.target.value)}
-                            /> 
-                                <div className='search-icon-div'>
-                                  
-                                        <FaSearch className='fa-search' onClick={handleSearchQuery}/>
-                                  
-                                        
-                                    
-                                    
-                                </div>
-                            </div>
                         
+                    
+
+                        <div className='search-input-div '>
+                        {console.log('I am first to run')}    
+                    <input className='search-custom' type="text" placeholder='Search Blog Posts'
+                        ref={searchRef}
+                    /> 
+                        <div className='search-icon-div'>
+                            <Link onClick={handleSearchQuery} to={`/${blogPageName}/page/${Number(1)}`} >
+                                <FaSearch className='fa-search' />
+                            </Link>
+                                
+                    
+                            
+                            
+                        </div>
+                    </div>
                         }
 
                      

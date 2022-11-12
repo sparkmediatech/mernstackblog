@@ -1,8 +1,9 @@
-import { createContext, useState, useEffect, useReducer } from "react";
+import { createContext, useState, useEffect, useReducer, useRef} from "react";
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import Reducer from "../context/Reducer";
-import BASE_URL from '../hooks/Base_URL'
+import BASE_URL from '../hooks/Base_URL';
+
 
 
 const INITIAL_STATE = {
@@ -30,7 +31,11 @@ export const AuthProvider = ({children})=>{
     const [aboutWebsite, setAboutWebsite] = useState();
     const [posts, setPosts] = useState([]);
     const [imageDetails, setImageDetails] = useState();
-    const [query, setQuery] = useState('');
+    //this search query controls the search term input by the user. I ended up not using query useState
+    const [query, setQuery] = useState();
+    //controls the state of search via category. It has to be global becus we made use of it in another component
+    const [categoryName, setCategoryName] = useState('')
+    // controls the state of search which triggers the api for search
     const [searchState, setSearchState] = useState(false);
     //the states for menu and paths start here
     const [componentName, setComponentName] = useState([])
@@ -79,6 +84,11 @@ export const AuthProvider = ({children})=>{
     //What this state does is to store the length of single Post component. When the length is greater than 0, then we can show the sidebar. This helps to encourage user experience
     const [postLength,  setPostLength] = useState([])
 
+    //path state for logics that relies on path linke name globally
+    const [globalPathName, setGlobalPathName] = useState('')
+    
+    //this search query ref controls the search term input by the user.
+    const searchRef = useRef()
     
 
 
@@ -249,7 +259,7 @@ return function cleanup() {
          
     }, [])
 
-
+console.log(globalPathName, 'global pathname', blogPageName)
 
     return(
         <AuthContext.Provider value={{auth, setAuth,logUser, setLogUsers, regUser, setRegUser, temp: state.temp, 
@@ -291,7 +301,10 @@ return function cleanup() {
            contactPageAliasName,setContactPageAliasName,
            aboutPageName,setAboutPageName,
            aboutPageAliasName, setAboutPageAliasName,
-           postLength,  setPostLength
+           postLength,  setPostLength,
+           globalPathName, setGlobalPathName,
+           categoryName, setCategoryName,
+           searchRef,
 
            
 

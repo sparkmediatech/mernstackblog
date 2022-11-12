@@ -36,7 +36,8 @@ export default function SinglePost() {
     const [username, setUsername] = useState();
     const [isLoading, setIsLoading] = useState(false);   
     let currentUrl = `http://www.localhost:3000/post/${path}`;
-    const {auth, logUser, dispatch, authorDetails, setAuthorDetails, imageDetails, tokenError, generalFetchError, setgeneralFetchError,  setPostLength} = useContext(AuthContext);
+    const {auth, logUser, dispatch, authorDetails, setAuthorDetails, imageDetails, tokenError, generalFetchError, setgeneralFetchError,  setPostLength,
+        categoryName, setCategoryName, setQuery, blogPageName, } = useContext(AuthContext);
     const [liked, setLiked] = useState();
     //const [showCategories, setShowCategories] = useState(false);
     const imagePlugin = createImagePlugin();
@@ -410,7 +411,10 @@ if(postLikeError){
 ])
     
 
-
+const handleSearchCategory = (categories)=>{
+    setCategoryName(categories);
+    setQuery('')
+}
 
 
 
@@ -502,7 +506,7 @@ if(postLikeError){
                     
                    
                
-                {!updateMode && <div className='single-category-div'><h5>Category</h5><h5 className='cat-Text'>{categories}</h5></div>}
+                {!updateMode && <div className='single-category-div'><h5>Category</h5><Link className='link' onClick={() => setCategoryName(categories)} to={`/${blogPageName}/page/${Number(1)}`}><h5  className='cat-Text'>{categories}</h5></Link></div>}
                 
                  {/* delete post error texts start here */}
 
@@ -547,7 +551,7 @@ if(postLikeError){
                
                {/*  Like button */}
 
-               {post.postLikes}
+               {post?.postLikes}
                 {/* post like error starts  */}
                 {userNotFoundError && postLikeError &&<p className='paragraph-text red-text'>User not found</p>}
                 {postNotFoundError &&  postLikeError && <p className='paragraph-text red-text'>Post not found</p>}
@@ -577,7 +581,7 @@ if(postLikeError){
        
             
         
-       {!updateMode && post.length > 0 && <Comments/>}
+       {!updateMode && post?.length > 0 && <Comments/>}
         
      
      </div>

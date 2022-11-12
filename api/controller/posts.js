@@ -395,7 +395,7 @@ const getPostSearchResults = async (req, res)=>{
     const catName = req.body.catName;
     const username = req.body.username
 
-
+console.log(search, catName, username)
     try{
         let posts;
         if(search){
