@@ -5,7 +5,7 @@ import SinglePost from '../../components/singlePost/singlePost'
 import {AuthContext} from '../../context/AuthProvide';
 
 export default function Single() {
-    const {postLength} = useContext(AuthContext);
+    const {postLength, updateMode, setUpdateMode} = useContext(AuthContext);
     //global post length that allows sidebar to be shown only whenthe length of post component is greater than 0 and improve user experience
 
     console.log(postLength, 'length')
@@ -13,7 +13,7 @@ export default function Single() {
         <div className='single'>
             <SinglePost/> 
             
-            {postLength > 0 && <Sidebar/>}
+            {postLength > 0 && !updateMode && <Sidebar/>}
         </div>
     )
 }

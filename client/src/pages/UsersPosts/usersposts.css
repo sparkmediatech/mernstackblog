@@ -43,6 +43,9 @@
     width: 100%;
     padding-bottom: 60px;
 }
+.custom-delete-user-posts-BTN-div{
+    height: 100px;
+}
 .delet-selected-custom{
     padding: 13px 40px 13px 40px;
     transition: 0.4s ease-in-out;
@@ -69,6 +72,7 @@
 .delet-selected-custom{
     cursor: not-allowed;
     opacity: 0.3;
+    pointer-events: none;
 }
 
 .custom-page-navigation-icon{
@@ -78,6 +82,7 @@
 }
 .unclickMouse{
     cursor:not-allowed;
+    pointer-events: none;
 }
 .custom-userPosts-delete-BTN-div{
     width: 45%;
@@ -88,6 +93,16 @@
     display: flex;
     justify-content: right;
 }
+
+
+.custom-userPosts-nav-div{
+    margin-top: 100px;
+}
+
+
+
+
+
 /*Tablet */
 @media (max-width: 768px){
     .usersPosts-custom-main-div{
@@ -116,5 +131,34 @@
     padding: 10px !important;
     margin-top: 40px !important;
     
+}
+.custom-del-userposts-BTN{
+    padding: 13px 15px 13px 15px !important;
+    font-size: 15px !important;
+}
+.custom-managePosts-titl{
+    font-size: 15px !important;
+}
+.custom-all-user-posts-text{
+    font-size: 13px !important;
+}
+.custom-del-user-posts-icon{
+    font-size: 14px !important;
+}
+
+}
+
+
+
+@media(max-width: 300px){
+.custom-del-userposts-BTN{
+    padding: 13px 13px 13px 13px !important;
+    font-size: 13px !important;
+}
+.custom-user-posts-title-text{
+    font-size: 10px !important;
+}
+.custom-userposts-gen-text{
+ font-size: 13px !important;   
 }
 }

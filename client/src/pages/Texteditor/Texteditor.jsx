@@ -11,6 +11,8 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import BASE_URL from '../../hooks/Base_URL';
 import axios from "axios";
 import { useMediaQuery } from '../../hooks/CustomMediaQuery';
+import UploadImage from '../../hooks/UploadImage'
+
 //import { convertFromRaw } from 'draft-js';
 
 
@@ -19,14 +21,14 @@ function Texteditor() {
     () => EditorState.createEmpty(),
   );
    
-
+  const imageUploader = UploadImage()
   const [file, setFile] = useState('')
-  const {auth, logUser, dispatch, setPathNameMount, pathNameMount} = useContext(AuthContext);
+  const {auth, logUser, dispatch, setPathNameMount, pathNameMount, imageDetails} = useContext(AuthContext);
   const [title, setTitle] = useState();
   const [description, setDescription] = useState(editorState);
   const [selectedCategoryId, setSelectedCategoryId] = useState()
   const axiosPrivate = useAxiosPrivate();
-  const [imageDetails, setImageDetails] = useState()
+  //const [imageDetails, setImageDetails] = useState()
   const [arrayImagePublicId, setArrayImagePublicID] = useState([]);
   const [arrayImagePhotoURL, setArrayImagePhotoURL] = useState([]);
   const [catName, setCatName] = useState([]);
@@ -58,37 +60,7 @@ function Texteditor() {
    }, []) 
 
   
-  //upload image to cloudinary server
-  const uploadImageCallBack = async (file) =>{
-        const data = new FormData();
-        const filename = Date.now() + file.name;
-        data.append("name", filename);
-        data.append("file", file);
-    try{
-      const response = await axiosPrivate.post(`${BASE_URL}/posts/uploadImage`,  data,{ withCredentials: true,
-            headers:{authorization: `Bearer ${auth.token}`}
-           
-        },)
 
-          //set image into file state to check if image is present before a post request is made
-          setFile(file)
-          //set image details to a state
-          setImageDetails(response.data)
-          //push selected post Ids into an array
-          setArrayImagePhotoURL(prevArray => [...prevArray, response.data.url]);
-          setArrayImagePublicID(prevArray => [...prevArray, response.data.publicId]);
-          
-         
-           return new Promise(
-            (resolve, reject) => {
-              resolve({ data: { link: response.data.url } });
-              }
-              );
-    }catch(err){
-
-    }     
-  }
- 
   
     const onEditorStateChange = async (editorState) => {
     setEditorState(editorState);
@@ -112,7 +84,7 @@ const handleShowCategory = () =>{
      dispatch({type:"CURSOR_NOT_ALLOWED_START"});
       e.preventDefault();
 
-       if(file){
+       if(imageDetails){
 
         const data = new FormData();
         data.append("username", logUser.userId);
@@ -149,7 +121,7 @@ const handleShowCategory = () =>{
         if(err.response.data === 'Post title already exist'){
             setDubplicateTitleError(true)
         };
-        if(err.response.data === "post title should not be more than 60 characters"){
+        if(err.response.data === 'post title should not be more than 100 characters'){
             setPostTitleMaxError(true)
         };
         if(err.response.data === "post title should not be empty"){
@@ -260,7 +232,7 @@ if(postTitleMinError){
                       textAlign: { inDropdown: true, className: 'custom-toolbox ', },
                       link: { inDropdown: true, className: 'custom-toolbox',},
                       history: { inDropdown: true, className: 'custom-toolbox no-display',},
-                      image: {uploadEnabled: true, className: 'custom-toolbox custom-img', uploadCallback: uploadImageCallBack,  previewImage: true, alt: { present: true }, defaultSize: {width: '700px', height: '400px'}},
+                      image: {uploadEnabled: true, className: 'custom-toolbox custom-img', uploadCallback: imageUploader,  previewImage: true, alt: { present: true }, defaultSize: {width: '700px', height: '400px'}},
                       
                       
                       

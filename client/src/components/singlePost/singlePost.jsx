@@ -31,13 +31,13 @@ export default function SinglePost() {
     const PF = "http://localhost:5000/images/" // making the image folder publicly visible
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("");
-    const [updateMode, setUpdateMode] = useState(false)
+
     const [categories, setCategories] = useState();
     const [username, setUsername] = useState();
     const [isLoading, setIsLoading] = useState(false);   
     let currentUrl = `http://www.localhost:3000/post/${path}`;
     const {auth, logUser, dispatch, authorDetails, setAuthorDetails, imageDetails, tokenError, generalFetchError, setgeneralFetchError,  setPostLength,
-        categoryName, setCategoryName, setQuery, blogPageName, } = useContext(AuthContext);
+        categoryName, setCategoryName, setQuery, blogPageName, updateMode, setUpdateMode } = useContext(AuthContext);
     const [liked, setLiked] = useState();
     //const [showCategories, setShowCategories] = useState(false);
     const imagePlugin = createImagePlugin();
@@ -285,7 +285,7 @@ const handleUpdate = async () =>{
                 return setPostTitleEmptyError(true)
             }
 
-            if(err.response.data == 'post title should not be more than 60 characters'){
+            if(err.response.data == 'post title should not be more than 100 characters'){
                 return setPostTitleMaxError(true)
             }
             if(err.response.data == 'post title should not be less than 10 characters'){
@@ -441,7 +441,7 @@ const handleSearchCategory = (categories)=>{
                 <div className="singlePostWrapper" >
                 
                 {updateMode && <div><MdCancel className='cancel-edit-mode-btn' onClick={() => {setUpdateMode(false); setTitle(singleItem.title)}}/></div>}
-                {updateMode ? <input type="text" value={title} className="singlePostTitleInput color1 center-text"
+                {updateMode ? <input type="text" value={title} className="singlePostTitleInput custom-edit-post-title color1 center-text"
 
                      onChange={(e)=> setTitle(e.target.value)}
 
@@ -485,11 +485,18 @@ const handleSearchCategory = (categories)=>{
                 {updateMode ? <div className='edit-post-div editor '>
                     <EditEditor editorState={editEditorState}  
                      wrapperClassName=" custom-Editor-wrapper"
+                     editorClassName="custom-editor-className"
+                     toolbarClassName="toolbar-class"
                       onEditorStateChange={onEditorStateChange}
                       
                       toolbar={{
-                        textAlign: { inDropdown: true },
-                        image: {uploadEnabled: true, uploadCallback: imageUploader,  previewImage: true, alt: { present: true }, defaultSize: {width: '700px', height: '400px'}},
+                        options: ['inline', 'image', 'blockType',  'list', 'textAlign',  'history', ],
+                        inline: { inDropdown: true, className: 'custom-toolbox no-display', },
+                        list: { inDropdown: true, className: 'custom-toolbox no-display', },
+                        textAlign: { inDropdown: true, className: 'custom-toolbox ', },
+                        link: { inDropdown: true, className: 'custom-toolbox',},
+                        history: { inDropdown: true, className: 'custom-toolbox no-display',},
+                        image: {uploadEnabled: true, uploadCallback: imageUploader ,  previewImage: true, alt: { present: true }, defaultSize: {width: '700px', height: '400px'}},
                         fontSize: {
                         className: 'custom-fontzie',
                     

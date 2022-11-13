@@ -40,8 +40,8 @@ const createNewPost =  async (req, res) =>{
     if(duplicatePost){
         return res.status(401).json('Post title already exist')
     }
-    if(uppercaseTitle.length > 61){
-        return res.status(500).json('post title should not be more than 60 characters')
+    if(uppercaseTitle.length > 100){
+        return res.status(500).json('post title should not be more than 100 characters')
     }
     if(uppercaseTitle.length < 10){
         return res.status(500).json('post title should not be less than 10 characters')
@@ -99,8 +99,8 @@ const updatePost = async (req, res)=>{
         return res.status(500).json('post title can not be empty')
     }
 
-    if(title.length > 61){
-        return res.status(500).json('post title should not be more than 60 characters')
+    if(title.length > 100){
+        return res.status(500).json('post title should not be more than 100 characters')
     }
     if(title.length < 10){
         return res.status(500).json('post title should not be less than 10 characters')

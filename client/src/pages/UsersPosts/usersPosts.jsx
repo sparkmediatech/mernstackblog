@@ -10,13 +10,14 @@ import './usersposts.css';
 import {AiFillDelete} from 'react-icons/ai';
 import axiosPrivate from '../../hooks/AxiosPrivate';
 import { useHistory, useParams } from 'react-router-dom';
-import {MdNavigateNext, MdNavigateBefore} from 'react-icons/md'
+import {MdNavigateNext, MdNavigateBefore} from 'react-icons/md';
+import { Link } from 'react-router-dom';
 
 function UsersPosts() {
     const location = useLocation()
     const path = location.pathname.split("/")[2];
     const pageNumber = Number(location.pathname.split("/")[3]);
-    const {auth, logUser, dispatch, setAuth} = useContext(AuthContext);
+    const {auth, logUser, dispatch, setAuth, setgeneralFetchError, cursorState} = useContext(AuthContext);
     const [usersPosts, setUsersPosts] = useState([]);
     const [selectedPosts, setSelectedPosts] = useState([])
     const [isLoaded, setIsLoaded] = useState(false);
@@ -54,6 +55,7 @@ console.log(logUser.username)
     useEffect(() =>{
 
         const fetchAllUsersPosts = async ()=>{
+            dispatch({type:"CURSOR_NOT_ALLOWED_START"});
             const userPosts = {
                 username: logUser.userId
             }
@@ -62,9 +64,13 @@ console.log(logUser.username)
                 try{
                 const response = await axios.post(`${BASE_URL}/posts/searches?page=${pageNumber}`,  userPosts)
                      setUsersPosts(response.data)
+                     dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
                     
             }catch(err){
-
+                dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+                if(err.response.data == 'something went wrong'){
+                    setgeneralFetchError(true)
+                }
             }
             }
             
@@ -146,8 +152,7 @@ console.log(logUser.username)
             headers:{authorization: `Bearer ${auth}`}
            });
             dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-           console.log(res.data)
-           setIsLoaded(true)
+           setIsLoaded(!isLoaded)
 
       }catch(err){
          dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
@@ -180,6 +185,8 @@ const handleDeleteAllPosts = async ()=>{
         await axiosPrivate.post(`${BASE_URL}/posts/deleteall`,   { withCredentials: true,
             headers:{authorization: `Bearer ${auth}`}});
              dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
+             setIsLoaded(!isLoaded)
+             
     }catch(err){
          dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
          if(err.response.data === 'No user found'){
@@ -204,7 +211,7 @@ const handleDeleteAllPosts = async ()=>{
 };
   //handle prev
 const handlePrev = () =>{
- if(!pageNumber == Number(1)){
+ if(pageNumber > 1){
      history.push(`/usersposts/${logUser?.userId}/${pageNumber - 1}`);
  }
   //setPage(page - 1)
@@ -212,7 +219,7 @@ const handlePrev = () =>{
 
 //handle next
 const handleNext = ()=>{
-  if(pageNumber < usersPosts.length && pageNumber !== usersPosts.length -1 ){
+  if(usersPosts.length > 11){
     history.push(`/usersposts/${logUser?.userId}/${pageNumber + 1}`);
     //setPage(page + 1)
   }
@@ -287,8 +294,8 @@ if(noPostFoundError){
            <div className='mainContainer usersPosts-custom-main-div  margin-small '>
                 <h5 className='text-general-small2 center-text color1 topMargin-medium custom-managePosts-title'>Manage Posts</h5>
                 <div className='clear-selected-btn-div'>
-                    <div className='custom-userPosts-delete-BTN-div'> {usersPosts.length > 1 &&<p onClick={handleDeleteAllPosts} className=' clear-btn marginRight-sm text-general-small color2'>Delete All Posts</p>}</div>
-                    <div className='custom-userPosts-clear-BTN-div'> {usersPosts.length > 1 && <p onClick={handleClearSelected} className=' clear-btn marginRight-sm text-general-small color2'>Clear Selected</p>}</div>
+                    <div className='custom-userPosts-delete-BTN-div'> {usersPosts.length > 1 &&<p onClick={handleDeleteAllPosts} className=' clear-btn marginRight-sm text-general-small color2 custom-all-user-posts-text'>Delete All Posts</p>}</div>
+                    <div className='custom-userPosts-clear-BTN-div'> {usersPosts.length > 1 && <p onClick={handleClearSelected} className=' clear-btn marginRight-sm text-general-small color2 custom-all-user-posts-text'>Clear Selected</p>}</div>
                     </div>
               {usersPosts.map((singlePost, index) =>{
                
@@ -298,7 +305,7 @@ if(noPostFoundError){
                         <div className='posts-div topMargin-medium ' key={index}>
                             <div className='flex-3 center-flex-align-display single-post-div'>
                                 <div className='marginLeft-sm post-title-div'>
-                                    <h4 className='text-general-small post-title-custom-text color1'>{title}</h4>
+                                    <Link className='link' to={`/post/${postId}`}><h4 className='text-general-small post-title-custom-text color1 custom-user-posts-title-text'>{title}</h4></Link>
                                 </div>
 
                                 
@@ -306,7 +313,7 @@ if(noPostFoundError){
 
                                      <div className='post-item-custom-div flex-3 center-flex-align-display'>
                                      <input className='marginRight-sm check-box' type="checkbox" name='' id={index} checked={checkedState[index]}   onChange={()=>{arrayOfSelectedPostId(postId, index); handleChangeState(postId)}} />
-                                    <AiFillDelete onClick={()=> handleSinglePost(postId)}  className='delete-post marginRight-sm red-text'/>
+                                    <AiFillDelete onClick={()=> handleSinglePost(postId)}  className='delete-post marginRight-sm red-text custom-del-user-posts-icon'/>
 
                                  </div>
                                 
@@ -334,12 +341,20 @@ if(noPostFoundError){
             {userBlockedError && <p className='paragraph-text red-text'>Your account is restricted and can not perform this action now</p>}
             {verifiedUserError && <p className='paragraph-text red-text'>You are yet to verify your account. You can not perform this action</p>}
 
-              <div className='flex-3 custom-page-navigation-div center-flex-justify-display margin-small'>
+            
+               {!cursorState &&  usersPosts.length > 0 &&
+                <div className='delete-BTN-div flex topMargin-medium custom-delete-user-posts-BTN-div'>
+                   <button onClick={handleSelectedPosts} className={selectedPosts?.length > 1 ? 'button-general-2 custom-del-userposts-BTN ' : "delet-selected-custom button-general-2 custom-del-userposts-BTN"}>Delete Selected Posts</button>
+                   
+                </div>
+            }
+             
+              <div className='flex-3 custom-page-navigation-div center-flex-justify-display margin-small custom-userPosts-nav-div'>
 
                
                    
                    {
-                    usersPosts.length > 0 && <div className='flex-2 marginRight-extraSmall '>
+                    !cursorState && usersPosts.length > 0 &&  <div className='flex-2 marginRight-extraSmall '>
                     <MdNavigateBefore onClick={handlePrev} className={pageNumber > 1 && pageNumber !== usersPosts.length ? 'custom-page-navigation-icon': 'custom-page-navigation-icon unclickMouse' }/>
                     <p className='margin-extra-small-Top color1 text-general-extral-small general-cursor-pointer'>PREV</p>
                 </div>
@@ -348,14 +363,17 @@ if(noPostFoundError){
                 
 
                 {
-                    usersPosts.length < 1 ? <p className='color1 text-general-small '>You do not have any post yet</p>:
-                    <p className='color1 text-general-small '>Page {pageNumber}</p>
+                    usersPosts.length < 1 ? <div className='flex-2 center-flex-align-display'>
+                        <p className='color1 text-general-small '>You do not have any post yet</p>
+                       <Link className='link' to={`/settings/${logUser.userId}`}> <p className='color2 margin-small text-general-small custom-userposts-gen-text'>Profile</p></Link>
+                    </div>:
+                    <p className='color1 text-general-small custom-userposts-gen-text'>Page {pageNumber}</p>
                 }
                 
                
                     
                 {
-                    usersPosts.length > 0 && 
+                    !cursorState && usersPosts.length > 0 &&
                      <div className='flex-2 margin-left-sm1'>
                     <MdNavigateNext onClick={handleNext} className={ pageNumber < usersPosts.length && pageNumber !== usersPosts.length -1 && usersPosts && usersPosts.length == 12 ? 'custom-page-navigation-icon' :  'custom-page-navigation-icon unclickMouse'}/>
                     <p className='margin-extra-small-Top color1 text-general-extral-small general-cursor-pointer'>NEXT</p>
@@ -364,12 +382,7 @@ if(noPostFoundError){
                 
               </div>
               
-              {
-                selectedPosts.length > 1 && <div className='delete-BTN-div flex topMargin-medium'>
-                   <button onClick={handleSelectedPosts} className={selectedPosts.length > 1 ? 'button-general-2 ' : "delet-selected-custom button-general-2 delet-selected-custom"}>Delete Selected Posts</button>
-                   
-              </div>
-              }
+             
               
            </div>
         

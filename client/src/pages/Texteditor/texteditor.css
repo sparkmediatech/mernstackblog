@@ -257,6 +257,8 @@
 }
 .custom-editor-className img{
     margin-top: 0;
+    width: 100% !important;
+    height: 300px !important;
 }
 }
 

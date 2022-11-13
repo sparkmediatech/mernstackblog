@@ -470,6 +470,12 @@ padding-bottom: 10px;
   .singlePost {
     width: 96vw;
   }
+  .cancel-edit-mode-btn{
+    font-size: 20px;
+  }
+  .custom-edit-post-title{
+    font-size: 15px !important;
+  }
 }
 
 
@@ -546,19 +552,18 @@ padding-bottom: 10px;
 
 @media(max-width: 350px){
   .editor {
-    width: 93%;
-    
-  }
-
-}
-
-
-
-
-
-@media(max-width: 350px){
-  .editor {
     width: 90%;
     
   }
+  .cancel-edit-mode-btn{
+    font-size: 15px;
+  }
+  .custom-edit-post-title{
+    font-size: 12px !important;
+  }
 }
+
+
+
+
+

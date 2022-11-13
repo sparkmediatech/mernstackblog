@@ -1,6 +1,7 @@
 import React, {useContext, useState} from 'react';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import {AuthContext} from '../context/AuthProvide';
+import BASE_URL from './Base_URL';
 
 //the image uploader react function
 
@@ -17,7 +18,7 @@ function UploadImage() {
         data.append("file", file);
 
         try{
-            const response = await axiosPrivate.post('/v1/posts/uploadImage',  data,{ withCredentials: true,
+            const response = await axiosPrivate.post(`${BASE_URL}/posts/uploadImage`,  data,{ withCredentials: true,
             headers:{authorization: `Bearer ${auth.token}`}
            
         },)

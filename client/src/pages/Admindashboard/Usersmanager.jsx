@@ -48,17 +48,15 @@ function Usersmanager(props,) {
   
       try{
            dispatch({type:"CURSOR_NOT_ALLOWED_START"});
-           dispatch({type:"ISLOADING_START"}); 
           const response = await axiosPrivate.post(`${BASE_URL}/users/allusers?page=${path}`, { withCredentials: true,
             headers:{authorization: `Bearer ${auth.token}`}});
             
             setAllUsers(response.data);
              dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-             dispatch({type:"ISLOADING_END"}); 
          
       }catch(err){
         dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
-        dispatch({type:"ISLOADING_END"}); 
+        
         if(err.response.data === 'No user found'){
             return setNoUserFoundError(true)
         }
@@ -82,7 +80,7 @@ useEffect(()=>{
 }, [allUsers])
 
 
-console.log(path, 'I am path')
+
 //handle prev
 const handlePrev = () =>{
     if(path > 1){
@@ -94,7 +92,7 @@ const handlePrev = () =>{
 
 //handle next
 const handleNext = ()=>{
-  if(path < allUsers.length && path !== allUsers.length){
+  if(allUsers.length > 4){
     history.push(`/users/page/${path + 1}`);
     //setPage(page + 1)
   }
@@ -112,7 +110,7 @@ const handleNext = ()=>{
 
         setCheckedState(updatedCheckedState);
     }
-console.log(selectedUsers)
+
 //handle deselecting of a selected postid
    const handleChangeState = (userId)=>{
        selectedUsers.map((item)=>{
@@ -134,7 +132,7 @@ console.log(selectedUsers)
               dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
             setDeleteUserState(!deleteUserState)
     }catch(err){
-        console.log(err)
+  
          dispatch({type:"CURSOR_NOT_ALLOWED_START_END"});
          if(err.response.data == 'user not found'){
             return setNoUserFoundError(true)
@@ -391,9 +389,9 @@ useEffect(()=>{
         
         </div>
       }
-   
+       
       {
-        allUsers.length != 0 && openAdminSideBar !== 'admin-sidebar-slideIn' && 
+        !cursorState && openAdminSideBar !== 'admin-sidebar-slideIn' && 
         <div className='custom-userdashboard-navigation-div flex-3  center-flex-align-display'>
             <div className='custom-userDashboard-Pre-div'>
                 <MdNavigateBefore  onClick={handlePrev} className={path > 1  ? 'custom-next-prev-userdashboard-icon marginRight-extraSmall flex-2' :'custom-next-prev-userdashboard-icon marginRight-extraSmall flex-2 curson-not-allowed-2' }/>
@@ -402,8 +400,8 @@ useEffect(()=>{
 
             <p className='text-general-small color1'>Page {path}</p>
 
-            <div className='flex-2 center-flex-align-display center-flex-justify-display'>
-                <MdNavigateNext  onClick={handleNext} className={path < allUsers.length && path !== allUsers.length  ? 'custom-next-prev-userdashboard-icon marginLeft-extraSmall flex-2 ' : 'custom-next-prev-userdashboard-icon marginLeft-extraSmall flex-2 curson-not-allowed-2'}/>
+            <div className={allUsers.length > 4 ? 'flex-2 center-flex-align-display center-flex-justify-display': 'flex-2 center-flex-align-display center-flex-justify-display display-page-nav-none' }>
+                <MdNavigateNext  onClick={handleNext} className='custom-next-prev-userdashboard-icon marginLeft-extraSmall flex-2 '/>
                <p className='margin-extra-small-Top color1 text-general-extral-small general-cursor-pointer'>NEXT</p>
             </div>
 

@@ -22,7 +22,6 @@ export const AuthContext = createContext({});
 export const AuthProvider = ({children})=>{
     const [state, dispatch] = useReducer(Reducer, INITIAL_STATE);
    
-   
     const [auth, setAuth] = useState({});
     const [logUser, setLogUsers] = useState({})
     const [regUser, setRegUser] = useState({});
@@ -30,6 +29,7 @@ export const AuthProvider = ({children})=>{
     const [authorDetails, setAuthorDetails] = useState({});
     const [aboutWebsite, setAboutWebsite] = useState();
     const [posts, setPosts] = useState([]);
+    //takes the image upload response and make it a global state
     const [imageDetails, setImageDetails] = useState();
     //this search query controls the search term input by the user. I ended up not using query useState
     const [query, setQuery] = useState();
@@ -88,14 +88,16 @@ export const AuthProvider = ({children})=>{
     const [globalPathName, setGlobalPathName] = useState('')
     
     //this search query ref controls the search term input by the user.
-    const searchRef = useRef()
+    const searchRef = useRef();
+    //controls the update state mode of single post where updating of individual posts take place
+    const [updateMode, setUpdateMode] = useState(false)
     
 
 
     const refreshToken = async () =>{
         
         try{
-            const response = await axios.post(`${BASE_URL}/refresh`, {
+            const response = await axios.post(`/refresh`, {
                  withCredentials: true
              });
              setAuth(response.data);
@@ -305,6 +307,7 @@ console.log(globalPathName, 'global pathname', blogPageName)
            globalPathName, setGlobalPathName,
            categoryName, setCategoryName,
            searchRef,
+           updateMode, setUpdateMode,
 
            
 

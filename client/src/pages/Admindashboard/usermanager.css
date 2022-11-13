@@ -5,6 +5,9 @@
     overflow: auto;
     padding: 0 40px;
 }*/
+.display-page-nav-none{
+    display: none !important;
+}
 .custom-user-manager-main-div{
     width: 80%;
    
