@@ -359,7 +359,7 @@ console.log(openAdminSideBar)
     
      <FiMenu onClick={handleOpenSidebarMenu}  className={openAdminSideBar == 'admin-sidebar-slideOut' ?  'custom-sidebar-menuOpen' :  'custom-sidebar-menuOpen customMenuOpenOff' }/>
 
-                <div className={openAdminSideBar === 'admin-sidebar-slideIn' ? 'other-pages custom-other-page bg-blur2 curson-not-allowed-2 pointer-events-none ' : 'other-pages custom-other-page'}>
+                <div className={openAdminSideBar === 'admin-sidebar-slideIn' ? 'other-pages custom-other-page bg-blur2 curson-not-allowed-2 pointer-events-none custom-page-setting-div' : 'other-pages custom-other-page custom-page-setting-div'}>
                                 <h3 className='text-general-Medium  custom-page-setting-title-text'>Page Setting</h3>
                         <div className='category-custom-div-wrapper margin-small'>
                                
@@ -369,9 +369,9 @@ console.log(openAdminSideBar)
                                     <input type="text" className='topMargin-medium input-general custom-category-input custom-create-category-input'
                                         ref={categoryRef}
                                         />
-                                    {!editCategory && <div className='custom-page-setting-BTN-div flex'><button onClick={ createNewCategory} className='button-general flex custom-page-setting-BTN'>Create</button></div>}
-                                    {editCategory && <div className='custom-page-setting-BTN-div flex'><button onClick={handleEditCategory} className='button-general custom-page-setting-BTN'>Update</button></div>}
-                                    {editCategory && <div className='custom-page-setting-BTN-div flex'><button onClick={handlecancelEdit} className='button-general custom-page-setting-BTN custom-page-setting-BTN'>Cancel</button></div>}
+                                    {!editCategory && <div className='custom-page-setting-BTN-div flex-2 center-flex-align-display'><button onClick={ createNewCategory} className='button-general flex custom-page-setting-BTN'>Create</button></div>}
+                                    {editCategory && <div className='custom-page-setting-BTN-div flex-2 center-flex-align-display'><button onClick={handleEditCategory} className='button-general custom-page-setting-BTN'>Update</button></div>}
+                                    {editCategory && <div className='custom-page-setting-BTN-div flex-2 center-flex-align-display'><button onClick={handlecancelEdit} className='button-general custom-page-setting-BTN custom-page-setting-BTN'>Cancel</button></div>}
                                     { created && <p className='paragraph-text '>Category created</p>}
                                     { alreadyExitError && <p className='paragraph-text red-text'>There is a category with that name already</p>}
                                     { categoryLessThanMinError && <p className='paragraph-text red-text'>Category should be more than 4 letters</p>}
@@ -397,7 +397,7 @@ console.log(openAdminSideBar)
                                 </div>
 
                                 <div className='category-display-div flex-2'>
-                                     {catName.length <= 0 && <p className='paragraph-text topMargin-Extral-Large'>You have not created any page yet</p>}
+                                     {catName.length <= 0 && <div className='custom-no-cat-display-div'><p className='paragraph-text topMargin-Extral-Large'>You have not created any page yet</p></div>}
                                     {catName.map((singleCategory, index)=>{
                                         const {catName, _id: categoryId} = singleCategory
                                         {/* convert catNames First letter to upper case   */}
@@ -406,13 +406,15 @@ console.log(openAdminSideBar)
                                         
                                         return(
                                         <>
-                                            <div className='category-single-div flex-3 center-flex-align-display' key={index}>
-                                                <div className='custom-category-name-div'><p className='text-general-small2 category-custom-text'>{catName}</p></div>
-                                                <div className='category-icons-div '>
-                                                    <FaEdit  className='category-icon-edit'onClick={() => {editCategoryState(catName);  setCategoryId(categoryId)}} />
-                                                    <AiFillDelete onClick={()=>  handleDeletCategory(categoryId)} className='category-icon-edit category-icon-delete'/>
-                                                </div>
-                                            </div>
+                                           
+                                             <div className='category-single-div flex-3 center-flex-align-display' key={index}>
+                                             <div className='custom-category-name-div'><p className='text-general-small2 category-custom-text'>{catName}</p></div>
+                                             <div className='category-icons-div '>
+                                                 <FaEdit  className='category-icon-edit'onClick={() => {editCategoryState(catName);  setCategoryId(categoryId)}} />
+                                                 <AiFillDelete onClick={()=>  handleDeletCategory(categoryId)} className='category-icon-edit category-icon-delete'/>
+                                             </div>
+                                         </div>
+                                           
                   
                                          </>
                                     )

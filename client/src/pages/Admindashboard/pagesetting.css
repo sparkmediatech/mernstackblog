@@ -5,6 +5,9 @@
     height: 93%;
     width: 95%;
 }
+.custom-page-setting-div{
+    width: 83% !important;
+}
 
 .custom-other-page{
     display: flex;
@@ -14,7 +17,7 @@
 .category-div-wrapper{
     justify-content: space-between;
     width: 100%;
-    height: 82vh;
+    height: auto;
     background-color: #414141;
 }
 .create-category-div{
@@ -86,6 +89,13 @@
 .custom-category-name-div{
     display: flex;
     width: 40%;
+}
+.custom-no-cat-display-div{
+    height: 83vh;
+}
+.custom-page-setting-BTN-div{
+    padding-bottom: 50px;
+    height: 50vh;
 }
 .custom-page-setting-BTN{
     width: 100%;
