@@ -10,7 +10,7 @@
     "api-start": "npm start --prefix api",
     "api-watch": "npm run watch --prefix api",
     "client": "npm start --prefix client",
-    "start": "concurrently \"npm run api-watch\" \"npm run client\"",
+    "start": "npm start --prefix api",
     "deploy": "concurrently \"npm run client-build --prefix client\" \"npm start --prefix api\"",
     "startcluster": "concurrently \"npm run build-deploy --prefix client\" \"npm run cluster --prefix api\"",
     "test": "concurrently \"npm run test --prefix api\" \"npm run test --prefix client\""
